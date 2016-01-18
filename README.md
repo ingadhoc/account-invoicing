@@ -1,9 +1,9 @@
-[![Runbot Status](http://runbot.adhoc.com.ar/runbot/badge/flat/4/8.0.svg)](http://runbot.adhoc.com.ar/runbot/repo/github-com-ingadhoc-account-invoice-4)
-[![Build Status](https://travis-ci.org/ingadhoc/account-invoice.svg?branch=8.0)](https://travis-ci.org/ingadhoc/account-invoice)
-[![Coverage Status](https://coveralls.io/repos/ingadhoc/account-invoice/badge.png?branch=8.0)](https://coveralls.io/r/ingadhoc/account-invoice?branch=8.0)
-[![Code Climate](https://codeclimate.com/github/ingadhoc/account-invoice/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/account-invoice)
+[![Runbot Status](http://runbot.adhoc.com.ar/runbot/badge/flat/4/8.0.svg)](http://runbot.adhoc.com.ar/runbot/repo/github-com-ingadhoc-account-invoicing-4)
+[![Build Status](https://travis-ci.org/ingadhoc/account-invoicing.svg?branch=8.0)](https://travis-ci.org/ingadhoc/account-invoicing)
+[![Coverage Status](https://coveralls.io/repos/ingadhoc/account-invoicing/badge.png?branch=8.0)](https://coveralls.io/r/ingadhoc/account-invoicing?branch=8.0)
+[![Code Climate](https://codeclimate.com/github/ingadhoc/account-invoicing/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/account-invoicing)
 
-# ADHOC Account Invoice
+# ADHOC Account Invoicing
 
 Odoo Invoicing Extension Addons
 
@@ -13,7 +13,7 @@ This part will be replaced when running the oca-gen-addons-table script from OCA
 
 Translation Status
 ------------------
-[![Transifex Status](https://www.transifex.com/projects/p/ingadhoc-account-invoice-8-0/chart/image_png)](https://www.transifex.com/projects/p/ingadhoc-account-invoice-8-0)
+[![Transifex Status](https://www.transifex.com/projects/p/ingadhoc-account-invoicing-8-0/chart/image_png)](https://www.transifex.com/projects/p/ingadhoc-account-invoicing-8-0)
 
 ----
 
