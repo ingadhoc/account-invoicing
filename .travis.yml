@@ -34,10 +34,11 @@ env:
   global:
   - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0"
   - TRANSIFEX_USER='jjscarafia'
-  - TRANSIFEX_ORGANIZATION='adhoc'
   # to get secure, run 'travis encrypt TRANSIFEX_PASSWORD=[transifex_password] -r [github_repo]'
   # example of github repo 'ingadhoc/odoo-infrastructure'
   - secure: oaPaT66TwBcRSPIGSsXGItNlRSyvp5/L2lS38CgZfsoFFFYEu8ALie5Qw7pGOteBVi7aRbUHILHR7KfVT7QjdEHa50nDGtxtlpJ5WhIH35Y0J5/SNhFnFZFZpCdV3DW0hGdjPo25KJOqEyYST91ExvbiUZ+ifysuqk8ecC/1Z7GeKzTIcP7XFvRa6aCKbHHzmORprre1vhglW5XMqxdrWgGuWr65b67bp5455tb27MJC+B9hA+pG84dupAREoiuJ6pbpPOAulmxBur0PhuXxWPmk7eUXKy3p7u1ZQEKNMudhuyuT04oOYaW8GGgnzFo1KQ097jguQYUM5H7CUQ9Omrwkro2+K9p6N1toudV7obU9hML/r4ZpXeX0PIILq43rv47unEWFCmhN5RID/BuV7rdXxiXScCjQwbL2yimES6gDt+/R629awNra/OKVXbWqLZVNSvoFXZyVvqUU8ZdL5UFUqV7g8KYn+B77gqKQ+Tq8ohWzKTkTS97RPve8mcnYx7Z83kujRSAzi9klJNXBJodtMZjizpy50x5GNnKj6WhKS5zcIL6fQyJKOBPexLJtAx9b6Nc9YjVyoa/vJpbp6DyZI2FDjj7jZwEcQLXivpQUkR9ufa7V+w4HpIANjzl/hOYsGJg3+4tLJjnuN44xPtu416777cDRiTaIa4O7slY=
+  - TRANSIFEX_ORGANIZATION='adhoc'
+  - TRANSIFEX_TEAM='46451'
 
   matrix:
   # TODO enable lint check
