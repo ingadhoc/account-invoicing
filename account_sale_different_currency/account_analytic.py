@@ -25,7 +25,7 @@ class account_analytic_account(models.Model):
             cr, uid, contract, context)
 
         if contract.different_currency_id:
-            res['currency_id'] = contract.amounts_on_currency_id.id
+            res['currency_id'] = contract.different_currency_id.id
             invoice_currency_rate = self.pool['res.currency'].compute(
                 cr, uid, contract.amounts_on_currency_id.id,
                 contract.different_currency_id.id,
