@@ -28,8 +28,11 @@ class account_invoice_line(models.Model):
             product] or False
         return res
 
+    # we add invoice_id on constraint because sometimes lines are created
+    # without an invoice so we add this value when we have the invoice and the
+    # currency
     @api.one
-    @api.constrains('product_id')
+    @api.constrains('product_id', 'invoice_id')
     def set_list_price(self):
         currency = self.invoice_id.currency_id
         if self.product_id and currency:
