@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Invoice in different Currency than Sale Order',
-    'version': '8.0.0.2.1',
+    'version': '8.0.0.4.1',
     'category': 'Account',
     'description': """
 Invoice in different Currency than Sale Order
@@ -39,13 +39,15 @@ monedas pertinentes y de "account" y "product" a 3 decimales.
     'license': 'AGPL-3',
     'depends': [
         'sale',
-        ],
+        'account_analytic_analysis'
+    ],
     'data': [
         'wizard/sale_make_invoice_advance.xml',
         'invoice_view.xml',
         'pricelist_view.xml',
         'sale_view.xml',
         'company_view.xml',
+        'account_analytic_view.xml',
     ],
     'demo': [],
     'installable': True,
