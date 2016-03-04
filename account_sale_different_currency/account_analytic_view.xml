@@ -8,7 +8,6 @@
                 <label for="recurring_invoice_line_ids" position="before">
                     <group col="4">
                         <field name="different_currency_id" attrs="{'invisible': [('recurring_invoices', '=', False)]}"/>
-                        <field name="amounts_on_currency_id" attrs="{'invisible': [('recurring_invoices', '=', False)]}"/>
                     </group>
                 </label>
             </field>
