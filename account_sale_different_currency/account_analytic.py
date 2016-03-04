@@ -16,9 +16,7 @@ class account_analytic_account(models.Model):
         'contract, please select a currency'
     )
 
-    @api.onchange(
-        'pricelist_id',
-        'pricelist_id.invoice_in_different_currency_id')
+    @api.onchange('pricelist_id')
     def onchange_pricelist_id(self):
         self.different_currency_id = False
         if self.pricelist_id.invoice_in_different_currency_id:
