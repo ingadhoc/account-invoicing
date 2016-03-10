@@ -1,0 +1,47 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_user_default_journals
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-10 13:48+0000\n"
+"PO-Revision-Date: 2016-03-10 13:48+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_user_default_journals
+#: field:res.users,default_purchase_journal_id:0
+msgid "Default Purchase Journal"
+msgstr ""
+
+#. module: account_user_default_journals
+#: field:res.users,default_sale_journal_id:0
+msgid "Default Sale Journal"
+msgstr ""
+
+#. module: account_user_default_journals
+#: model:ir.model,name:account_user_default_journals.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: account_user_default_journals
+#: view:res.users:account_user_default_journals.view_users_form
+msgid "Journal"
+msgstr ""
+
+#. module: account_user_default_journals
+#: view:res.users:account_user_default_journals.view_users_form
+msgid "Preferences"
+msgstr ""
+
+#. module: account_user_default_journals
+#: model:ir.model,name:account_user_default_journals.model_res_users
+msgid "Users"
+msgstr ""
+
