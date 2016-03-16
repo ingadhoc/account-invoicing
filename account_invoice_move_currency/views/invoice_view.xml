@@ -7,7 +7,11 @@
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
                 <div groups="base.group_multi_currency" position="after">
-                    <field name="move_currency_id"/>
+                    <label for="move_currency_id" groups="base.group_multi_currency"/>
+                    <div groups="base.group_multi_currency">
+                        <field name="move_currency_id" class="oe_inline"/>
+                        <field name="move_inverse_currency_rate" class="oe_inline" placeholder="Rate..." attrs="{'required': [('move_currency_id', '!=', False)], 'invisible': [('move_currency_id', '=', False)]}"/>
+                    </div>
                 </div>
             </field>
         </record>
