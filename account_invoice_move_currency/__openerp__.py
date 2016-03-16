@@ -32,7 +32,6 @@ Account Invoice Move Currency
     'name': 'Account Invoice Move Currency',
     'test': [],
     'data': [
-        # 'wizard/update_prices_wizard_view.xml',
         'views/invoice_view.xml',
     ],
     'version': '8.0.0.0.0',

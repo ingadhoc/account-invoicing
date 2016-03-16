@@ -7,7 +7,7 @@ from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 
 
-class AccountInvoice(models.TransientModel):
+class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     move_currency_id = fields.Many2one(
