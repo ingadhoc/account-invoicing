@@ -30,9 +30,10 @@ class account_change_currency(models.TransientModel):
             if self.currency_id == invoice.currency_id:
                 raise Warning(_(
                     'Old Currency And New Currency can not be the same'))
-            self.currency_rate = self.env[
-                'res.currency']._get_conversion_rate(
-                invoice.currency_id, self.currency_id)
+            currency = invoice.currency_id.with_context(
+                date=invoice.date_invoice or fields.Date.context_today(self))
+            self.currency_rate = currency.compute(
+                1.0, self.currency_id)
 
     @api.multi
     def change_currency(self, ):
