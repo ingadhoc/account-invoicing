@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_account_change_currency" model="ir.ui.view">
+            <field name="name">Change Currency</field>
+            <field name="model">account.change.currency</field>
+            <field name="inherit_id" ref="account.view_account_change_currency"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="currency_rate"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
