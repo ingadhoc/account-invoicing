@@ -12,9 +12,9 @@ class AccountInvoice(models.Model):
 
     move_currency_id = fields.Many2one(
         'res.currency',
-        'Account Move Secondary Currency',
+        'Secondary Currency',
         help='If you set a currency here, then this invoice values will be '
-        'also stored in the related Account Move',
+        'also stored in the related Account Move Secondary Currency',
         copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
@@ -33,15 +33,23 @@ class AccountInvoice(models.Model):
     def change_move_currency(self):
         if not self.move_currency_id:
             self.move_inverse_currency_rate = False
-        self.move_inverse_currency_rate = self.env[
-            'res.currency']._get_conversion_rate(
-            self.move_currency_id, self.company_id.currency_id)
+        else:
+            currency = self.move_currency_id.with_context(
+                date=self.date_invoice or fields.Date.context_today(self))
+            self.move_inverse_currency_rate = currency.compute(
+                1.0, self.company_id.currency_id)
 
     @api.constrains('move_currency_id', 'currency_id')
     def check_move_currency(self):
-        if self.move_currency_id and self.move_currency_id == self.currency_id:
-            raise Warning(_(
-                'Move Currency Can not be the same as Invoice Currency'))
+        if self.move_currency_id:
+            if self.move_currency_id == self.currency_id:
+                raise Warning(_(
+                    'Secondary currency can not be the same as Invoice '
+                    'Currency'))
+            if self.currency_id != self.company_id.currency_id:
+                raise Warning(_(
+                    'Can not use Secondary currency if invoice is in a '
+                    'Currency different from Company Currency'))
 
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
@@ -58,14 +66,10 @@ class AccountInvoice(models.Model):
         move_lines = super(
             AccountInvoice, self).finalize_invoice_move_lines(move_lines)
         if self.move_currency_id:
-            # company_currency = self.company_id.currency_id
             for a, b, line in move_lines:
-                # move_currency = self.move_currency_id.with_context(
-                #     date=self.date_invoice or fields.Date.context_today(
-                #     self))
                 if not self.move_inverse_currency_rate:
                     raise Warning(_(
-                        'If Move Secondary Currency Select you must set rate'))
+                        'If Secondary currency select you must set rate'))
                 if line['debit']:
                     amount = line['debit']
                     sign = 1.0
@@ -75,6 +79,4 @@ class AccountInvoice(models.Model):
                 line['currency_id'] = self.move_currency_id.id
                 line['amount_currency'] = sign * self.move_currency_id.round(
                     amount / self.move_inverse_currency_rate)
-                # line['amount_currency'] = sign * company_currency.compute(
-                #     amount, move_currency)
         return move_lines
