@@ -12,9 +12,9 @@ class AccountInvoice(models.Model):
 
     move_currency_id = fields.Many2one(
         'res.currency',
-        'Account Move Secondary Currency',
+        'Secondary Currency',
         help='If you set a currency here, then this invoice values will be '
-        'also stored in the related Account Move',
+        'also stored in the related Account Move Secondary Currency',
         copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
@@ -33,9 +33,10 @@ class AccountInvoice(models.Model):
     def change_move_currency(self):
         if not self.move_currency_id:
             self.move_inverse_currency_rate = False
-        self.move_inverse_currency_rate = self.env[
-            'res.currency']._get_conversion_rate(
-            self.move_currency_id, self.company_id.currency_id)
+        else:
+            self.move_inverse_currency_rate = self.env[
+                'res.currency']._get_conversion_rate(
+                self.move_currency_id, self.company_id.currency_id)
 
     @api.constrains('move_currency_id', 'currency_id')
     def check_move_currency(self):
