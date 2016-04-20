@@ -38,16 +38,32 @@ class account_invoice_line(models.Model):
         if self.product_id and currency:
             price_get = self.product_id.with_context(
                 currency_id=currency.id
-                ).price_get()
+            ).price_get()
 
-            self.list_price = price_get and price_get[
-                self.product_id.id] or False
+            self.write({'list_price': price_get and price_get[
+                self.product_id.id] or False})
+
+    @api.model
+    def create(self, vals):
+        """
+        Esto es porque, por ejemplo, daba error al crear notas de credito
+        desde facturas, terminaba inventando un discount
+        """
+        # este valor no interesa, lo sacamos para no tener ruido
+        # if vals.get('list_discount'):
+        #     vals.pop('list_discount')
+        # si vienen los dos no tiene sentido, porque uno va a setear el otro
+        # sacamos total_discount
+        if 'total_discount' in vals and 'discount' in vals:
+            vals.pop('total_discount')
+        return super(account_invoice_line, self).create(vals)
 
     @api.one
     @api.depends(
         'discount',
         'price_unit',
-        )
+        'list_price',
+    )
     def _get_discounts(self):
         discount = 0.0
         total_discount = 0.0
@@ -56,8 +72,6 @@ class account_invoice_line(models.Model):
             (list_price - self.price_unit) * 100.0 / list_price) or 0.0
         total_discount = discount + self.discount - (
             discount * self.discount or 0.0) / 100.0
-
-        self.list_price = list_price
         self.list_discount = discount
         self.total_discount = total_discount
 
@@ -76,13 +90,13 @@ class account_invoice_line(models.Model):
         digits=dp.get_precision('Account'),
         string='List Price',
         readonly=True
-        )
+    )
     list_discount = fields.Float(
         compute='_get_discounts',
         string='List Discount'
-        )
+    )
     total_discount = fields.Float(
         compute='_get_discounts',
         inverse='_set_discount',
         string='Total Discount'
-        )
+    )
