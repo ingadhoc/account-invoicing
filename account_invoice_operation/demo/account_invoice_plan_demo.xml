@@ -5,7 +5,7 @@
             <field name="name">30 / 60 / 90 Same Journal (move all, round integer, validate first)</field>
         </record>
 
-        <record id="demo_invoice_plan_1_line_1" model="account.invoice.plan">
+        <record id="demo_invoice_plan_1_line_1" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_1"/>
             <field name="reference">Cuota 1</field>
             <field name="automatic_validation" eval="1"/>
@@ -14,7 +14,7 @@
             <field name="days" eval="35"/>
             <field name="days2" eval="1.0"/>
         </record>
-        <record id="demo_invoice_plan_1_line_2" model="account.invoice.plan">
+        <record id="demo_invoice_plan_1_line_2" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_1"/>
             <field name="reference">Cuota 2</field>
             <field name="automatic_validation" eval="0"/>
@@ -23,7 +23,7 @@
             <field name="days" eval="65"/>
             <field name="days2" eval="1.0"/>
         </record>
-        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan">
+        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_1"/>
             <field name="reference">Cuota 3</field>
             <field name="automatic_validation" eval="0"/>
@@ -47,7 +47,7 @@
         <record id="demo_invoice_plan_2" model="account.invoice.plan">
             <field name="name">Move 100% to journal</field>
         </record>
-        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan">
+        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_2"/>
             <field name="journal_id" ref="sales_journal2"/>
             <field name="percentage" eval="100.0"/>
@@ -56,7 +56,7 @@
         <record id="demo_invoice_plan_3" model="account.invoice.plan">
             <field name="name">Move 50% to journal</field>
         </record>
-        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan">
+        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_2"/>
             <field name="journal_id" ref="sales_journal2"/>
             <field name="percentage" eval="50.0"/>
