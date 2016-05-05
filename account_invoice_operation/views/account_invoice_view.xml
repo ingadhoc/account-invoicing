@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="journal_type" invisible="1"/>
+                </form>
+                <field name="account_id" position="after">
+                    <label for="operation_ids"/>
+                    <div>
+                        <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
+                        <button name="%(action_invoice_operation_wizard)d" type="action" string="Load Plan" class="oe_link oe_line"/>
+                    </div>
+                </field>
+                <button name="invoice_open" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>
+                    <attribute name="states"></attribute>
+                </button>
+                <button name="invoice_proforma2" position="after">
+                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}"/>
+                    <button name="action_run_operations" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}"/>
+                </button>
+            </field>
+        </record>
+
+<!-- TODO copiar cambios aca -->
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form</field>
+            <field name="model">account.invoice</field>
+            <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="journal_type" invisible="1"/>
+                </form>
+                <field name="account_id" position="after">
+                    <label for="operation_ids"/>
+                    <div>
+                        <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
+                        <button name="%(action_invoice_operation_wizard)d" type="action" string="Load Plan" class="oe_link oe_line"/>
+                    </div>
+                </field>
+                <button name="invoice_open" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>
+                    <attribute name="states"></attribute>
+                </button>
+                <button name="invoice_open" position="after">
+                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}"/>
+                    <button name="action_run_operations" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}"/>
+                </button>
+            </field>
+        </record>
+    </data>
+</openerp>

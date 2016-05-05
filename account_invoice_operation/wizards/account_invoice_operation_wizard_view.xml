@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_invoice_operation_wizard_form" model="ir.ui.view">
+            <field name="name">Account Invoice Operation Wizard</field>
+            <field name="model">account.invoice.operation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Operation">
+                    <group>
+                        <field name="model" invisible="1"/>
+                        <field name="res_id" invisible="1"/>
+                        <field name="plan_id"/>
+                    </group>
+                    <footer>
+                        <button name="confirm" string="Load" type="object" class="oe_highlight" invisible="context.get('load_and_run', False)"/>
+                        <button name="confirm" string="Load and Run Plan" type="object" class="oe_highlight" invisible="not context.get('load_and_run', False)"/>
+                        or
+                        <button string="_Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window
+            name="Invoice Operation"
+            res_model="account.invoice.operation.wizard"
+            src_model="account.invoice"
+            view_mode="form"
+            target="new"
+            id="action_invoice_operation_wizard"/>
+    </data>
+</openerp>

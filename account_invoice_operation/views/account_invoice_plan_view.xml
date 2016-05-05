@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="account_invoice_plan_tree" model="ir.ui.view">
+            <field name="name">account.invoice.plan.tree</field>
+            <field name="model">account.invoice.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Invoicing Plans">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_invoice_plan_form" model="ir.ui.view">
+            <field name="name">account.invoice.plan.form</field>
+            <field name="model">account.invoice.plan</field>
+            <field name="arch" type="xml">
+                <form string="Invoicing Plan">
+                    <sheet>
+                        <group>
+                            <!-- <field name="date"/> -->
+                            <field name="name"/>
+                            <field name="type"/>
+                        </group>
+                            <field name="line_ids" context="{'default_type': type}">
+                                <tree editable="top">
+                                    <field name="days"/>
+                                    <field name="days2"/>
+                                    <field name="reference"/>
+                                    <field name="company_id"/>
+                                    <field name="journal_id" attrs="{'readonly': [('company_id', '=', False), ('type', '=', False)]}" domain="[('company_id', '=', company_id), ('type', '=', type)]"/>
+                                    <field name="automatic_validation"/>
+                                    <field name="percentage"/>
+                                    <field name="rounding"/>
+                                    <field name="type" invisible="1"/>
+                                </tree>
+                            </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_invoice_plan_form" model="ir.actions.act_window">
+            <field name="name">Invoicing Plans</field>
+            <field name="res_model">account.invoice.plan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref="view_invoice_plan_search"/> -->
+        </record>
+        <menuitem action="action_invoice_plan_form"
+            id="menu_action_invoice_plan_form" parent="account.menu_configuration_misc"/>
+
+    </data>
+</openerp>
