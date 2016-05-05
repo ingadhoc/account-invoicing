@@ -24,7 +24,7 @@
     'version': '8.0.0.0.0',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
-    'depends': ['account'],
+    'depends': ['sale', 'purchase'],
     'description': '''
 Account Invoice Control
 =======================
