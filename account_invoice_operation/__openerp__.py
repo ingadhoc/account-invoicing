@@ -30,7 +30,7 @@
     'images': [
     ],
     'depends': [
-        'sale',
+        'account',
         'web_widget_one2many_tags',
     ],
     'data': [

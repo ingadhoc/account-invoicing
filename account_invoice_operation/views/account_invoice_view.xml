@@ -22,7 +22,7 @@
                     <attribute name="states"></attribute>
                 </button>
                 <button name="invoice_proforma2" position="after">
-                    <button name="action_choose_plan" groups="base.group_user" string="Choose Plan" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}"/>
+                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}"/>
                     <button name="action_run_operations" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}"/>
                 </button>
             </field>
@@ -50,7 +50,7 @@
                     <attribute name="states"></attribute>
                 </button>
                 <button name="invoice_open" position="after">
-                    <button name="action_choose_plan" groups="base.group_user" string="Choose Plan" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}"/>
+                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}"/>
                     <button name="action_run_operations" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}"/>
                 </button>
             </field>

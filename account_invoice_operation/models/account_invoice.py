@@ -207,14 +207,6 @@ class AccountInvoice(models.Model):
         return result
 
     @api.multi
-    def action_invoice_operation(self):
-        self.ensure_one()
-        action = self.env.ref(
-            'account_invoice_operation.action_invoice_operation_wizard')
-        action_read = action.read()[0]
-        return action_read
-
-    @api.multi
     def onchange_partner_id(
             self, type, partner_id, date_invoice=False,
             payment_term=False, partner_bank_id=False, company_id=False):

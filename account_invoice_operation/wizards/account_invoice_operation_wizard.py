@@ -46,6 +46,8 @@ class account_invoice_operation_wizard(models.TransientModel):
         active_model = self._context.get('active_id', False)
         if not active_id or not active_model:
             return True
-        return self.plan_id.recreate_operations(
+        self.plan_id.recreate_operations(
             self.invoice_id)
-        # return self.invoice_id.action_invoice_operation()
+        if self._context.get('load_and_run', False):
+            return self.invoice_id.action_run_operations()
+        return True

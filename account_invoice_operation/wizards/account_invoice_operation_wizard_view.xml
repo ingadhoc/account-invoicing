@@ -6,18 +6,13 @@
             <field name="model">account.invoice.operation.wizard</field>
             <field name="arch" type="xml">
                 <form string="Invoice Operation">
-<!--                     <field name="invoice_id" invisible="1"/>
-                    <field name="invoice_type" invisible="1"/>
-                    <field name="invoice_company_id" invisible="1"/> -->
                     <group>
-<!--                         <field name="operation_id" context="{'type':invoice_type}" domain="[('parent_id','=',False),('company_id', '=', invoice_company_id)]"/>
-                        <field name="name"/>
-                        <field name="base"/> -->
                         <field name="invoice_id" invisible="1"/>
                         <field name="plan_id"/>
                     </group>
                     <footer>
-                        <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                        <button name="confirm" string="Load" type="object" class="oe_highlight" invisible="context.get('load_and_run', False)"/>
+                        <button name="confirm" string="Load and Run Plan" type="object" class="oe_highlight" invisible="not context.get('load_and_run', False)"/>
                         or
                         <button string="_Cancel" class="oe_link" special="cancel" />
                     </footer>

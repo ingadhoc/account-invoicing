@@ -1,21 +1,7 @@
-Dividir modulos
-sale_invoice_plan
-sale_invoice_plan_line
+TODO: description
 
-Agregar parametro de validar automáticamente. Parametro en diarios de diario dummy. Agregar secuencia a rules, sugerir en wixard la primera. Llamar invoice plan y botones ejecutar plan o elegir plan. Invoice plan linea a otro modulo. Invoice plan, invoice plan linea e invoicen plan operations. Agregar change plan. Agregar plan por defecto.
-
-Hacer un enfoque de split (diario/cia, fecha) a n facturas por porcentaje
-Hacer split por porcentajes distintos en lineas?
-
-
-Factor de redondeo es necesario
-
-Rule por defecto en partner?
-
-Analizar poner rule como m2o y no como wizard
-
-
-TODO
+CASOS:
+======
 Caso 1:
     OV - Cargar en venta, venta a 12 facturas (distinta fecha)
 
@@ -33,22 +19,3 @@ Caso 5:
 
 Caso 6:
     FA - Mover un porcentaje a otra compania
-
-Listo:
-    Agregar tipo de comprobante
-    Que no se supere el 100% ni puntual ni manera global
-
-
-Al validar si el resultado es más de una factura, mostrar vista lista
-
-Agregar campo reference a las operations
-
-Agregar wizard para generar operaciones:
-    Se selecciona un "operation rule" analogo a terminos de pagos, en realidad la misma clase heradada pero agregamos fechas de manera relativa
-
-Agregar boton "recomputar"
-
-
-En factura:
-    que si hay "invoice operation" no mostrar "Validar"
-
