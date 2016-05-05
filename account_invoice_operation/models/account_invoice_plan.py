@@ -38,33 +38,28 @@ class AccountInvoicePlan(models.Model):
     )
 
     @api.multi
-    def recreate_operations(self, invoice):
+    def recreate_operations(self, res_id, model):
         self.ensure_one()
-        invoice.operation_ids.unlink()
-        operations_vals = self.get_operations_vals()
-        for operation_vals in operations_vals:
-            operation_vals['invoice_id'] = invoice.id
-            invoice.operation_ids.create(operation_vals)
-        return True
+        record = self.env[model].browse(res_id)
+        if model == 'account.invoice':
+            record.operation_ids.unlink()
+            field = 'invoice_id'
+            operations_model = 'account.invoice.operation'
+        elif model == 'sale.order':
+            field = 'order_id'
+            operations_model = 'sale.invoice.operation'
+            record.invoice_operation_ids.unlink()
+        else:
+            raise Warning(
+                'Invoice operation with active_model %s not implemented '
+                'yet' % self.model)
 
-    @api.multi
-    def get_operations_vals(self):
-        self.ensure_one()
-        operations_vals = []
         for line in self.line_ids:
-            operations_vals.append({
-                'plan_id': line.plan_id.id,
-                'automatic_validation': line.automatic_validation,
-                'company_id': line.company_id.id,
-                'journal_id': line.journal_id.id,
-                'percentage': line.percentage,
-                'rounding': line.rounding,
-                'days': line.days,
-                'days2': line.days2,
-                'reference': line.reference,
-                # 'invoice_id': invoice.id,
-            })
-        return operations_vals
+            operation_vals = line.get_operations_vals()
+            operation_vals[field] = res_id
+            operation_vals['plan_id'] = self.id
+            self.env[operations_model].create(operation_vals)
+        return True
 
 
 class AccountInvoicePlanLine(models.Model):
@@ -151,3 +146,17 @@ class AccountInvoicePlanLine(models.Model):
         if self.days2 > 0:
             date += relativedelta(day=self.days2, months=1)
         return date.strftime('%Y-%m-%d')
+
+    @api.multi
+    def get_operations_vals(self):
+        self.ensure_one()
+        return {
+            'automatic_validation': self.automatic_validation,
+            'company_id': self.company_id.id,
+            'journal_id': self.journal_id.id,
+            'percentage': self.percentage,
+            'rounding': self.rounding,
+            'days': self.days,
+            'days2': self.days2,
+            'reference': self.reference,
+        }

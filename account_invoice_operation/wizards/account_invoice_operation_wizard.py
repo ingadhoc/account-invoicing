@@ -11,8 +11,12 @@ class account_invoice_operation_wizard(models.TransientModel):
     _description = 'Account Invoice Operation Wizard'
 
     @api.model
-    def _get_invoice(self):
+    def _get_res_id(self):
         return self._context.get('active_id', False)
+
+    @api.model
+    def _get_model(self):
+        return self._context.get('active_model', False)
 
     plan_id = fields.Many2one(
         'account.invoice.plan',
@@ -20,34 +24,47 @@ class account_invoice_operation_wizard(models.TransientModel):
         required=True,
         ondelete='cascade',
     )
-    invoice_id = fields.Many2one(
-        'account.invoice',
-        'Invoice',
-        default=_get_invoice,
+    model = fields.Char(
+        default=_get_model,
         required=True,
-        ondelete='cascade',
+    )
+    res_id = fields.Integer(
+        default=_get_res_id,
+        required=True,
     )
 
-    @api.onchange('invoice_id')
-    def onchange_invoice(self):
-        if self.invoice_id:
+    @api.onchange('res_id', 'model')
+    def onchange_res_id(self):
+        model = self.model
+        res_id = self.res_id
+        if res_id and model:
+            if model == 'account.invoice':
+                types = [self.env[model].browse(res_id).journal_id.type, False]
+            # for compatibility with sale order
+            elif model == 'sale.order':
+                types = ['sale', False]
+            else:
+                raise Warning(
+                    'Invoice operation with active_model %s not implemented '
+                    'yet' % self.model)
             self.plan_id = self.env['account.invoice.plan'].search(
-                [('type', 'in', [self.invoice_id.journal_id.type, False])],
+                [('type', 'in', types)],
                 limit=1)
             return {'domain': {'plan_id': [
-                ('type', 'in', [self.invoice_id.journal_id.type, False])]}}
+                ('type', 'in', types)]}}
         else:
             self.plan_id = False
 
     @api.multi
     def confirm(self):
         self.ensure_one()
-        active_id = self._context.get('active_id', False)
-        active_model = self._context.get('active_id', False)
-        if not active_id or not active_model:
+        model = self.model
+        res_id = self.res_id
+        if not model or not res_id:
             return True
         self.plan_id.recreate_operations(
-            self.invoice_id)
-        if self._context.get('load_and_run', False):
-            return self.invoice_id.action_run_operations()
+            res_id, model)
+        if model == 'account.invoice' and self._context.get(
+                'load_and_run', False):
+            return self.env[model].browse(res_id).action_run_operations()
         return True
