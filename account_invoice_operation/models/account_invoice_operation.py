@@ -4,6 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
 
 class AccountInvoiceOperation(models.Model):
@@ -17,12 +18,14 @@ class AccountInvoiceOperation(models.Model):
     # only required on plan line, not in operations
     plan_id = fields.Many2one(
         required=False,
+        auto_join=True,
     )
     invoice_id = fields.Many2one(
         'account.invoice',
         'Invoice',
-        onedelete='cascade',
+        ondelete='cascade',
         required=True,
+        auto_join=True,
     )
     date = fields.Date(
         help='If you set a date here, then this date will be used and not '

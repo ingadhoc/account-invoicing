@@ -47,7 +47,7 @@
         <record id="demo_invoice_plan_2" model="account.invoice.plan">
             <field name="name">Move 100% to journal</field>
         </record>
-        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan.line">
+        <record id="demo_invoice_plan_2_line_1" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_2"/>
             <field name="journal_id" ref="sales_journal2"/>
             <field name="percentage" eval="100.0"/>
@@ -56,8 +56,8 @@
         <record id="demo_invoice_plan_3" model="account.invoice.plan">
             <field name="name">Move 50% to journal</field>
         </record>
-        <record id="demo_invoice_plan_1_line_3" model="account.invoice.plan.line">
-            <field name="plan_id" ref="demo_invoice_plan_2"/>
+        <record id="demo_invoice_plan_3_line_1" model="account.invoice.plan.line">
+            <field name="plan_id" ref="demo_invoice_plan_3"/>
             <field name="journal_id" ref="sales_journal2"/>
             <field name="percentage" eval="50.0"/>
         </record>

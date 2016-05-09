@@ -12,9 +12,9 @@
                 </form>
                 <field name="account_id" position="after">
                     <label for="operation_ids"/>
-                    <div>
+                    <div name="operations_lines">
                         <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-                        <button name="%(action_invoice_operation_wizard)d" type="action" string="Load Plan" class="oe_link oe_line"/>
+                        <button name="%(action_invoice_operation_wizard)d" type="action" string="⇒ Load Plan" class="oe_link oe_line" states="draft"/>
                     </div>
                 </field>
                 <button name="invoice_open" position="attributes">
@@ -40,9 +40,9 @@
                 </form>
                 <field name="account_id" position="after">
                     <label for="operation_ids"/>
-                    <div>
+                    <div name="operations_lines">
                         <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-                        <button name="%(action_invoice_operation_wizard)d" type="action" string="Load Plan" class="oe_link oe_line"/>
+                        <button name="%(action_invoice_operation_wizard)d" type="action" string="⇒ Load Plan" class="oe_link oe_line" states="draft"/>
                     </div>
                 </field>
                 <button name="invoice_open" position="attributes">

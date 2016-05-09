@@ -7,6 +7,16 @@ from openerp import models, fields, api
 from openerp.tools import float_round
 
 
+class AccountInvoiceLine(models.Model):
+    _inherit = 'account.invoice'
+
+    @api.multi
+    def _get_operation_percentage(self, operation):
+        """For compatibility with sale invoice operation line"""
+        self.ensure_one()
+        return operation.percentage
+
+
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
@@ -31,6 +41,7 @@ class AccountInvoice(models.Model):
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
         sale_orders = False
+        purchase_orders = False
         # if sale installed we get linked sales orders to update invoice links
         if self.env['ir.model'].search(
                 [('model', '=', 'sale.order')]):
@@ -110,7 +121,8 @@ class AccountInvoice(models.Model):
                 if remaining_op == 1 and total_percentage == 100.0:
                     new_quantity = last_quantities.get(line.id)
                 else:
-                    new_quantity = line.quantity * operation.percentage / 100.0
+                    line_percentage = line._get_operation_percentage(operation)
+                    new_quantity = line.quantity * line_percentage / 100.0
                     if operation.rounding:
                         new_quantity = float_round(
                             new_quantity,
@@ -125,7 +137,7 @@ class AccountInvoice(models.Model):
                 }
 
                 # if company has change, then we need to update lines
-                if company and company.id != self.company_id:
+                if company and company != self.company_id:
                     line_data = line.with_context(
                         force_company=company.id).sudo().product_id_change(
                             line.product_id.id,
@@ -183,7 +195,12 @@ class AccountInvoice(models.Model):
             self.unlink()
         else:
             for line in self.invoice_line:
-                line.quantity = last_quantities.get(line.id)
+                line_quantity = last_quantities.get(line.id)
+                # if remaining qty = 0 we delete line
+                if not line_quantity or line_quantity == 0.0:
+                    line.unlink()
+                else:
+                    line.quantity = last_quantities.get(line.id)
             self.operation_ids.unlink()
 
         invoices.button_reset_taxes()
