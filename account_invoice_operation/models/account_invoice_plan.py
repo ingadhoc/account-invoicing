@@ -39,17 +39,24 @@ class AccountInvoicePlan(models.Model):
     )
 
     @api.multi
+    def get_plan_vals(self):
+        self.ensure_one()
+        operations_vals = []
+        for line in self.line_ids:
+            operations_vals.append((0, 0, line.get_operations_vals()))
+        return operations_vals
+
+    @api.multi
     def recreate_operations(self, res_id, model):
         self.ensure_one()
         record = self.env[model].browse(res_id)
+        record.operation_ids.unlink()
         if model == 'account.invoice':
-            record.operation_ids.unlink()
             field = 'invoice_id'
             operations_model = 'account.invoice.operation'
         elif model == 'sale.order':
             field = 'order_id'
             operations_model = 'sale.invoice.operation'
-            record.invoice_operation_ids.unlink()
         else:
             raise Warning(
                 'Invoice operation with active_model %s not implemented '
