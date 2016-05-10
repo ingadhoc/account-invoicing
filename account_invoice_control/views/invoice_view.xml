@@ -13,7 +13,7 @@
                 </field>
                
                 <field name="invoice_line" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('order_ids','!=',[])]}</attribute>
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
                 
 
@@ -32,7 +32,7 @@
                 </field>
 
                 <field name="invoice_line" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','in_invoice'),('purchase_ids','!=',[])]}</attribute>
+                    <attribute name="attrs">{'readonly':[('type','=','in_invoice'),('purchase_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
                 
 
