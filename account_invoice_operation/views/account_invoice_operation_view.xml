@@ -9,7 +9,8 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="percentage"/>
+                                <field name="amount_type"/>
+                                <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'invisible': [('amount_type', '!=', 'percentage')]}"/>
                                 <field name="rounding"/>
                                 <field name="date"/>
                                 <field name="days" attrs="{'invisible': [('date', '!=', False)]}"/>

@@ -72,7 +72,12 @@ class AccountInvoicePlan(models.Model):
 
 class AccountInvoicePlanLine(models.Model):
     _name = 'account.invoice.plan.line'
+    _order = 'sequence'
 
+    sequence = fields.Integer(
+        default=10,
+        required=True,
+    )
     plan_id = fields.Many2one(
         'account.invoice.plan',
         'Plan',
@@ -93,6 +98,7 @@ class AccountInvoicePlanLine(models.Model):
     company_id = fields.Many2one(
         'res.company',
         'Company',
+        # default=lambda self: self.env.user.company_id,
     )
     journal_id = fields.Many2one(
         'account.journal',
@@ -100,10 +106,16 @@ class AccountInvoicePlanLine(models.Model):
         help='Journal can only be used if type is configured on plan',
     )
     # TODO add percentage
+    amount_type = fields.Selection(
+        [('percentage', 'Percentage'), ('balance', 'Balance')],
+        'Amount Type',
+        default='percentage',
+        required=True,
+    )
     percentage = fields.Float(
         'Percentage',
         digits=dp.get_precision('Discount'),
-        required=True,
+        required=False,
         help='Percentage of invoice lines quantities that will be used for '
         'this operation',
     )
@@ -130,6 +142,23 @@ class AccountInvoicePlanLine(models.Model):
     @api.onchange('company_id')
     def onchange_company(self):
         self.journal_id = False
+
+    @api.multi
+    @api.constrains('amount_type', 'sequence')
+    def check_amount_type(self):
+        # TODO we should group by plan, invoice, etc
+        last_line = self.search(
+            [('id', 'in', self.ids)], order='sequence desc', limit=1)
+        balance_type_lines = self.search(
+            [('id', 'in', self.ids), ('amount_type', '=', 'balance')])
+        if not balance_type_lines:
+            return True
+        elif len(balance_type_lines) > 1:
+            raise Warning(_(
+                'You can only configure one line with amount type balance'))
+        elif balance_type_lines[0].id != last_line.id:
+            raise Warning(_(
+                'Line with amount type balance must be the last one'))
 
     @api.one
     @api.constrains('plan_id', 'percentage')
@@ -163,6 +192,7 @@ class AccountInvoicePlanLine(models.Model):
             'company_id': self.company_id.id,
             'journal_id': self.journal_id.id,
             'percentage': self.percentage,
+            'amount_type': self.amount_type,
             'rounding': self.rounding,
             'days': self.days,
             'days2': self.days2,

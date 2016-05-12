@@ -61,5 +61,19 @@
             <field name="journal_id" ref="sales_journal2"/>
             <field name="percentage" eval="50.0"/>
         </record>
+
+        <record id="demo_invoice_plan_4" model="account.invoice.plan">
+            <field name="name">Move 30% and balance</field>
+        </record>
+        <record id="demo_invoice_plan_4_line_1" model="account.invoice.plan.line">
+            <field name="plan_id" ref="demo_invoice_plan_4"/>
+            <field name="journal_id" ref="sales_journal2"/>
+            <field name="percentage" eval="30.0"/>
+        </record>
+        <record id="demo_invoice_plan_4_line_2" model="account.invoice.plan.line">
+            <field name="plan_id" ref="demo_invoice_plan_4"/>
+            <field name="journal_id" ref="sales_journal2"/>
+            <field name="amount_type">balance</field>
+        </record>
     </data>
 </openerp>

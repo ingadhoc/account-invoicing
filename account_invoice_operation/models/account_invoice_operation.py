@@ -15,6 +15,9 @@ class AccountInvoiceOperation(models.Model):
     display_name = fields.Char(
         compute='get_display_name',
     )
+    number = fields.Integer(
+        compute='get_display_name',
+    )
     # only required on plan line, not in operations
     plan_id = fields.Many2one(
         required=False,
@@ -52,12 +55,22 @@ class AccountInvoiceOperation(models.Model):
             raise Warning(_(
                 'Sum of percentage could not be greater than 100%'))
 
-    @api.one
+    @api.multi
     @api.depends('percentage', 'date', 'journal_id.name')
     def get_display_name(self):
-        display_name = "%s%%" % self.percentage
-        if self.date:
-            display_name += " - %s" % self.date
-        if self.journal_id:
-            display_name += " - %s" % self.journal_id.name
-        self.display_name = display_name
+        # TODO suponemos que estamos viendo operaciones de una misma facutra
+        # habria que agrupar por facturas antes de enumerar
+        number = 1
+        for operation in self:
+            operation.number = number
+            display_name = "%s) " % number
+            number += 1
+            if operation.amount_type == 'percentage':
+                display_name += "%s%%" % operation.percentage
+            else:
+                display_name += _("Balance")
+            if operation.date:
+                display_name += " - %s" % operation.date
+            if operation.journal_id:
+                display_name += " - %s" % operation.journal_id.name
+            operation.display_name = display_name

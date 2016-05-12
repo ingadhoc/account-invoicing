@@ -3,8 +3,9 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 from openerp.tools import float_round
+from openerp.exceptions import Warning
 
 
 class AccountInvoiceLine(models.Model):
@@ -14,7 +15,11 @@ class AccountInvoiceLine(models.Model):
     def _get_operation_percentage(self, operation):
         """For compatibility with sale invoice operation line"""
         self.ensure_one()
-        return operation.percentage
+        if operation.amount_type == 'percentage':
+            return operation.percentage
+        else:
+            return 100.0 - sum(operation.invoice_id.operation_ids.mapped(
+                'percentage'))
 
 
 class AccountInvoice(models.Model):
@@ -36,7 +41,13 @@ class AccountInvoice(models.Model):
     def action_run_operations(self):
         self.ensure_one()
         invoices = self
-        total_percentage = sum(self.operation_ids.mapped('percentage'))
+        # TODO tal vez podemos agregar un campo calculado y hacer que devuevla
+        # el porcentaje segun si es balance o porcentaje, el tema es que
+        # el agrupador varia de modelo a modelo
+        # if there is a line with balance we have 100.0, else we have
+        total_percentage = self.operation_ids.filtered(
+            lambda x: x.amount_type == 'balance') and 100.0 or sum(
+            self.operation_ids.mapped('percentage'))
         last_quantities = {}
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
@@ -69,20 +80,23 @@ class AccountInvoice(models.Model):
             if (
                     operation.journal_id and
                     operation.journal_id != self.journal_id):
+                company = operation.journal_id.company_id
                 journal = operation.journal_id
                 default['journal_id'] = journal.id
-                company = operation.journal_id.company_id
                 default['company_id'] = company.id
             # if op company and is different from invoice company
             elif (
                     operation.company_id and
                     operation.company_id != self.company_id):
+                company = operation.company_id
                 default['company_id'] = operation.company_id.id
                 # we get a journal in new company
                 journal = self.with_context(
                     company_id=company.id)._default_journal()
-                default['journal_id'] = journal and journal.id or False
-                company = operation.company_id
+                if not journal:
+                    raise Warning(_('No %s journal found on company %s') % (
+                        self.journal_type, company.name))
+                default['journal_id'] = journal.id
 
             if operation.date:
                 default['date_invoice'] = operation.date
@@ -146,11 +160,26 @@ class AccountInvoice(models.Model):
                             name='',
                             type=invoice_type,
                             partner_id=self.partner_id.id,
-                            fposition_id=self.fiscal_position,
+                            fposition_id=self.fiscal_position.id,
                             company_id=company.id)
                     # we only update account and taxes
+
+                    account_id = line_data['value'].get('account_id')
+                    # not acconunt usually for lines without product
+                    if not account_id:
+                        prop = self.env['ir.property'].with_context(
+                            force_company=company.id).get(
+                            'property_account_income_categ',
+                            'product.category')
+                        prop_id = prop and prop.id or False
+                        account_id = self.fiscal_position.map_account(prop_id)
+                        if not account_id:
+                            raise Warning(_(
+                                'There is no income account defined as global '
+                                'property.'))
+
                     line_defaults.update({
-                        'account_id': line_data['value']['account_id'],
+                        'account_id': account_id,
                         'invoice_line_tax_id': [
                             (6, 0, line_data['value'].get(
                                 'invoice_line_tax_id', []))],
@@ -163,8 +192,14 @@ class AccountInvoice(models.Model):
                         sale_lines = self.env['sale.order.line'].search(
                             [('invoice_lines', 'in', [line.id])])
                         sale_lines.write({'invoice_lines': [(4, new_line.id)]})
-                        sale_orders.write(
-                            {'invoice_ids': [(4, new_invoice.id)]})
+                        # revisar porque no hace falta, usariamos sql para
+                        # que la constrain que creamos en sale no se dispare
+                        # for order in sale_orders:
+# self._cr.execute('insert into sale_order_invoice_rel
+# (order_id, invoice_id) values (%s,%s)', (order.id, new_invoice.id))
+
+                        # sale_orders.write(
+                        #     {'invoice_ids': [(4, new_invoice.id)]})
                     if purchase_orders:
                         purchas_lines = self.env['purchase.order.line'].search(
                             [('invoice_lines', 'in', [line.id])])
@@ -192,6 +227,11 @@ class AccountInvoice(models.Model):
         # for thisone
         if total_percentage == 100.0 and len(invoices) > 1:
             invoices -= self
+            # we redirect workflow so that sale order doenst goes to except
+            # state and also if we delete new invoice it sends to except
+            # we only send first invoice because it does not works ok with many
+            # invoices
+            self.redirect_workflow([(self.id, invoices[0].id)])
             self.unlink()
         else:
             for line in self.invoice_line:
@@ -232,7 +272,8 @@ class AccountInvoice(models.Model):
             payment_term=payment_term, partner_bank_id=partner_bank_id,
             company_id=company_id)
         if partner_id:
-            partner = self.env['res.partner'].browse(partner_id)
+            partner = self.env['res.partner'].browse(
+                partner_id).commercial_partner_id
             if partner.default_sale_invoice_plan:
                 plan_vals = partner.default_sale_invoice_plan.get_plan_vals()
                 result['value']['operation_ids'] = plan_vals

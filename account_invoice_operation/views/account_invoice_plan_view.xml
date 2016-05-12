@@ -27,13 +27,15 @@
                         </group>
                             <field name="line_ids" context="{'default_type': type}">
                                 <tree editable="top">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="days"/>
                                     <field name="days2"/>
                                     <field name="reference"/>
                                     <field name="company_id"/>
                                     <field name="journal_id" attrs="{'readonly': [('company_id', '=', False), ('type', '=', False)]}" domain="[('company_id', '=', company_id), ('type', '=', type)]"/>
                                     <field name="automatic_validation"/>
-                                    <field name="percentage"/>
+                                    <field name="amount_type"/>
+                                    <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'invisible': [('amount_type', '!=', 'percentage')]}"/>
                                     <field name="rounding"/>
                                     <field name="type" invisible="1"/>
                                 </tree>
