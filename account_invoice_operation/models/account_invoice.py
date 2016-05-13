@@ -6,6 +6,8 @@
 from openerp import models, fields, api, _
 from openerp.tools import float_round
 from openerp.exceptions import Warning
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class AccountInvoiceLine(models.Model):
@@ -192,14 +194,7 @@ class AccountInvoice(models.Model):
                         sale_lines = self.env['sale.order.line'].search(
                             [('invoice_lines', 'in', [line.id])])
                         sale_lines.write({'invoice_lines': [(4, new_line.id)]})
-                        # revisar porque no hace falta, usariamos sql para
-                        # que la constrain que creamos en sale no se dispare
-                        # for order in sale_orders:
-# self._cr.execute('insert into sale_order_invoice_rel
-# (order_id, invoice_id) values (%s,%s)', (order.id, new_invoice.id))
 
-                        # sale_orders.write(
-                        #     {'invoice_ids': [(4, new_invoice.id)]})
                     if purchase_orders:
                         purchas_lines = self.env['purchase.order.line'].search(
                             [('invoice_lines', 'in', [line.id])])
@@ -207,6 +202,14 @@ class AccountInvoice(models.Model):
                             {'invoice_lines': [(4, new_line.id)]})
                         purchase_orders.write(
                             {'invoice_ids': [(4, new_invoice.id)]})
+
+            # not sure why but in some cases we need to update this and in
+            # others it is updated automatically
+            for order in sale_orders:
+                if new_invoice not in order.invoice_ids:
+                    self._cr.execute(
+                        'insert into sale_order_invoice_rel (order_id, invoice_id) values (%s,%s)', (
+                            order.id, new_invoice.id))
 
             # if no invoice lines then we unlink the invoice
             if not new_invoice.invoice_line:
