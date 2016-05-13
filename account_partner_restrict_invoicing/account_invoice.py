@@ -12,10 +12,6 @@ class account_invoice(models.Model):
 
     @api.multi
     def action_move_create(self):
-        """
-         We add currency rate on move creation so it can be used by electronic
-        invoice later on action_number
-        """
         if self.partner_id.commercial_partner_id.restrict_invoice:
             raise Warning(_('You can not validate an invoice'
                             ' for this partner "%s" while the field'
