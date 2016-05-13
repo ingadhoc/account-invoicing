@@ -26,6 +26,11 @@
     'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
+    'description': '''
+Account Partner Restrict Invoicing
+==================================
+Add to partner a field to restrict validate invoices
+''',
     'license': 'AGPL-3',
     'images': [
     ],
