@@ -38,6 +38,32 @@ class AccountInvoice(models.Model):
     journal_type = fields.Selection(
         related='journal_id.type'
     )
+    plan_id = fields.Many2one(
+        'account.invoice.plan',
+        'Plan',
+        # required=True,
+        # ondelete='cascade',
+        readonly=True,
+        states={'draft': [('readonly', False)]}
+    )
+    # we need to fields because on readonly view onchange is not saved
+    readonly_operation_ids = fields.One2many(
+        related='operation_ids',
+        readonly=True,
+    )
+    readonly_plan_id = fields.Many2one(
+        related='plan_id',
+        readonly=True,
+    )
+
+    @api.one
+    @api.onchange('plan_id')
+    def change_plan(self):
+        if self.plan_id:
+            operations_vals = self.plan_id.get_plan_vals()
+        else:
+            operations_vals = False
+        self.operation_ids = operations_vals
 
     @api.multi
     def action_run_operations(self):
@@ -277,7 +303,8 @@ class AccountInvoice(models.Model):
         if partner_id:
             partner = self.env['res.partner'].browse(
                 partner_id).commercial_partner_id
-            if partner.default_sale_invoice_plan:
-                plan_vals = partner.default_sale_invoice_plan.get_plan_vals()
-                result['value']['operation_ids'] = plan_vals
+            result['value']['plan_id'] = partner.default_sale_invoice_plan_id
+            # if partner.default_sale_invoice_plan_id:
+            #     plan_vals = partner.default_sale_invoice_plan_id.get_plan_vals()
+            #     result['value']['operation_ids'] = plan_vals
         return result

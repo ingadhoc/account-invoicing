@@ -5,9 +5,21 @@
             <field name="name">res.partner.property.form.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
             <field name="arch" type="xml">
                 <field name="credit_limit" position="after">
-                    <field name="default_sale_invoice_plan"/>
+                    <field name="default_sale_invoice_plan_id" readonly="1"/>
+                </field>
+            </field>
+        </record>
+        <record id="view_partner_property_invoic_plan_edit_form" model="ir.ui.view">
+            <field name="name">res.partner.property.invoice_plan_edit_form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="view_partner_property_form"/>
+            <field name="groups_id" eval="[(4, ref('invoice_plan_change'))]"/>
+            <field name="arch" type="xml">
+                <field name="default_sale_invoice_plan_id" position="attributes">
+                    <attribute name="readonly">0</attribute>
                 </field>
             </field>
         </record>

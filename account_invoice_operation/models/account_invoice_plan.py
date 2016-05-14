@@ -197,4 +197,5 @@ class AccountInvoicePlanLine(models.Model):
             'days': self.days,
             'days2': self.days2,
             'reference': self.reference,
+            'sequence': self.sequence,
         }

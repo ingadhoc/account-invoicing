@@ -9,7 +9,7 @@ from openerp import models, fields
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    default_sale_invoice_plan = fields.Many2one(
+    default_sale_invoice_plan_id = fields.Many2one(
         'account.invoice.plan',
         'Default Invoice Plan',
         domain=[('type', 'in', ['sale', False])],
