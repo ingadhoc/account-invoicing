@@ -38,6 +38,13 @@ class AccountInvoicePlan(models.Model):
         ' if no company set then it will be available for all companies'
     )
 
+    @api.one
+    @api.constrains('line_ids')
+    def check_percetantage(self):
+        if sum(self.line_ids.mapped('percentage')) > 100.0:
+            raise Warning(_(
+                'Sum of lines percentage could not be greater than 100%'))
+
     @api.multi
     def get_plan_vals(self):
         self.ensure_one()
@@ -159,15 +166,6 @@ class AccountInvoicePlanLine(models.Model):
         elif balance_type_lines[0].id != last_line.id:
             raise Warning(_(
                 'Line with amount type balance must be the last one'))
-
-    @api.one
-    @api.constrains('plan_id', 'percentage')
-    def check_percetantage(self):
-        lines = self.search(
-            [('plan_id', '=', self.plan_id.id)])
-        if sum(lines.mapped('percentage')) > 100.0:
-            raise Warning(_(
-                'Sum of percentage could not be greater than 100%'))
 
     @api.multi
     def _get_date(self, date_ref=False):

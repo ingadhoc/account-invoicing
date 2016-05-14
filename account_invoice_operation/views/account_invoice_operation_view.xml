@@ -21,6 +21,7 @@
                                 <field name="company_id"/>
                                 <field name="journal_id" attrs="{'invisible': [('company_id', '=', False)]}" domain="[('company_id', '=', company_id), ('type', '=', journal_type)]"/>
                                 <field name="automatic_validation"/>
+                                <field name="sequence"/>
                             </group>
                         </group>
                     </sheet>

@@ -38,6 +38,7 @@
                                     <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'readonly': [('amount_type', '!=', 'percentage')]}"/>
                                     <field name="rounding" attrs="{'readonly': [('amount_type', '!=', 'percentage')]}"/>
                                     <field name="type" invisible="1"/>
+                                    <field name="sequence"/>
                                 </tree>
                             </field>
                     </sheet>

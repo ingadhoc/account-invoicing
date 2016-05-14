@@ -59,11 +59,36 @@ class AccountInvoice(models.Model):
     @api.one
     @api.onchange('plan_id')
     def change_plan(self):
+        self.operation_ids = False
         if self.plan_id:
-            operations_vals = self.plan_id.get_plan_vals()
-        else:
-            operations_vals = False
-        self.operation_ids = operations_vals
+            self.operation_ids = self.plan_id.get_plan_vals()
+
+    @api.one
+    @api.constrains('operation_ids')
+    def check_operation_percetantage(self):
+        # orders = self.search(
+        #     [('order_id', '=', self.order_id.id)])
+        if sum(self.operation_ids.mapped('percentage')) > 100.0:
+            raise Warning(_(
+                'Sum of operations percentage could not be greater than 100%'))
+
+    @api.multi
+    def onchange_partner_id(
+            self, type, partner_id, date_invoice=False,
+            payment_term=False, partner_bank_id=False, company_id=False):
+        result = super(AccountInvoice, self).onchange_partner_id(
+            type, partner_id, date_invoice=date_invoice,
+            payment_term=payment_term, partner_bank_id=partner_bank_id,
+            company_id=company_id)
+        if partner_id:
+            partner = self.env['res.partner'].browse(
+                partner_id).commercial_partner_id
+            result['value'][
+                'plan_id'] = partner.default_sale_invoice_plan_id.id
+            # if partner.default_sale_invoice_plan_id:
+            #     plan_vals = partner.default_sale_invoice_plan_id.get_plan_vals()
+            #     result['value']['operation_ids'] = plan_vals
+        return result
 
     @api.multi
     def action_run_operations(self):
@@ -290,21 +315,4 @@ class AccountInvoice(models.Model):
             form_view = self.env.ref(form_view_ref)
             result['views'] = [(form_view.id, 'form')]
             result['res_id'] = invoices.id
-        return result
-
-    @api.multi
-    def onchange_partner_id(
-            self, type, partner_id, date_invoice=False,
-            payment_term=False, partner_bank_id=False, company_id=False):
-        result = super(AccountInvoice, self).onchange_partner_id(
-            type, partner_id, date_invoice=date_invoice,
-            payment_term=payment_term, partner_bank_id=partner_bank_id,
-            company_id=company_id)
-        if partner_id:
-            partner = self.env['res.partner'].browse(
-                partner_id).commercial_partner_id
-            result['value']['plan_id'] = partner.default_sale_invoice_plan_id
-            # if partner.default_sale_invoice_plan_id:
-            #     plan_vals = partner.default_sale_invoice_plan_id.get_plan_vals()
-            #     result['value']['operation_ids'] = plan_vals
         return result

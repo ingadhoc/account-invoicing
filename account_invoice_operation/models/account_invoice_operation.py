@@ -46,15 +46,6 @@ class AccountInvoiceOperation(models.Model):
                 'than invoice currency yet. Operation "%s"') % (
                     self.display_name))
 
-    @api.one
-    @api.constrains('invoice_id', 'percentage')
-    def check_percetantage(self):
-        invoices = self.search(
-            [('invoice_id', '=', self.invoice_id.id)])
-        if sum(invoices.mapped('percentage')) > 100.0:
-            raise Warning(_(
-                'Sum of percentage could not be greater than 100%'))
-
     @api.multi
     @api.depends('percentage', 'date', 'journal_id.name')
     def get_display_name(self):
