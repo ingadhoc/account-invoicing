@@ -16,7 +16,7 @@ class AccountInvoiceOperation(models.Model):
         compute='get_display_name',
     )
     number = fields.Integer(
-        compute='get_display_name',
+        compute='get_number',
     )
     # only required on plan line, not in operations
     plan_id = fields.Many2one(
@@ -47,15 +47,21 @@ class AccountInvoiceOperation(models.Model):
                     self.display_name))
 
     @api.multi
-    @api.depends('percentage', 'date', 'journal_id.name')
+    @api.depends('sequence', 'invoice_id')
+    def get_number(self):
+        for invoice in self.mapped('invoice_id'):
+            number = 1
+            operations = invoice.operation_ids.search([
+                ('invoice_id', '=', invoice.id), ('id', 'in', self.ids)])
+            for operation in operations:
+                operation.number = number
+                number += 1
+
+    @api.multi
+    @api.depends('percentage', 'date', 'journal_id.name', 'number')
     def get_display_name(self):
-        # TODO suponemos que estamos viendo operaciones de una misma facutra
-        # habria que agrupar por facturas antes de enumerar
-        number = 1
         for operation in self:
-            operation.number = number
-            display_name = "%s) " % number
-            number += 1
+            display_name = "%s) " % operation.number
             if operation.amount_type == 'percentage':
                 display_name += "%s%%" % operation.percentage
             else:

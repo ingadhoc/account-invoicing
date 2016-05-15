@@ -53,8 +53,13 @@
             <field name="view_mode">tree,form</field>
             <!-- <field name="search_view_id" ref="view_invoice_plan_search"/> -->
         </record>
+        
+        <!-- parent menu for operations configuracion -->
+        <menuitem
+            id="menu_invoice_operations_config" parent="account.menu_finance_configuration" name="Invoice Operations" sequence="50"/>
+
         <menuitem action="action_invoice_plan_form"
-            id="menu_action_invoice_plan_form" parent="account.menu_configuration_misc"/>
+            id="menu_action_invoice_plan_form" parent="menu_invoice_operations_config" sequence="10"/>
 
     </data>
 </openerp>
