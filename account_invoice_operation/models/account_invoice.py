@@ -57,20 +57,16 @@ class AccountInvoice(models.Model):
     )
 
     @api.one
+    @api.constrains('operation_ids')
+    def run_checks(self):
+        self.operation_ids._run_checks()
+
+    @api.one
     @api.onchange('plan_id')
     def change_plan(self):
         self.operation_ids = False
         if self.plan_id:
             self.operation_ids = self.plan_id.get_plan_vals()
-
-    @api.one
-    @api.constrains('operation_ids')
-    def check_operation_percetantage(self):
-        # orders = self.search(
-        #     [('order_id', '=', self.order_id.id)])
-        if sum(self.operation_ids.mapped('percentage')) > 100.0:
-            raise Warning(_(
-                'Sum of operations percentage could not be greater than 100%'))
 
     @api.multi
     def onchange_partner_id(
@@ -85,9 +81,6 @@ class AccountInvoice(models.Model):
                 partner_id).commercial_partner_id
             result['value'][
                 'plan_id'] = partner.default_sale_invoice_plan_id.id
-            # if partner.default_sale_invoice_plan_id:
-            #     plan_vals = partner.default_sale_invoice_plan_id.get_plan_vals()
-            #     result['value']['operation_ids'] = plan_vals
         return result
 
     @api.multi
@@ -295,8 +288,10 @@ class AccountInvoice(models.Model):
                     line.unlink()
                 else:
                     line.quantity = last_quantities.get(line.id)
-            self.operation_ids.unlink()
+            # self.operation_ids.unlink()
 
+        # set plan false
+        invoices.write({'plan_id': False})
         invoices.button_reset_taxes()
 
         if invoice_type in ['out_invoice', 'out_refund']:

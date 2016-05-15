@@ -40,10 +40,8 @@ class AccountInvoicePlan(models.Model):
 
     @api.one
     @api.constrains('line_ids')
-    def check_percetantage(self):
-        if sum(self.line_ids.mapped('percentage')) > 100.0:
-            raise Warning(_(
-                'Sum of lines percentage could not be greater than 100%'))
+    def run_checks(self):
+        self.line_ids._run_checks()
 
     @api.multi
     def get_plan_vals(self):
@@ -52,29 +50,6 @@ class AccountInvoicePlan(models.Model):
         for line in self.line_ids:
             operations_vals.append((0, 0, line.get_operations_vals()))
         return operations_vals
-
-    @api.multi
-    def recreate_operations(self, res_id, model):
-        self.ensure_one()
-        record = self.env[model].browse(res_id)
-        record.operation_ids.unlink()
-        if model == 'account.invoice':
-            field = 'invoice_id'
-            operations_model = 'account.invoice.operation'
-        elif model == 'sale.order':
-            field = 'order_id'
-            operations_model = 'sale.invoice.operation'
-        else:
-            raise Warning(
-                'Invoice operation with active_model %s not implemented '
-                'yet' % self.model)
-
-        for line in self.line_ids:
-            operation_vals = line.get_operations_vals()
-            operation_vals[field] = res_id
-            operation_vals['plan_id'] = self.id
-            self.env[operations_model].create(operation_vals)
-        return True
 
 
 class AccountInvoicePlanLine(models.Model):
@@ -146,26 +121,38 @@ class AccountInvoicePlanLine(models.Model):
     )
 
     @api.one
+    @api.constrains('amount_type')
+    @api.onchange('amount_type')
+    def onchange_amount_type(self):
+        if self.amount_type == 'balance':
+            self.percentage = False
+            self.rounding = False
+
+    @api.one
     @api.onchange('company_id')
     def onchange_company(self):
         self.journal_id = False
 
     @api.multi
-    @api.constrains('amount_type', 'sequence')
-    def check_amount_type(self):
-        # TODO we should group by plan, invoice, etc
+    def _run_checks(self):
+        # this should be alled from grouping models like plan, invoice and
+        # sale orders
         last_line = self.search(
             [('id', 'in', self.ids)], order='sequence desc', limit=1)
         balance_type_lines = self.search(
             [('id', 'in', self.ids), ('amount_type', '=', 'balance')])
-        if not balance_type_lines:
-            return True
-        elif len(balance_type_lines) > 1:
+        if len(balance_type_lines) > 1:
             raise Warning(_(
                 'You can only configure one line with amount type balance'))
-        elif balance_type_lines[0].id != last_line.id:
+        elif balance_type_lines and balance_type_lines[0].id != last_line.id:
             raise Warning(_(
                 'Line with amount type balance must be the last one'))
+        percentage_lines = self.search([
+            ('id', 'in', self.ids),
+            ('amount_type', '=', 'percentage')])
+        if sum(percentage_lines.mapped('percentage')) > 100.0:
+            raise Warning(_(
+                'Sum of lines percentage could not be greater than 100%'))
 
     @api.multi
     def _get_date(self, date_ref=False):

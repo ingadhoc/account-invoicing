@@ -35,7 +35,7 @@
                                     <field name="journal_id" attrs="{'readonly': [('company_id', '=', False), ('type', '=', False)]}" domain="[('company_id', '=', company_id), ('type', '=', type)]"/>
                                     <field name="automatic_validation"/>
                                     <field name="amount_type"/>
-                                    <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'readonly': [('amount_type', '!=', 'percentage')]}"/>
+                                    <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'readonly': [('amount_type', '!=', 'percentage')]}" sum="Total"/>
                                     <field name="rounding" attrs="{'readonly': [('amount_type', '!=', 'percentage')]}"/>
                                     <field name="type" invisible="1"/>
                                     <field name="sequence"/>
