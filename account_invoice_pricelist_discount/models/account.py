@@ -21,7 +21,7 @@ class account_invoice_line(models.Model):
             price_unit=price_unit, currency_id=currency_id,
             company_id=company_id)
         price_get = self.env['product.product'].browse(product).with_context(
-            currency_id=currency_id).price_get()
+            currency_id=currency_id, uom=uom_id).price_get()
         if 'value' not in res:
             res['value'] = {}
         res['value']['list_price'] = price_get and price_get[
@@ -32,12 +32,13 @@ class account_invoice_line(models.Model):
     # without an invoice so we add this value when we have the invoice and the
     # currency
     @api.one
-    @api.constrains('product_id', 'invoice_id')
+    @api.constrains('product_id', 'invoice_id', 'uos_id')
     def set_list_price(self):
         currency = self.invoice_id.currency_id
         if self.product_id and currency:
             price_get = self.product_id.with_context(
-                currency_id=currency.id
+                currency_id=currency.id,
+                uom=self.uos_id.id,
             ).price_get()
 
             self.write({'list_price': price_get and price_get[
