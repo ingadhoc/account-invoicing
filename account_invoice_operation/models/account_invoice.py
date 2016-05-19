@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = 'account.invoice.line'
 
     @api.multi
     def _get_operation_percentage(self, operation):
