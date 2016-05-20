@@ -94,7 +94,8 @@ class AccountInvoice(models.Model):
         total_percentage = self.operation_ids.filtered(
             lambda x: x.amount_type == 'balance') and 100.0 or sum(
             self.operation_ids.mapped('percentage'))
-        last_quantities = {}
+        last_quantities = {
+            line.id: line.quantity for line in self.invoice_line}
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
         sale_orders = False
@@ -259,6 +260,8 @@ class AccountInvoice(models.Model):
             if not new_invoice.invoice_line:
                 new_invoice.unlink()
             else:
+                # update amounts for new invoice
+                new_invoice.button_reset_taxes()
                 if operation.automatic_validation:
                     new_invoice.signal_workflow('invoice_open')
 
@@ -290,9 +293,8 @@ class AccountInvoice(models.Model):
                     line.quantity = last_quantities.get(line.id)
             # self.operation_ids.unlink()
 
-        # set plan false
+        # set plan false for all invoices
         invoices.write({'plan_id': False})
-        invoices.button_reset_taxes()
 
         if invoice_type in ['out_invoice', 'out_refund']:
             action_ref = 'account.action_invoice_tree1'
