@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_report_partner_categ
+# * account_invoice_pricelist_discount
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
@@ -18,12 +18,22 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. module: account_invoice_report_partner_categ
-#: model:ir.model,name:account_invoice_report_partner_categ.model_account_invoice_report
-msgid "Invoices Statistics"
-msgstr "Estadísticas de Facturas"
+#. module: account_invoice_pricelist_discount
+#: model:ir.model,name:account_invoice_pricelist_discount.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Número de Línea"
 
-#. module: account_invoice_report_partner_categ
-#: field:account.invoice.report,partner_category_ids:0
-msgid "Partner Category"
-msgstr "Categoría de partner"
+#. module: account_invoice_pricelist_discount
+#: field:account.invoice.line,list_discount:0
+msgid "List Discount"
+msgstr "Descuento de Lista"
+
+#. module: account_invoice_pricelist_discount
+#: field:account.invoice.line,list_price:0
+msgid "List Price"
+msgstr "Precio de Lista"
+
+#. module: account_invoice_pricelist_discount
+#: field:account.invoice.line,total_discount:0
+msgid "Total Discount"
+msgstr "Descuento Total"

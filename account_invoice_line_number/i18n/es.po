@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_report_partner_categ
+# * account_invoice_line_number
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: account-invoicing (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-24 22:59+0000\n"
-"PO-Revision-Date: 2016-05-24 22:42+0000\n"
+"PO-Revision-Date: 2016-05-24 22:20+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-account-invoicing-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -18,12 +18,17 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. module: account_invoice_report_partner_categ
-#: model:ir.model,name:account_invoice_report_partner_categ.model_account_invoice_report
-msgid "Invoices Statistics"
-msgstr "Estadísticas de Facturas"
+#. module: account_invoice_line_number
+#: model:ir.model,name:account_invoice_line_number.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Número de Línea"
 
-#. module: account_invoice_report_partner_categ
-#: field:account.invoice.report,partner_category_ids:0
-msgid "Partner Category"
-msgstr "Categoría de partner"
+#. module: account_invoice_line_number
+#: field:account.invoice.line,number:0
+msgid "Number"
+msgstr "Número"
+
+#. module: account_invoice_line_number
+#: view:account.invoice:account_invoice_line_number.invoice_form
+msgid "nbr"
+msgstr "num"

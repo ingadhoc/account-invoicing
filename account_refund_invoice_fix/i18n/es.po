@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_report_partner_categ
+# * account_refund_invoice_fix
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: account-invoicing (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 22:59+0000\n"
-"PO-Revision-Date: 2016-05-24 22:42+0000\n"
+"POT-Creation-Date: 2016-01-18 12:49+0000\n"
+"PO-Revision-Date: 2016-05-24 22:56+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-account-invoicing-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. module: account_invoice_report_partner_categ
-#: model:ir.model,name:account_invoice_report_partner_categ.model_account_invoice_report
-msgid "Invoices Statistics"
-msgstr "Estadísticas de Facturas"
+#. module: account_refund_invoice_fix
+#: field:account.invoice.refund,invoice_id:0
+msgid "Invoice"
+msgstr "Factura"
 
-#. module: account_invoice_report_partner_categ
-#: field:account.invoice.report,partner_category_ids:0
-msgid "Partner Category"
-msgstr "Categoría de partner"
+#. module: account_refund_invoice_fix
+#: model:ir.model,name:account_refund_invoice_fix.model_account_invoice_refund
+msgid "Invoice Refund"
+msgstr "Reembolso de Factura"

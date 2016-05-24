@@ -1,0 +1,430 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * account_invoice_operation
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: account-invoicing (8.0)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-24 22:59+0000\n"
+"PO-Revision-Date: 2016-05-24 22:42+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-account-invoicing-8-0/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice_operation.py:72
+#, python-format
+msgid " - Days: %s/%s"
+msgstr " - Días: %s/%s"
+
+#. module: account_invoice_operation
+#: model:ir.model,name:account_invoice_operation.model_account_invoice_operation_wizard
+msgid "Account Invoice Operation Wizard"
+msgstr "Asistente de Operación de Factura"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,automatic_validation:0
+#: help:account.invoice.plan.line,automatic_validation:0
+msgid "After running operations, invoice are going to be validated"
+msgstr "Después de correr las operaciones, las facturas van a ser validadas"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,amount_type:0
+#: field:account.invoice.plan.line,amount_type:0
+msgid "Amount Type"
+msgstr "Tipo de Importe"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,automatic_validation:0
+#: field:account.invoice.plan.line,automatic_validation:0
+msgid "Automatic validation"
+msgstr "Validación Automática"
+
+#. module: account_invoice_operation
+#: selection:account.invoice.operation,amount_type:0
+#: selection:account.invoice.plan.line,amount_type:0
+#: code:addons/account_invoice_operation/models/account_invoice_operation.py:68
+#, python-format
+msgid "Balance"
+msgstr "Saldo"
+
+#. module: account_invoice_operation
+#: model:res.groups,name:account_invoice_operation.invoice_plan_change
+msgid "Choose Plan"
+msgstr "Elegir Plan"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,company_id:0
+#: field:account.invoice.plan,company_id:0
+#: field:account.invoice.plan.line,company_id:0
+msgid "Company"
+msgstr "Compania"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,create_uid:0
+#: field:account.invoice.operation.wizard,create_uid:0
+#: field:account.invoice.plan,create_uid:0
+#: field:account.invoice.plan.line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,create_date:0
+#: field:account.invoice.operation.wizard,create_date:0
+#: field:account.invoice.plan,create_date:0
+#: field:account.invoice.plan.line,create_date:0
+msgid "Created on"
+msgstr "Creadon en"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,days2:0
+#: field:account.invoice.plan.line,days2:0
+msgid "Day of the Month"
+msgstr "Día del Mes"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,days2:0
+#: help:account.invoice.plan.line,days2:0
+msgid ""
+"Day of the month, set -1 for the last day of the current month. If it's "
+"positive, it gives the day of the next month. Set 0 for net days (otherwise "
+"it's based on the beginning of the month)."
+msgstr "Día del mes, introduzca -1 para el último día del mes actual. Si es positivo, nos indica el día del próximo mes. Introduzca 0 para días netos (de lo contrario se calcula desde principio del mes)."
+
+#. module: account_invoice_operation
+#: field:res.partner,default_sale_invoice_plan_id:0
+msgid "Default Invoice Plan"
+msgstr "Plan de Facturación por defecto"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation.wizard,display_name:0
+#: field:account.invoice.plan,display_name:0
+#: field:account.invoice.plan.line,display_name:0
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,display_name:0
+msgid "Display name"
+msgstr "Nombre a Mostrar"
+
+#. module: account_invoice_operation
+#: model:res.groups,name:account_invoice_operation.invoice_plan_edit
+msgid "Edit Plan"
+msgstr "Editar Plan"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,rounding:0
+#: help:account.invoice.plan.line,rounding:0
+msgid "For eg, if you set 0.1, quani will be round to 1 decimal"
+msgstr "Por ej, si setea 0.1, las cantidades van a ser redondeadas a 1 decimal"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,id:0
+#: field:account.invoice.operation.wizard,id:0 field:account.invoice.plan,id:0
+#: field:account.invoice.plan.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,date:0
+msgid "If you set a date here, then this date will be used and not computed."
+msgstr "Si setea una fecha aquí, entonce esta fecha va a ser utilizada y no será computada"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,invoice_id:0
+#: model:ir.model,name:account_invoice_operation.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: account_invoice_operation
+#: model:ir.model,name:account_invoice_operation.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Número de Línea"
+
+#. module: account_invoice_operation
+#: view:account.invoice.operation:account_invoice_operation.account_invoice_operation_form
+#: view:account.invoice.operation.wizard:account_invoice_operation.view_invoice_operation_wizard_form
+#: model:ir.actions.act_window,name:account_invoice_operation.action_invoice_operation_wizard
+msgid "Invoice Operation"
+msgstr "Operación de Factura"
+
+#. module: account_invoice_operation
+#: field:account.invoice,operation_ids:0
+#: field:account.invoice,readonly_operation_ids:0
+#: model:ir.module.category,name:account_invoice_operation.module_category_invoice_operations
+#: model:ir.ui.menu,name:account_invoice_operation.menu_invoice_operations_config
+msgid "Invoice Operations"
+msgstr "Operaciones de Factura"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,reference:0
+#: field:account.invoice.plan.line,reference:0
+msgid "Invoice Reference"
+msgstr "Referencia de Factura"
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_form
+msgid "Invoicing Plan"
+msgstr "Plan de Facturación"
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_tree
+#: model:ir.actions.act_window,name:account_invoice_operation.action_invoice_plan_form
+#: model:ir.ui.menu,name:account_invoice_operation.menu_action_invoice_plan_form
+msgid "Invoicing Plans"
+msgstr "Planes de Facturación"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,journal_id:0
+#: field:account.invoice.plan.line,journal_id:0
+msgid "Journal"
+msgstr "Diarios"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,journal_id:0
+#: help:account.invoice.plan.line,journal_id:0
+msgid "Journal can only be used if type is configured on plan"
+msgstr "Los diarios solo pueden ser usados si el tipo está configurado en el plan"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,__last_update:0
+#: field:account.invoice.operation.wizard,__last_update:0
+#: field:account.invoice.plan,__last_update:0
+#: field:account.invoice.plan.line,__last_update:0
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,write_uid:0
+#: field:account.invoice.operation.wizard,write_uid:0
+#: field:account.invoice.plan,write_uid:0
+#: field:account.invoice.plan.line,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,write_date:0
+#: field:account.invoice.operation.wizard,write_date:0
+#: field:account.invoice.plan,write_date:0
+#: field:account.invoice.plan.line,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:148
+#, python-format
+msgid "Line with amount type balance must be the last one"
+msgstr "La línea con tipo de importe saldo debe ser la última"
+
+#. module: account_invoice_operation
+#: field:account.invoice.plan,line_ids:0
+msgid "Lines"
+msgstr "Líneas"
+
+#. module: account_invoice_operation
+#: view:account.invoice.operation.wizard:account_invoice_operation.view_invoice_operation_wizard_form
+msgid "Load"
+msgstr "Cargar"
+
+#. module: account_invoice_operation
+#: view:account.invoice:account_invoice_operation.invoice_form
+#: view:account.invoice:account_invoice_operation.invoice_supplier_form
+msgid "Load & Run Plan"
+msgstr "Cargar & Correr Plan"
+
+#. module: account_invoice_operation
+#: view:account.invoice.operation.wizard:account_invoice_operation.view_invoice_operation_wizard_form
+msgid "Load and Run Plan"
+msgstr "Cargar y Correr Plan"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation.wizard,model:0
+msgid "Model"
+msgstr "Modelo"
+
+#. module: account_invoice_operation
+#: field:account.invoice.plan,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice.py:144
+#, python-format
+msgid "No %s journal found on company %s"
+msgstr "Diario de %s no encontrado para la compañía %s"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,number:0
+msgid "Number"
+msgstr "Número"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,days:0
+#: field:account.invoice.plan.line,days:0
+msgid "Number of Days"
+msgstr "Número de Días"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,days:0 help:account.invoice.plan.line,days:0
+msgid ""
+"Number of days to add before computation of the day of month.If Date=15/01, "
+"Number of Days=22, Day of Month=-1, then the due date is 28/02."
+msgstr "Número de días a añadir antes del cálculo del día de mes. Si la fecha=15/01, el número de días=22 y el día del mes=-1, entonces la fecha de vencimiento es el 28/02."
+
+#. module: account_invoice_operation
+#: model:ir.model,name:account_invoice_operation.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: account_invoice_operation
+#: selection:account.invoice.operation,amount_type:0
+#: field:account.invoice.operation,percentage:0
+#: selection:account.invoice.plan.line,amount_type:0
+#: field:account.invoice.plan.line,percentage:0
+msgid "Percentage"
+msgstr "Porcentaje"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,percentage:0
+#: help:account.invoice.plan.line,percentage:0
+msgid ""
+"Percentage of invoice lines quantities that will be used for this operation"
+msgstr "Porcentaje de la cantidad de las líneas de facturas que va a utilizarse para esta operación "
+
+#. module: account_invoice_operation
+#: field:account.invoice,plan_id:0 field:account.invoice,readonly_plan_id:0
+#: field:account.invoice.operation,plan_id:0
+#: field:account.invoice.operation.wizard,plan_id:0
+#: field:account.invoice.plan.line,plan_id:0
+msgid "Plan"
+msgstr "Plan"
+
+#. module: account_invoice_operation
+#: selection:account.invoice.plan,type:0
+msgid "Purchase"
+msgstr "Compras"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation.wizard,res_id:0
+msgid "Res id"
+msgstr "Id Recurso"
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,rounding:0
+#: field:account.invoice.plan.line,rounding:0
+msgid "Rounding Factor"
+msgstr "Factor de Redondeo"
+
+#. module: account_invoice_operation
+#: view:account.invoice:account_invoice_operation.invoice_form
+#: view:account.invoice:account_invoice_operation.invoice_supplier_form
+msgid "Run Operations"
+msgstr "Correr Operaciones"
+
+#. module: account_invoice_operation
+#: selection:account.invoice.plan,type:0
+msgid "Sale"
+msgstr "Ventas"
+
+#. module: account_invoice_operation
+#: help:account.invoice,journal_type:0
+msgid ""
+"Select 'Sale' for customer invoices journals. Select 'Purchase' for supplier"
+" invoices journals. Select 'Cash' or 'Bank' for journals that are used in "
+"customer or supplier payments. Select 'General' for miscellaneous operations"
+" journals. Select 'Opening/Closing Situation' for entries generated for new "
+"fiscal years."
+msgstr "Seleccione 'Ventas' para diarios de facturas de cliente. Seleccione 'Compras' para diarios de facturas de proveedor. Seleccione 'Caja' o 'Banco' para diarios que se usan para pagos de clientes y proveedores. Seleccione 'General' para diarios que contienen operaciones varias. Seleccione 'Balance apertura/cierre' para diarios que contendrán asientos creados en el nuevo ejercicio fiscal."
+
+#. module: account_invoice_operation
+#: field:account.invoice.operation,sequence:0
+#: field:account.invoice.plan,sequence:0
+#: field:account.invoice.plan.line,sequence:0
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:154
+#, python-format
+msgid "Sum of lines percentage could not be greater than 100%"
+msgstr "La suma de porcentajes de las líneas no puede ser mayor al 100%"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice.py:224
+#, python-format
+msgid "There is no income account defined as global property."
+msgstr "No hay cuenta de ingresos definida como propiedad global."
+
+#. module: account_invoice_operation
+#: help:res.partner,default_sale_invoice_plan_id:0
+msgid ""
+"This invoice plan will be automatically loaded on invoices and sale orders"
+msgstr "El plan de facturación va a ser automáticamente cargado en facturas y ordenes de ventas"
+
+#. module: account_invoice_operation
+#: help:account.invoice.plan,company_id:0
+msgid ""
+"This plan will be available only for this company or child ones, if no "
+"company set then it will be available for all companies"
+msgstr "Esta plan va a estar disponible solo para esta compañía o hijas de la misma, si no se configura una compañía entonces va a estar disponible para todas"
+
+#. module: account_invoice_operation
+#: help:account.invoice.operation,reference:0
+#: help:account.invoice.plan.line,reference:0
+msgid "This reference will be added to invoice reference."
+msgstr "Esta referencia va a ser agregada a la referencia de las facturas"
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_form
+msgid "Total"
+msgstr "Total"
+
+#. module: account_invoice_operation
+#: field:account.invoice,journal_type:0 field:account.invoice.operation,type:0
+#: field:account.invoice.plan,type:0 field:account.invoice.plan.line,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice_operation.py:44
+#, python-format
+msgid ""
+"You can not use a journal or company of different currency than invoice "
+"currency yet. Operation \"%s\""
+msgstr "Por ahora no puede utilizar un diario o compañía con moneda diferente a la de la factura. Operación \"%s\""
+
+#. module: account_invoice_operation
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:145
+#, python-format
+msgid "You can only configure one line with amount type balance"
+msgstr "Solo puede configurar una línea con tipo de importe saldo"
+
+#. module: account_invoice_operation
+#: view:account.invoice.operation.wizard:account_invoice_operation.view_invoice_operation_wizard_form
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#. module: account_invoice_operation
+#: view:account.invoice.operation.wizard:account_invoice_operation.view_invoice_operation_wizard_form
+msgid "or"
+msgstr "o"
+
+#. module: account_invoice_operation
+#: view:account.invoice:account_invoice_operation.invoice_form
+#: view:account.invoice:account_invoice_operation.invoice_supplier_form
+msgid ""
+"{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}"
+msgstr "{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}"
