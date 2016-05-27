@@ -30,7 +30,7 @@ class AccountInvoice(models.Model):
     operation_ids = fields.One2many(
         'account.invoice.operation',
         'invoice_id',
-        'Invoice Operations',
+        'Operations',
         readonly=True,
         copy=True,
         states={'draft': [('readonly', False)]}
@@ -98,8 +98,8 @@ class AccountInvoice(models.Model):
             line.id: line.quantity for line in self.invoice_line}
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
-        sale_orders = False
-        purchase_orders = False
+        sale_orders = []
+        purchase_orders = []
         # if sale installed we get linked sales orders to update invoice links
         if self.env['ir.model'].search(
                 [('model', '=', 'sale.order')]):
@@ -173,7 +173,7 @@ class AccountInvoice(models.Model):
 
             if operation.reference:
                 default['reference'] = "%s%s" % (
-                    self.reference, operation.reference)
+                    self.reference or '', operation.reference)
 
             new_invoice = self.copy(default)
 

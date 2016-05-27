@@ -54,7 +54,7 @@ class AccountInvoicePlan(models.Model):
 
 class AccountInvoicePlanLine(models.Model):
     _name = 'account.invoice.plan.line'
-    _order = 'sequence'
+    _order = 'sequence, id'
 
     sequence = fields.Integer(
         default=10,
@@ -138,7 +138,7 @@ class AccountInvoicePlanLine(models.Model):
         # this should be alled from grouping models like plan, invoice and
         # sale orders
         last_line = self.search(
-            [('id', 'in', self.ids)], order='sequence desc', limit=1)
+            [('id', 'in', self.ids)], order='sequence desc, id desc', limit=1)
         balance_type_lines = self.search(
             [('id', 'in', self.ids), ('amount_type', '=', 'balance')])
         if len(balance_type_lines) > 1:
