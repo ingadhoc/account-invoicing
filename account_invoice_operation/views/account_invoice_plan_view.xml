@@ -25,6 +25,11 @@
                             <field name="name"/>
                             <field name="type"/>
                         </group>
+                        <p>
+Some notes:<br/>
+* If you don't select a type then you can not choose journals on lines<br/>
+* If sum of lines is not 100 or you don't use "balance" type on last line, original invoice will remain with the balance after running operations.
+                        </p>
                             <field name="line_ids" context="{'default_type': type}">
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
