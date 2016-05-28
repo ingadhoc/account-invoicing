@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: account-invoicing (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 22:59+0000\n"
-"PO-Revision-Date: 2016-05-24 22:42+0000\n"
+"POT-Creation-Date: 2016-05-28 00:19+0000\n"
+"PO-Revision-Date: 2016-05-28 12:19+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-account-invoicing-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,18 @@ msgstr ""
 #, python-format
 msgid " - Days: %s/%s"
 msgstr " - Días: %s/%s"
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_form
+msgid ""
+"* If sum of lines is not 100 or you don't use \"balance\" type on last line,"
+" original invoice will remain with the balance after running operations."
+msgstr "* Si la suma de las líneas no es 100 o no usa una del tipo \"balance\" en la última línea, entonces la factura original va a quedar con el saldo de las líneas luego de correr las operaciones."
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_form
+msgid "* If you don't select a type then you can not choose journals on lines"
+msgstr "* Si no selecciona un tipo entonces no puede elegir diarios en las líneas"
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_operation_wizard
@@ -162,8 +174,6 @@ msgid "Invoice Operation"
 msgstr "Operación de Factura"
 
 #. module: account_invoice_operation
-#: field:account.invoice,operation_ids:0
-#: field:account.invoice,readonly_operation_ids:0
 #: model:ir.module.category,name:account_invoice_operation.module_category_invoice_operations
 #: model:ir.ui.menu,name:account_invoice_operation.menu_invoice_operations_config
 msgid "Invoice Operations"
@@ -285,6 +295,12 @@ msgid ""
 msgstr "Número de días a añadir antes del cálculo del día de mes. Si la fecha=15/01, el número de días=22 y el día del mes=-1, entonces la fecha de vencimiento es el 28/02."
 
 #. module: account_invoice_operation
+#: field:account.invoice,operation_ids:0
+#: field:account.invoice,readonly_operation_ids:0
+msgid "Operations"
+msgstr "Operaciones"
+
+#. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_res_partner
 msgid "Partner"
 msgstr "Empresa"
@@ -355,6 +371,11 @@ msgstr "Seleccione 'Ventas' para diarios de facturas de cliente. Seleccione 'Com
 #: field:account.invoice.plan.line,sequence:0
 msgid "Sequence"
 msgstr "Secuencia"
+
+#. module: account_invoice_operation
+#: view:account.invoice.plan:account_invoice_operation.account_invoice_plan_form
+msgid "Some notes:"
+msgstr "Algunas notas:"
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice_plan.py:154
