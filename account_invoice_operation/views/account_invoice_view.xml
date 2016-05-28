@@ -48,11 +48,11 @@
                 </field>
             </field>
         </record>
-        <record id="invoice_plan_edit_form" model="ir.ui.view">
-            <field name="name">account.invoice.plan.edit.form</field>
+        <record id="invoice_operations_edit_form" model="ir.ui.view">
+            <field name="name">account.invoice.operations.edit.form</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="invoice_form"/>
-            <field name="groups_id" eval="[(4, ref('invoice_plan_edit'))]"/>
+            <field name="groups_id" eval="[(4, ref('invoice_operations_edit'))]"/>
             <field name="arch" type="xml">
                 <field name="readonly_operation_ids" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -77,7 +77,7 @@
                     <!-- <field name="readonly_plan_id"/> -->
                     <!-- Para proveedore slo hacemos editable para todos -->
                     <field name="plan_id" invisible="0"/>
-                    <!-- <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/> -->
+                    <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
                     <field name="operation_ids" invisible="0" widget="one2many_tags" context="{'journal_type': journal_type}"/>
 <!--                     <label for="operation_ids"/>
                     <div name="operations_lines">

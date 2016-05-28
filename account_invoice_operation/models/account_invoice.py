@@ -46,7 +46,8 @@ class AccountInvoice(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]}
     )
-    # we need to fields because on readonly view onchange is not saved
+    # we leave this field so it can be understand what can happen, for ex in
+    # lines
     readonly_operation_ids = fields.One2many(
         related='operation_ids',
         readonly=True,
