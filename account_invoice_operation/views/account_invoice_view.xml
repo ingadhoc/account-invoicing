@@ -17,11 +17,6 @@
                     <field name="plan_id" invisible="1"/>
                     <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
                     <field name="operation_ids" invisible="1" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-<!--                     <label for="operation_ids"/>
-                    <div name="operations_lines">
-                        <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-                        <button name="%(action_invoice_operation_wizard)d" type="action" string="⇒ Load Plan" class="oe_link oe_line" states="draft"/>
-                    </div> -->
                 </field>
                 <button name="invoice_open" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>
@@ -75,15 +70,9 @@
                 </form>
                 <field name="account_id" position="after">
                     <!-- <field name="readonly_plan_id"/> -->
-                    <!-- Para proveedore slo hacemos editable para todos -->
+                    <!-- Para proveedores lo hacemos editable para todos -->
                     <field name="plan_id" invisible="0"/>
-                    <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
                     <field name="operation_ids" invisible="0" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-<!--                     <label for="operation_ids"/>
-                    <div name="operations_lines">
-                        <field name="operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-                        <button name="%(action_invoice_operation_wizard)d" type="action" string="⇒ Load Plan" class="oe_link oe_line" states="draft"/>
-                    </div> -->
                 </field>
                 <button name="invoice_open" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>
