@@ -35,16 +35,17 @@ class AccountInvoiceOperation(models.Model):
         'computed.'
     )
 
-    @api.one
-    @api.constrains('invoice_id', 'journal_id', 'company_id')
-    def check_currencies(self):
-        other_currency = (
-            self.journal_id.currency or self.company_id.currency_id)
-        if other_currency and self.invoice_id.currency_id != other_currency:
-            raise Warning(_(
-                'You can not use a journal or company of different currency '
-                'than invoice currency yet. Operation "%s"') % (
-                    self.display_name))
+    # we dont need this check because we keep original currency
+    # @api.one
+    # @api.constrains('invoice_id', 'journal_id', 'company_id')
+    # def check_currencies(self):
+    #     other_currency = (
+    #         self.journal_id.currency or self.company_id.currency_id)
+    #     if other_currency and self.invoice_id.currency_id != other_currency:
+    #         raise Warning(_(
+    #             'You can not use a journal or company of different currency '
+    #             'than invoice currency yet. Operation "%s"') % (
+    #                 self.display_name))
 
     @api.multi
     @api.depends('sequence', 'invoice_id')
