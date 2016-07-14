@@ -28,14 +28,14 @@ Account Invoice Prices Update
 =============================
 
 ''',
-    'installable': True,
+    'installable': False,
     'name': 'Account Invoice Prices Update',
     'test': [],
     'data': [
         'wizard/update_prices_wizard_view.xml',
         'views/invoice_view.xml',
     ],
-    'version': '8.0.0.0.1',
+    'version': '9.0.1.0.0',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3'}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

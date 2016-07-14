@@ -21,7 +21,7 @@
 {
     'name': 'Account Invoice Control',
     'author': 'ADHOC SA',
-    'version': '8.0.0.0.0',
+    'version': '9.0.1.0.0',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'depends': ['sale', 'purchase'],
@@ -36,5 +36,5 @@ Account Invoice Control
         'views/invoice_view.xml',
     ],
     'website': 'www.adhoc.com.ar',
-    'installable': True,
+    'installable': False,
 }

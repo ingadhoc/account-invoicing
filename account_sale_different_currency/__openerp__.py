@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Invoice in different Currency than Sale Order',
-    'version': '8.0.0.5.1',
+    'version': '9.0.1.0.0',
     'category': 'Account',
     'description': """
 Invoice in different Currency than Sale Order
@@ -50,7 +50,7 @@ monedas pertinentes y de "account" y "product" a 3 decimales.
         'account_analytic_view.xml',
     ],
     'demo': [],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

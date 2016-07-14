@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Invoice Reporte Partner Categ',
-    'version': '8.0.1.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'description': """
@@ -43,7 +43,7 @@ Adds partner category on account invoice report
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
