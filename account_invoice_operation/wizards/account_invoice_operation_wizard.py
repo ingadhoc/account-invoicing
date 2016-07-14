@@ -65,9 +65,9 @@ class account_invoice_operation_wizard(models.TransientModel):
         record = self.env[model].browse(res_id)
         record.plan_id = self.plan_id.id
         record.change_plan()
-        # self.plan_id.recreate_operations(
-        #     res_id, model)
         if model == 'account.invoice' and self._context.get(
                 'load_and_run', False):
+            # if we dont invalidate cache it dont works ok
+            record.invalidate_cache()
             return record.action_run_operations()
         return True

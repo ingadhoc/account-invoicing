@@ -122,6 +122,11 @@ class AccountInvoice(models.Model):
                 'period_id': False,
             }
 
+            # por compatibilidad con stock_picking_invoice_link
+            # como el campo nuevo tiene copy=False lo copiamos nosotros
+            if 'picking_ids' in self._fields:
+                default['picking_ids'] = [(6, 0, self.picking_ids.ids)]
+
             company = False
             journal = False
             # if op journal and is different from invoice journal
@@ -160,7 +165,7 @@ class AccountInvoice(models.Model):
                     invoice_type, self.partner_id.id,
                     date_invoice=default.get(
                         'date_invoice', False) or self.date_invoice,
-                    payment_term=self.payment_term,
+                    payment_term=self.payment_term.id,
                     company_id=company.id)['value']
                 default.update({
                     'account_id': partner_data.get('account_id', False),
@@ -197,6 +202,10 @@ class AccountInvoice(models.Model):
                     'invoice_id': new_invoice.id,
                     'quantity': new_quantity,
                 }
+                # por compatibilidad con stock_picking_invoice_link
+                # como el campo nuevo tiene copy=False lo copiamos nosotros
+                if 'move_line_ids' in self._fields:
+                    default['move_line_ids'] = [(6, 0, line.move_line_ids.ids)]
 
                 # if company has change, then we need to update lines
                 if company and company != self.company_id:
@@ -284,6 +293,12 @@ class AccountInvoice(models.Model):
             # invoices
             self.redirect_workflow([(self.id, invoices[0].id)])
             self.unlink()
+            # por compatibilidad con stock_picking_invoice_link
+            # if we unlink original invoice, we set them invoiced
+            if 'picking_ids' in self._fields:
+                pickings = invoices.mapped('picking_ids').filtered(
+                    lambda x: x.state != 'cancel')
+                pickings.write({'invoice_state': 'invoiced'})
         else:
             for line in self.invoice_line:
                 line_quantity = last_quantities.get(line.id)
