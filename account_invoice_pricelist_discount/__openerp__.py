@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Pricelist Discount',
-    'version': '8.0.2.1.3',
+    'version': '9.0.1.0.0',
     'description': """
 Account Invoice Pricelist Discount
 ==================================
@@ -37,6 +37,6 @@ Account Invoice Pricelist Discount
         ],
     'demo_xml': [],
     'test': [],
-    'installable': True,
+    'installable': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

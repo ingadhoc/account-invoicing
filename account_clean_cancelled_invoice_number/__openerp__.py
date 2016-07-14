@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Clean Cancelled Invoice Number',
-    'version': '8.0.1.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Invoicing, Number, Cancelled',
@@ -46,7 +46,7 @@ Adds a button on invoice to allow clean number to cancelled invoices in order to
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
