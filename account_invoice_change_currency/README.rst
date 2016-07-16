@@ -6,12 +6,9 @@
 Account Invoice Change Currency
 ===============================
 
-This module replace original odoo wizard for changing currency on an invoice with serveral
-improovements:
-
-* Preview and allow to change the rate thats is going to be used:
-* Log the currency change on the chatter
-* Add this functionality to supplier invoices
+This module adds a wizard for changing currency on invoices.
+It allows you to preview and change the rate thats is going to be used.
+It also logs the currency change on the chatter.
 
 Installation
 ============
