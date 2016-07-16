@@ -23,16 +23,6 @@
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
-    'description': '''
-Account Invoice Change Currency
-===============================
-Replace original odoo wizard for changing currency on an invoice with serveral
-improovements:
-
-* Preview and allow to change the rate thats is going to be used:
-* Log the currency change on the chatter
-* Add this functionality to supplier invoices
-''',
     'installable': True,
     'name': 'Account Invoice Change Currency',
     'test': [],
