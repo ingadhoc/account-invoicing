@@ -307,9 +307,9 @@ class AccountInvoice(models.Model):
             # self.operation_ids.unlink()
 
         # por compatibilidad con stock_picking_invoice_link
-        # if we unlink original invoice, we set them invoiced
+        # we set all related pickings on invoiced state
         if 'picking_ids' in self._fields:
-            pickings = self.sudo().mapped('picking_ids').filtered(
+            pickings = invoices.sudo().mapped('picking_ids').filtered(
                 lambda x: x.state != 'cancel')
             pickings.invoice_state = 'invoiced'
 
