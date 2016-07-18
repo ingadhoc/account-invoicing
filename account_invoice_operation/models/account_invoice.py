@@ -125,7 +125,7 @@ class AccountInvoice(models.Model):
             # por compatibilidad con stock_picking_invoice_link
             # como el campo nuevo tiene copy=False lo copiamos nosotros
             if 'picking_ids' in self._fields:
-                default['picking_ids'] = [(6, 0, self.picking_ids.ids)]
+                default['picking_ids'] = [(6, 0, self.sudo().picking_ids.ids)]
 
             company = False
             journal = False
@@ -205,7 +205,8 @@ class AccountInvoice(models.Model):
                 # por compatibilidad con stock_picking_invoice_link
                 # como el campo nuevo tiene copy=False lo copiamos nosotros
                 if 'move_line_ids' in self._fields:
-                    default['move_line_ids'] = [(6, 0, line.move_line_ids.ids)]
+                    default['move_line_ids'] = [
+                        (6, 0, line.sudo().move_line_ids.ids)]
 
                 # if company has change, then we need to update lines
                 if company and company != self.company_id:
@@ -292,17 +293,9 @@ class AccountInvoice(models.Model):
             # we only send first invoice because it does not works ok with many
             # invoices
             self.redirect_workflow([(self.id, invoices[0].id)])
-            # por compatibilidad con stock_picking_invoice_link
-            # if we unlink original invoice, we set them invoiced
-            pickings = False
-            if 'picking_ids' in self._fields:
-                pickings = self.sudo().picking_ids.filtered(
-                    lambda x: x.state != 'cancel')
             # borrar factura
             self.unlink()
             # actualizar pickings
-            if pickings:
-                pickings.write({'invoice_state': 'invoiced'})
         else:
             for line in self.invoice_line:
                 line_quantity = last_quantities.get(line.id)
@@ -312,6 +305,13 @@ class AccountInvoice(models.Model):
                 else:
                     line.quantity = last_quantities.get(line.id)
             # self.operation_ids.unlink()
+
+        # por compatibilidad con stock_picking_invoice_link
+        # if we unlink original invoice, we set them invoiced
+        if 'picking_ids' in self._fields:
+            pickings = self.sudo().mapped('picking_ids').filtered(
+                lambda x: x.state != 'cancel')
+            pickings.invoice_state = 'invoiced'
 
         # set plan false for all invoices
         invoices.write({'plan_id': False})
