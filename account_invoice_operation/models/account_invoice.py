@@ -292,13 +292,13 @@ class AccountInvoice(models.Model):
             # we only send first invoice because it does not works ok with many
             # invoices
             self.redirect_workflow([(self.id, invoices[0].id)])
-            self.unlink()
             # por compatibilidad con stock_picking_invoice_link
             # if we unlink original invoice, we set them invoiced
             if 'picking_ids' in self._fields:
-                pickings = invoices.mapped('picking_ids').filtered(
+                pickings = self.mapped('picking_ids').filtered(
                     lambda x: x.state != 'cancel')
                 pickings.write({'invoice_state': 'invoiced'})
+            self.unlink()
         else:
             for line in self.invoice_line:
                 line_quantity = last_quantities.get(line.id)
