@@ -294,11 +294,15 @@ class AccountInvoice(models.Model):
             self.redirect_workflow([(self.id, invoices[0].id)])
             # por compatibilidad con stock_picking_invoice_link
             # if we unlink original invoice, we set them invoiced
+            pickings = False
             if 'picking_ids' in self._fields:
-                pickings = self.mapped('picking_ids').filtered(
+                pickings = self.sudo().picking_ids.filtered(
                     lambda x: x.state != 'cancel')
-                pickings.write({'invoice_state': 'invoiced'})
+            # borrar factura
             self.unlink()
+            # actualizar pickings
+            if pickings:
+                pickings.write({'invoice_state': 'invoiced'})
         else:
             for line in self.invoice_line:
                 line_quantity = last_quantities.get(line.id)
