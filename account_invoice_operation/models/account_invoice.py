@@ -311,7 +311,7 @@ class AccountInvoice(models.Model):
         if 'picking_ids' in self._fields:
             pickings = invoices.sudo().mapped('picking_ids').filtered(
                 lambda x: x.state != 'cancel')
-            pickings.invoice_state = 'invoiced'
+            pickings.write({'invoice_state': 'invoiced'})
 
         # set plan false for all invoices
         invoices.write({'plan_id': False})
