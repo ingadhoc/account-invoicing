@@ -12,4 +12,4 @@ class invoice(models.Model):
     def clean_internal_number(self):
         # We also clean reference for compatibility with argentinian localization
         # self.write({'internal_number':False,'afip_document_number':False})
-        self.write({'move_name': None, 'afip_document_number': False})
+        self.write({'move_name': False, 'afip_document_number': False})
