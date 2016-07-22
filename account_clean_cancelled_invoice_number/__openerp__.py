@@ -20,17 +20,10 @@
 ##############################################################################
 {
     'name': 'Clean Cancelled Invoice Number',
-    'version': '8.0.1.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Invoicing, Number, Cancelled',
-    'description': """
-Clean Cancelled Invoice Number
-========================
-Adds a button on invoice to allow clean number to cancelled invoices in order to:
-* Regenerate the invoice number with new sequence number
-* Delete the invoice
-    """,
     'author':  'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',

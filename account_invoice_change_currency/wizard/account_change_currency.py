@@ -4,8 +4,10 @@ from openerp.exceptions import Warning
 
 
 class account_change_currency(models.TransientModel):
-    _inherit = 'account.change.currency'
+    _name = 'account.change.currency'
+    _description = 'Change Currency'
 
+    currency_id = fields.Many2one('res.currency', string='Change to', required=True, help="Select a currency to apply on the invoice")
     currency_rate = fields.Float(
         'Currency Rate',
         required=True,
@@ -43,7 +45,7 @@ class account_change_currency(models.TransientModel):
         """
         self.ensure_one()
         invoice = self.get_invoice()
-        for line in invoice.invoice_line:
+        for line in invoice.invoice_line_ids:
             line.price_unit = self.currency_id.round(
                     line.price_unit * self.currency_rate)
         invoice.currency_id = self.currency_id.id

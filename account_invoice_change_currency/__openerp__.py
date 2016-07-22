@@ -23,24 +23,14 @@
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
-    'description': '''
-Account Invoice Change Currency
-===============================
-Replace original odoo wizard for changing currency on an invoice with serveral
-improovements:
-
-* Preview and allow to change the rate thats is going to be used:
-* Log the currency change on the chatter
-* Add this functionality to supplier invoices
-''',
     'installable': True,
     'name': 'Account Invoice Change Currency',
     'test': [],
     'data': [
-        'views/invoice_view.xml',
         'wizard/account_change_currency_view.xml',
+        'views/invoice_view.xml',
     ],
-    'version': '8.0.0.0.0',
+    'version': '9.0.1.0.0',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3'}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
