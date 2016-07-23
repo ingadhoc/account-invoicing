@@ -10,7 +10,8 @@
                     <field name="invoice_type" invisible="1"/>
                     <field name="invoice_company_id" invisible="1"/>
                     <group>
-                        <field name="tax_id" context="{'type':invoice_type}" domain="[('parent_id','=',False),('company_id', '=', invoice_company_id)]"/>
+                        <!--<field name="tax_id" context="{'type':invoice_type}" domain="[('parent_id','=',False),('company_id', '=', invoice_company_id)]"/>-->
+                        <field name="tax_id" context="{'type':invoice_type}" domain="[('company_id', '=', invoice_company_id)]"/>
                         <field name="name"/>
                         <field name="base"/>
                         <field name="amount"/>

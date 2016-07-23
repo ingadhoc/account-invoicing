@@ -29,12 +29,7 @@
     ],
     'demo': [],
     'depends': ['account'],
-    'description': '''
-Account Invoice Tax Wizard
-==========================
-Add a wizard to add manual taxes on invoices
-''',
-    'installable': False,
+    'installable': True,
     'name': 'Account Invoice Tax Wizard',
     'test': [],
     'version': '9.0.1.0.0'}

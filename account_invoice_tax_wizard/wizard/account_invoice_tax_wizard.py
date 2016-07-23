@@ -50,9 +50,12 @@ class account_invoice_tax_wizard(models.TransientModel):
 
     @api.onchange('base', 'tax_id')
     def onchange_base(self):
-        res = self.env['account.tax'].compute_for_bank_reconciliation(
-            self.tax_id.id, self.base)
-        self.amount = res['taxes'][0]['amount']
+        # res = self.env['account.tax'].compute_for_bank_reconciliation(
+        #     self.tax_id.id, self.base)
+        res = self.env['account.tax'].compute_all(
+            self.base)
+        if res['taxes']:
+            self.amount = res['taxes'][0]['amount']
 
     @api.multi
     def confirm(self):
@@ -64,22 +67,26 @@ class account_invoice_tax_wizard(models.TransientModel):
             'invoice_id': active_id,
             'name': self.name,
             'manual': True,
-            'base': self.base,
+            # 'base': self.base,
             'amount': self.amount,
         }
         if invoice.type in ('out_invoice', 'in_invoice'):
-            val['base_code_id'] = self.tax_id.base_code_id.id
-            val['tax_code_id'] = self.tax_id.tax_code_id.id
-            val['base_amount'] = self.base * self.tax_id.base_sign
-            val['tax_amount'] = self.amount * self.tax_id.tax_sign
-            val['account_id'] = self.tax_id.account_collected_id.id
-            val['account_analytic_id'] = self.tax_id.account_analytic_collected_id.id
+            # val['base_code_id'] = self.tax_id.base_code_id.id
+            # val['tax_code_id'] = self.tax_id.tax_code_id.id
+            # val['base_amount'] = self.base * self.tax_id.base_sign
+            # val['tax_amount'] = self.amount * self.tax_id.tax_sign
+            val['tax_id'] = self.tax_id.id
+            # val['account_id'] = self.tax_id.account_collected_id.id
+            val['account_id'] = self.tax_id.account_id.id
+            # val['account_analytic_id'] = self.tax_id.account_analytic_collected_id.id
         else:
-            val['base_code_id'] = self.tax_id.ref_base_code_id.id
-            val['tax_code_id'] = self.tax_id.ref_tax_code_id.id
-            val['base_amount'] = self.base * self.tax_id.ref_base_sign
-            val['tax_amount'] = self.amount * self.tax_id.ref_tax_sign
-            val['account_id'] = self.tax_id.account_paid_id.id
-            val['account_analytic_id'] = self.tax_id.account_analytic_paid_id.id
+            # val['base_code_id'] = self.tax_id.ref_base_code_id.id
+            # val['tax_code_id'] = self.tax_id.ref_tax_code_id.id
+            # val['base_amount'] = self.base * self.tax_id.ref_base_sign
+            # val['tax_amount'] = self.amount * self.tax_id.ref_tax_sign
+            val['tax_id'] = self.tax_id.id
+            # val['account_id'] = self.tax_id.account_paid_id.id
+            val['account_id'] = self.tax_id.refund_account_id.id
+            # val['account_analytic_id'] = self.tax_id.account_analytic_paid_id.id
 
         self.env['account.invoice.tax'].create(val)
