@@ -13,6 +13,7 @@
                         <!--<field name="tax_id" context="{'type':invoice_type}" domain="[('parent_id','=',False),('company_id', '=', invoice_company_id)]"/>-->
                         <field name="tax_id" context="{'type':invoice_type}" domain="[('company_id', '=', invoice_company_id)]"/>
                         <field name="name"/>
+                        <field domain="[('company_id', '=', invoice_company_id), ('account_type', '=', 'normal')]" name="account_analytic_id" groups="analytic.group_analytic_accounting"/>
                         <field name="base"/>
                         <field name="amount"/>
                     </group>
