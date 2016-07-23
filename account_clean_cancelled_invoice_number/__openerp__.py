@@ -24,7 +24,7 @@
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Invoicing, Number, Cancelled',
-    'author':  'ADHOC SA',
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [

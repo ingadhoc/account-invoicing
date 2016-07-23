@@ -7,12 +7,17 @@ class account_change_currency(models.TransientModel):
     _name = 'account.change.currency'
     _description = 'Change Currency'
 
-    currency_id = fields.Many2one('res.currency', string='Change to', required=True, help="Select a currency to apply on the invoice")
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Change to',
+        required=True,
+        help="Select a currency to apply on the invoice"
+    )
     currency_rate = fields.Float(
         'Currency Rate',
         required=True,
         help="Select a currency to apply on the invoice"
-        )
+    )
 
     @api.multi
     def get_invoice(self):
@@ -47,7 +52,7 @@ class account_change_currency(models.TransientModel):
         invoice = self.get_invoice()
         for line in invoice.invoice_line_ids:
             line.price_unit = self.currency_id.round(
-                    line.price_unit * self.currency_rate)
+                line.price_unit * self.currency_rate)
         invoice.currency_id = self.currency_id.id
         return {'type': 'ir.actions.act_window_close'}
 
