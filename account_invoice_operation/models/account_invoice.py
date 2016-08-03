@@ -36,7 +36,8 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]}
     )
     journal_type = fields.Selection(
-        related='journal_id.type'
+        related='journal_id.type',
+        readonly=True,
     )
     plan_id = fields.Many2one(
         'account.invoice.plan',
