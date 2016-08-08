@@ -295,6 +295,9 @@ class AccountInvoice(models.Model):
             # invoices
             self.redirect_workflow([(self.id, invoices[0].id)])
             # borrar factura
+            # por compatibilidad con sale commission, borramos las lineas y
+            # luego la factura
+            self.invoice_line.unlink()
             self.unlink()
             # actualizar pickings
         else:
