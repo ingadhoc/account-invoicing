@@ -19,7 +19,7 @@
 #
 ##############################################################################
 {
-    'author': 'Odoo Community Association (OCA),ADHOC SA',
+    'author': 'ADHOC SA',
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
@@ -27,10 +27,10 @@
     'name': 'Account Invoice Change Currency',
     'test': [],
     'data': [
-        'views/invoice_view.xml',
         'wizard/account_change_currency_view.xml',
+        'views/invoice_view.xml',
     ],
     'version': '9.0.1.0.0',
-    'website': 'https://odoo-community.org/',
+    'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3'}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
