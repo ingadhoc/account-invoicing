@@ -24,8 +24,8 @@
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Quotations, Sales Orders, Invoicing',
-    'author':  'Odoo Community Association (OCA),ADHOC SA',
-    'website': 'https://odoo-community.org/',
+    'author':  'ADHOC SA',
+    'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [
     ],
