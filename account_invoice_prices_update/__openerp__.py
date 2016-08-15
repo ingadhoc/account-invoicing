@@ -23,12 +23,7 @@
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
-    'description': '''
-Account Invoice Prices Update
-=============================
-
-''',
-    'installable': False,
+    'installable': True,
     'name': 'Account Invoice Prices Update',
     'test': [],
     'data': [
@@ -36,6 +31,6 @@ Account Invoice Prices Update
         'views/invoice_view.xml',
     ],
     'version': '9.0.1.0.0',
-    'website': 'www.adhoc.com.ar',
+    'website': 'https://odoo-community.org/',
     'license': 'AGPL-3'}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
