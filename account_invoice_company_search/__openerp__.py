@@ -21,8 +21,8 @@
 {
     "name": "Account Invioce Company Search",
     "version": "9.0.1.0.0",
-    'author':  'Odoo Community Association (OCA),ADHOC SA',
-    'website': 'https://odoo-community.org/',
+    'author':  'ADHOC SA',
+    'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     "category": "Accounting",
     'depends': [
