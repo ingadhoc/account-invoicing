@@ -74,19 +74,5 @@
         price_unit: 200.0
         quantity: 5.0
 
--
-  !function {model: account.invoice, name: change_move_currency, id: my_demo_invoice_1}:
-  - model: account.invoice
-    eval: "[obj(ref('my_demo_invoice_1')).id]"
-
--
-  !function {model: account.invoice, name: check_move_currency, id: my_demo_invoice_2}:
-  - model: account.invoice
-    eval: "[obj(ref('my_demo_invoice_2')).id]"
-
--
-  !function {model: account.invoice, name: finalize_invoice_move_lines, id: my_demo_invoice_3}:
-  - model: account.invoice
-    eval: "[obj(ref('my_demo_invoice_2')).id]"
 
 

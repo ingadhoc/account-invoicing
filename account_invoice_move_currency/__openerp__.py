@@ -21,7 +21,7 @@
 {
     'name': 'Account Invoice Move Currency',
     'version': '9.0.1.0.0',
-    'author': 'Odoo Community Association (OCA), ADHOC SA',
+    'author': 'ADHOC SA',
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
@@ -32,7 +32,7 @@
     'demo': [
         'demo/account_invoice_demo.yml',
     ],
-    'website': 'https://odoo-community.org/',
+    'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,
