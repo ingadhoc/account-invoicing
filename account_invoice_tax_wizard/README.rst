@@ -6,8 +6,8 @@
 Account Invoice Tax Wizard
 ==========================
 
-This module adds a wizard to add manual taxes on invoices without needing to add 
-such taxes on each invoice lines.
+This module adds a wizard to add manual taxes on invoices without
+needing such taxes to be added in each of the invoice lines.
 
 Installation
 ============
