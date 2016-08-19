@@ -23,17 +23,14 @@ class account_invoice_prices_update(models.TransientModel):
         'product.pricelist', string="Price List",
         required=True, default=_get_pricelist)
 
-    type = fields.Selection(
-        [('sale', 'Sale'), ('purchase', 'Purchase')])
-
     @api.one
     def update_prices(self):
         active_id = self._context.get('active_id', False)
         invoice = self.env['account.invoice'].browse(active_id)
         invoice.write({'currency_id': self.pricelist_id.currency_id.id})
-        for line in invoice.invoice_line.filtered('product_id'):
+        for line in invoice.invoice_line_ids.filtered('product_id'):
             price = self.pricelist_id.with_context(
-                uom=line.uos_id.id).price_get(
+                uom=line.uom_id.id).price_get(
                     line.product_id.id, line.quantity or 1.0,
                     partner=line.partner_id.id)[self.pricelist_id.id]
             line.price_unit = price
