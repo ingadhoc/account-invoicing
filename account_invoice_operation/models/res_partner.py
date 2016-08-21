@@ -13,6 +13,7 @@ class ResPartner(models.Model):
         'account.invoice.plan',
         'Default Invoice Plan',
         domain=[('type', 'in', ['sale', False])],
+        company_dependent=True,
         help='This invoice plan will be automatically loaded on invoices and '
         'sale orders'
     )
