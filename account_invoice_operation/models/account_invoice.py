@@ -171,12 +171,12 @@ class AccountInvoice(models.Model):
                     company_id=company.id)['value']
                 default.update({
                     'account_id': partner_data.get('account_id', False),
-                    # we dont want to change fiscal position
+                    # we dont want to change fiscal position, bank or pay term
                     # 'fiscal_position': partner_data.get(
                     #     'fiscal_position', False),
-                    'partner_bank_id': partner_data.get(
-                        'partner_bank_id', False),
-                    'payment_term': partner_data.get('payment_term', False),
+                    # 'partner_bank_id': partner_data.get(
+                    #     'partner_bank_id', False),
+                    # 'payment_term': payment_term,
                 })
 
             if operation.reference:
