@@ -87,6 +87,20 @@ class AccountInvoice(models.Model):
         return result
 
     @api.multi
+    def onchange_company_id(
+            self, company_id, part_id, type, invoice_line, currency_id):
+            result = super(AccountInvoice, self).onchange_company_id(
+                company_id, part_id, type, invoice_line, currency_id)
+            partner_id = part_id
+            if partner_id:
+                partner = self.env['res.partner'].with_context(
+                    force_company=company_id).browse(
+                    partner_id).commercial_partner_id
+                result['value'][
+                    'plan_id'] = partner.default_sale_invoice_plan_id.id
+            return result
+
+    @api.multi
     def action_run_operations(self):
         self.ensure_one()
         invoices = self
