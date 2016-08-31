@@ -107,6 +107,8 @@ class AccountInvoicePlanLine(models.Model):
         help='For eg, if you set 0.1, quani will be round to 1 decimal',
         # default=0.01,
     )
+    change_date = fields.Boolean(
+    )
     days = fields.Integer(
         'Number of Days',
         help="Number of days to add before computation of the day of month."
@@ -179,6 +181,7 @@ class AccountInvoicePlanLine(models.Model):
             'percentage': self.percentage,
             'amount_type': self.amount_type,
             'rounding': self.rounding,
+            'change_date': self.change_date,
             'days': self.days,
             'days2': self.days2,
             'reference': self.reference,

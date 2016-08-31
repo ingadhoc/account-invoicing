@@ -12,9 +12,10 @@
                                 <field name="amount_type"/>
                                 <field name="percentage" attrs="{'required': [('amount_type', '=', 'percentage')], 'invisible': [('amount_type', '!=', 'percentage')]}"/>
                                 <field name="rounding" attrs="{'invisible': [('amount_type', '!=', 'percentage')]}"/>
-                                <field name="date"/>
-                                <field name="days" attrs="{'invisible': [('date', '!=', False)]}"/>
-                                <field name="days2" attrs="{'invisible': [('date', '!=', False)]}"/>
+                                <field name="change_date"/>
+                                <field name="date" attrs="{'invisible': [('change_date', '=', False)]}"/>
+                                <field name="days" attrs="{'invisible': ['|', ('change_date', '=', False), ('date', '!=', False)]}"/>
+                                <field name="days2" attrs="{'invisible': ['|', ('change_date', '=', False), ('date', '!=', False)]}"/>
                             </group>
                             <group>
                                 <field name="reference"/>

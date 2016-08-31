@@ -167,12 +167,13 @@ class AccountInvoice(models.Model):
                         self.journal_type, company.name))
                 default['journal_id'] = journal.id
 
-            if operation.date:
-                default['date_invoice'] = operation.date
-            elif operation.days and operation.days2:
-                # TODO tal vez podamos pasar alguna fecha a esta funcion si
-                # interesa
-                default['date_invoice'] = operation._get_date()
+            if operation.change_date:
+                if operation.date:
+                    default['date_invoice'] = operation.date
+                else:
+                    # TODO tal vez podamos pasar alguna fecha a esta funcion si
+                    # interesa
+                    default['date_invoice'] = operation._get_date()
 
             # if journal then journal has change and we need to
             # upate, at least, account_id
