@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Operation',
-    'version': '8.0.0.6.0',
+    'version': '8.0.0.7.0',
     'category': 'Accounting & Finance',
     'sequence': 14,
     'summary': '',

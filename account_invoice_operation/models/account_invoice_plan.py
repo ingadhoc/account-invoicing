@@ -37,6 +37,14 @@ class AccountInvoicePlan(models.Model):
         help='This plan will be available only for this company or child ones,'
         ' if no company set then it will be available for all companies'
     )
+    split_type = fields.Selection([
+        ('by_quantity', 'By Quantity'),
+        ('by_price', 'By Price (not recommended)')],
+        default='by_quantity',
+        required=True,
+        help='By Price is not recommended because it could be not compatible '
+        'with other modules and also because price analysis would not be ok'
+    )
 
     @api.one
     @api.constrains('line_ids')
@@ -96,7 +104,8 @@ class AccountInvoicePlanLine(models.Model):
     )
     percentage = fields.Float(
         'Percentage',
-        digits=dp.get_precision('Discount'),
+        # digits=dp.get_precision('Discount'),
+        digits=(12, 6),
         required=False,
         help='Percentage of invoice lines quantities that will be used for '
         'this operation',

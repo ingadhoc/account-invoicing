@@ -111,8 +111,7 @@ class AccountInvoice(models.Model):
         total_percentage = self.operation_ids.filtered(
             lambda x: x.amount_type == 'balance') and 100.0 or sum(
             self.operation_ids.mapped('percentage'))
-        last_quantities = {
-            line.id: line.quantity for line in self.invoice_line}
+
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
         sale_orders = []
@@ -127,6 +126,17 @@ class AccountInvoice(models.Model):
                 [('model', '=', 'purchase.order')]):
             purchase_orders = self.env['purchase.order'].search(
                 [('invoice_ids', 'in', [self.id])])
+
+        # if manual operations, we split by_quantity by default
+        # split_type = 'by_quantity'
+        # if self.plan_id:
+        split_type = self.plan_id.split_type or 'by_quantity'
+        if split_type == 'by_price':
+            splt_field = 'price_unit'
+        else:
+            splt_field = 'quantity'
+        last_quantities = {
+            line.id: getattr(line, splt_field) for line in self.invoice_line}
 
         for operation in self.operation_ids:
             default = {
@@ -201,23 +211,30 @@ class AccountInvoice(models.Model):
             new_invoice = self.copy(default)
 
             for line in self.invoice_line:
+                # quantities could be price or quantity depending on split_type
                 # if last operation and total perc 100 then we adjust qtys
                 if remaining_op == 1 and total_percentage == 100.0:
                     new_quantity = last_quantities.get(line.id)
+                    print 'new_quantity 1', new_quantity
                 else:
                     line_percentage = line._get_operation_percentage(operation)
-                    new_quantity = line.quantity * line_percentage / 100.0
+
+                    new_quantity = getattr(
+                        line, splt_field) * line_percentage / 100.0
+                    print 'new_quantity 2', new_quantity
                     if operation.rounding:
                         new_quantity = float_round(
                             new_quantity,
                             precision_rounding=operation.rounding)
+                        print 'new_quantity 3', new_quantity
                     last_quantities[line.id] = (
                         last_quantities.get(
-                            line.id, line.quantity) - new_quantity)
+                            line.id, getattr(line, splt_field)) - new_quantity)
+                    print 'last_quantities', last_quantities
 
                 line_defaults = {
                     'invoice_id': new_invoice.id,
-                    'quantity': new_quantity,
+                    splt_field: new_quantity,
                 }
                 # por compatibilidad con stock_picking_invoice_link
                 # como el campo nuevo tiene copy=False lo copiamos nosotros
@@ -231,7 +248,10 @@ class AccountInvoice(models.Model):
                         force_company=company.id).sudo().product_id_change(
                             line.product_id.id,
                             line.product_id.uom_id.id,
-                            qty=new_quantity,
+                            # TODO aca tal vez deberia ir new_quantity solo
+                            # si by_quantity
+                            # qty=new_quantity,
+                            qty=line.quantity,
                             name='',
                             type=invoice_type,
                             partner_id=self.partner_id.id,

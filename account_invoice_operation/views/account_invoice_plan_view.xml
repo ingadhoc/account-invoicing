@@ -8,6 +8,7 @@
                 <tree string="Invoicing Plans">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
+                    <field name="split_type"/>
                     <field name="type"/>
                     <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                 </tree>
@@ -23,6 +24,7 @@
                         <group>
                             <!-- <field name="date"/> -->
                             <field name="name"/>
+                            <field name="split_type"/>
                             <field name="type"/>
                         </group>
                         <p>
