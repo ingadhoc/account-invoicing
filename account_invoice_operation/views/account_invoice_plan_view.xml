@@ -26,6 +26,7 @@
                             <field name="name"/>
                             <field name="split_type"/>
                             <field name="type"/>
+                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                         </group>
                         <p>
 Some notes:<br/>
