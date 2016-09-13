@@ -373,3 +373,17 @@ class AccountInvoice(models.Model):
             result['views'] = [(form_view.id, 'form')]
             result['res_id'] = invoices.id
         return result
+
+    @api.multi
+    def signal_workflow(self, signal):
+        """
+        If someone calls "invoice_open" and invoice has operations, we run
+        operations instead. This helps in compatibility, for eg with
+        sale_order_type_automation
+        """
+        if signal == 'invoice_open':
+            for invoice in self:
+                if invoice.operation_ids:
+                    invoice.action_run_operations()
+                    self -= invoice
+        return super(AccountInvoice, self).signal_workflow(signal)
