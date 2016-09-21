@@ -9,6 +9,7 @@ from openerp import models, api
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
+    @api.multi
     @api.constrains('invoice_line')
     def update_taxes(self):
         context = dict(self._context)
