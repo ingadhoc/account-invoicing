@@ -61,6 +61,9 @@ class AccountInvoice(models.Model):
     @api.one
     @api.constrains('operation_ids')
     def run_checks(self):
+        """
+        If whe change operations the we run checks of that operations
+        """
         self.operation_ids._run_checks()
 
     @api.one
