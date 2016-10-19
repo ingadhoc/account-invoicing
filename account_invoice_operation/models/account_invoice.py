@@ -58,13 +58,23 @@ class AccountInvoice(models.Model):
         readonly=True,
     )
 
-    @api.one
-    @api.constrains('operation_ids')
-    def run_checks(self):
-        """
-        If whe change operations the we run checks of that operations
-        """
-        self.operation_ids._run_checks()
+    # we call only on write on not with constrains because when we create an
+    # invoice from a sale order operation lines where overwritten
+    @api.multi
+    def write(self, vals):
+        res = super(AccountInvoice, self).write(vals)
+        if vals.get('operation_ids'):
+            self.operation_ids._run_checks()
+        return res
+
+    # @api.one
+    # @api.constrains('operation_ids')
+    # def run_checks(self):
+    #     """
+    #     If whe change operations the we run checks of that operations
+    #     """
+    #     raise Warning('sadas')
+    #     self.operation_ids._run_checks()
 
     @api.one
     @api.onchange('plan_id')
