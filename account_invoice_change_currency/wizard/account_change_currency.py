@@ -55,6 +55,3 @@ class account_change_currency(models.TransientModel):
                 line.price_unit * self.currency_rate)
         invoice.currency_id = self.currency_id.id
         return {'type': 'ir.actions.act_window_close'}
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

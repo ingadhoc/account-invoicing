@@ -34,9 +34,8 @@ Account Invoice Pricelist Discount
     ],
     'data': [
         'views/invoice_view.xml',
-        ],
+    ],
     'demo_xml': [],
     'test': [],
     'installable': False,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
