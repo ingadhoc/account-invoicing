@@ -9,9 +9,9 @@ class account_invoice(models.Model):
         'account.journal',
         'Default Purchase Journal',
         domain=[('type', '=', 'purchase')]
-        )
+    )
     default_sale_journal_id = fields.Many2one(
         'account.journal',
         'Default Sale Journal',
         domain=[('type', '=', 'sale')]
-        )
+    )

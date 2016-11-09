@@ -19,7 +19,7 @@
 #
 ##############################################################################
 {
-    'name': 'Account Partner Restrict Invoicing',
+    'name': 'Restrict Invoicing for some Partners',
     'version': '9.0.1.0.0',
     'category': 'Accounting & Finance',
     'sequence': 14,
