@@ -2,12 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-==========================
-Account Invoice Tax Wizard
-==========================
+=============================
+Account Invoice Prices Update
+=============================
 
-This module adds a wizard to add manual taxes on invoices without
-needing such taxes to be added in each of the invoice lines.
+This module adds a wizard to update prices of the products of an invoice according to the price list is chosen in the wizard.
 
 Installation
 ============
@@ -34,10 +33,6 @@ To use this module, you need to:
 .. repo_id is available in https://github.com/OCA/maintainer-tools/blob/master/tools/repos_with_ids.txt
 .. branch is "9.0" for example
 
-Known issues / Roadmap
-======================
-
-* ...
 
 Bug Tracker
 ===========

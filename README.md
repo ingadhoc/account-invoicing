@@ -1,4 +1,4 @@
-[![Runbot Status](http://runbot.adhoc.com.ar/runbot/badge/flat/15/9.0.svg)](http://runbot.adhoc.com.ar/runbot/repo/github-com-ingadhoc-account-invoicing-15)
+[![Runbot Status](http://runbot.adhoc.com.ar/runbot/badge/flat/16/9.0.svg)](http://runbot.adhoc.com.ar/runbot/repo/github-com-ingadhoc-account-invoicing-16)
 [![Build Status](https://travis-ci.org/ingadhoc/account-invoicing.svg?branch=9.0)](https://travis-ci.org/ingadhoc/account-invoicing)
 [![Coverage Status](https://coveralls.io/repos/ingadhoc/account-invoicing/badge.png?branch=9.0)](https://coveralls.io/r/ingadhoc/account-invoicing?branch=9.0)
 [![Code Climate](https://codeclimate.com/github/ingadhoc/account-invoicing/badges/gpa.svg)](https://codeclimate.com/github/ingadhoc/account-invoicing)

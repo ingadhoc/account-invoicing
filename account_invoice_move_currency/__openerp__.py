@@ -19,18 +19,24 @@
 #
 ##############################################################################
 {
+    'name': 'Account Invoice Move Currency',
+    'version': '9.0.1.0.0',
     'author': 'ADHOC SA',
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
-    'installable': True,
-    'name': 'Account Invoice Prices Update',
     'test': [],
     'data': [
-        'wizard/update_prices_wizard_view.xml',
         'views/invoice_view.xml',
     ],
-    'version': '9.0.1.0.0',
+    'demo': [
+        # 'demo/account_invoice_demo.yml',
+    ],
     'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3'}
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False
+}
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

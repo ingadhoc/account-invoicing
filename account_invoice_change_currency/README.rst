@@ -6,26 +6,46 @@
 Account Invoice Change Currency
 ===============================
 
-This module adds a wizard for changing currency on invoices.
-It allows you to preview and change the rate thats is going to be used.
-It also logs the currency change on the chatter.
+This replace original odoo wizard for changing currency on an invoice with serveral
+improovements:
+
+* Preview and allow to change the rate thats is going to be used:
+* Log the currency change on the chatter
+* Add this functionality to supplier invoices
 
 Installation
 ============
 
 To install this module, you need to:
 
-  Just install the module
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-Use multicurrency in invoicing configuration seetings
+
+Usage
+=====
+
+To use this module, you need to:
 
 
+.. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
+   :alt: Try me on Runbot
+   :target: https://runbot.adhoc.com.ar/
 
+.. repo_id is available in https://github.com/OCA/maintainer-tools/blob/master/tools/repos_with_ids.txt
+.. branch is "9.0" for example
+
+
+Bug Tracker
+===========
+
+Bugs are tracked on `GitHub Issues
+<https://github.com/ingadhoc/{project_repo}/issues>`_. In case of trouble, please
+check there if your issue has already been reported. If you spotted it first,
+help us smashing it by providing a detailed and welcomed feedback.
 
 Credits
 =======
@@ -33,25 +53,19 @@ Credits
 Images
 ------
 
-* Odoo Community Association: `Icon <https://github.com/OCA/maintainer-tools/blob/master/template/module/static/description/icon.svg>`_.
+* ADHOC SA: `Icon <http://fotos.subefotos.com/83fed853c1e15a8023b86b2b22d6145bo.png>`_.
 
 Contributors
 ------------
-
-* Firstname Lastname <jjs@adhoc.com.ar>
 
 
 Maintainer
 ----------
 
-.. image:: https://odoo-community.org/logo.png
+.. image:: http://fotos.subefotos.com/83fed853c1e15a8023b86b2b22d6145bo.png
    :alt: Odoo Community Association
-   :target: https://odoo-community.org
+   :target: https://www.adhoc.com.ar
 
-This module is maintained by the OCA.
+This module is maintained by the ADHOC SA.
 
-OCA, or the Odoo Community Association, is a nonprofit organization whose
-mission is to support the collaborative development of Odoo features and
-promote its widespread use.
-
-To contribute to this module, please visit https://odoo-community.org.
+To contribute to this module, please visit https://www.adhoc.com.ar.

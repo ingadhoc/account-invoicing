@@ -2,12 +2,12 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-==========================
-Account Invoice Tax Wizard
-==========================
+==============================
+Account Invioce Company Search
+==============================
 
-This module adds a wizard to add manual taxes on invoices without
-needing such taxes to be added in each of the invoice lines.
+This module adds possibility of filtering and grouping by company on invoices.
+The user has to be Multi company
 
 Installation
 ============
@@ -34,10 +34,6 @@ To use this module, you need to:
 .. repo_id is available in https://github.com/OCA/maintainer-tools/blob/master/tools/repos_with_ids.txt
 .. branch is "9.0" for example
 
-Known issues / Roadmap
-======================
-
-* ...
 
 Bug Tracker
 ===========

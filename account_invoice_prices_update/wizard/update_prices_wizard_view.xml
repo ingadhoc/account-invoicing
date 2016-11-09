@@ -8,8 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Update Prices Wizard">
                     <group>
-                        <field name="type" invisible="1"/>
-                        <field name="pricelist_id" domain="[('type', '=', type)]"/>
+                        <field name="pricelist_id"/>
                     </group>
                     <footer>
                         <button string="Update Prices" name="update_prices" type="object" class="oe_highlight"/>

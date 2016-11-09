@@ -2,12 +2,12 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-==========================
-Account Invoice Tax Wizard
-==========================
+=============================
+Account Invoice Move Currency
+=============================
 
-This module adds a wizard to add manual taxes on invoices without
-needing such taxes to be added in each of the invoice lines.
+This module extends the functionality of account invoice to
+allows force the seat on an invoice generated save the data in another currency.
 
 Installation
 ============
