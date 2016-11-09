@@ -16,6 +16,6 @@ class AccountInvoiceLine(models.Model):
     def get_number(self):
         for invoice in self.mapped('invoice_id'):
             number = 1
-            for line in invoice.invoice_line:
+            for line in invoice.invoice_line_ids:
                 line.number = number
                 number += 1
