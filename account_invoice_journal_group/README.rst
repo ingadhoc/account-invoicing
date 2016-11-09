@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-==============================
-Account Invioce Journal Filter
-==============================
+============================
+Group by Journal on Invoices
+============================
 
-This module adds possibility of filtering by journal on invoices.
+This module allows to group by journal on invoices.
 
 Installation
 ============
