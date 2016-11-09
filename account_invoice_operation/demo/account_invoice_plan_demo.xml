@@ -34,22 +34,14 @@
         </record>
 
 
-        <record id="sales_journal2" model="account.journal">
-            <field name="name">Sales Journal - (to test operations)</field>
-            <field name="code">TSAJO</field>
-            <field name="type">sale</field>
-            <!-- <field name="sequence_id" ref="sequence_sale_journal"/> -->
-            <field name="default_credit_account_id" ref="account.a_sale"/>
-            <field name="default_debit_account_id" ref="account.a_sale"/>
-            <field name="analytic_journal_id" ref="account.cose_journal_sale"/>
-            <field name="user_id" ref="base.user_root"/>
-        </record>
         <record id="demo_invoice_plan_2" model="account.invoice.plan">
             <field name="name">Move 100% to journal</field>
         </record>
         <record id="demo_invoice_plan_2_line_1" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_2"/>
-            <field name="journal_id" ref="sales_journal2"/>
+            <field name="company_id" ref="base.main_company"/>
+            <!-- TODO we should search for main company journals but we can not use ref with search -->
+            <field name="journal_id" search="[('type', '=', 'sale')]"/>
             <field name="percentage" eval="100.0"/>
         </record>
 
@@ -58,7 +50,8 @@
         </record>
         <record id="demo_invoice_plan_3_line_1" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_3"/>
-            <field name="journal_id" ref="sales_journal2"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="journal_id" search="[('type', '=', 'sale')]"/>
             <field name="percentage" eval="50.0"/>
         </record>
 
@@ -67,12 +60,14 @@
         </record>
         <record id="demo_invoice_plan_4_line_1" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_4"/>
-            <field name="journal_id" ref="sales_journal2"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="journal_id" search="[('type', '=', 'sale')]"/>
             <field name="percentage" eval="30.0"/>
         </record>
         <record id="demo_invoice_plan_4_line_2" model="account.invoice.plan.line">
             <field name="plan_id" ref="demo_invoice_plan_4"/>
-            <field name="journal_id" ref="sales_journal2"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="journal_id" search="[('type', '=', 'sale')]"/>
             <field name="amount_type">balance</field>
         </record>
     </data>

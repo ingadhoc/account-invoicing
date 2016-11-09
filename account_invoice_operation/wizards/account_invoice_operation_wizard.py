@@ -64,7 +64,8 @@ class account_invoice_operation_wizard(models.TransientModel):
             return True
         record = self.env[model].browse(res_id)
         record.plan_id = self.plan_id.id
-        record.change_plan()
+        # por el problema de la v9 se ejecuta con el constrains
+        # record.change_plan()
         if model == 'account.invoice' and self._context.get(
                 'load_and_run', False):
             # if we dont invalidate cache it dont works ok

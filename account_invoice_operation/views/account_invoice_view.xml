@@ -12,11 +12,13 @@
                 <form>
                     <field name="journal_type" invisible="1"/>
                 </form>
-                <field name="account_id" position="after">
+                <field name="partner_id" position="after">
                     <field name="readonly_plan_id"/>
                     <field name="plan_id" invisible="1"/>
-                    <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/>
-                    <field name="operation_ids" invisible="1" widget="one2many_tags" context="{'journal_type': journal_type}"/>
+                    <field name="readonly_operation_ids" widget="many2many_tags" context="{'journal_type': journal_type}"/>
+                    <!-- <field name="readonly_operation_ids" widget="one2many_tags" context="{'journal_type': journal_type}"/> -->
+                    <field name="operation_ids" invisible="1" widget="many2many_tags" context="{'journal_type': journal_type}"/>
+                    <!-- <field name="operation_ids" invisible="1" widget="one2many_tags" context="{'journal_type': journal_type}"/> -->
                 </field>
                 <button name="invoice_open" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>
@@ -35,14 +37,23 @@
             <field name="inherit_id" ref="invoice_form"/>
             <field name="groups_id" eval="[(4, ref('invoice_plan_change'))]"/>
             <field name="arch" type="xml">
-                <field name="readonly_plan_id" position="attributes">
+<!--                 <field name="readonly_plan_id" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </field>
-                <field name="plan_id" position="attributes">
+                </field> -->
+                <!-- TODO como en la v9 no anda el onchange lo hacemos con boton -->
+<!--                 <field name="plan_id" position="attributes">
                     <attribute name="invisible">0</attribute>
+                </field> -->
+                <field name="readonly_plan_id" position="replace">
+                    <label for="readonly_plan_id"/>
+                    <div class="oe_inline">
+                        <field name="readonly_plan_id" class="oe_inline"/>
+                        <button name="%(action_invoice_operation_wizard)d" class="oe_link oe_inline" groups="base.group_user" string="&#8594; Change" type="action" attrs="{'invisible':[('state','not in',['draft'])]}"/>
+                    </div>
                 </field>
             </field>
         </record>
+
         <record id="invoice_operations_edit_form" model="ir.ui.view">
             <field name="name">account.invoice.operations.edit.form</field>
             <field name="model">account.invoice</field>
@@ -68,11 +79,19 @@
                 <form>
                     <field name="journal_type" invisible="1"/>
                 </form>
-                <field name="account_id" position="after">
+                <field name="partner_id" position="after">
                     <!-- <field name="readonly_plan_id"/> -->
                     <!-- Para proveedores lo hacemos editable para todos -->
-                    <field name="plan_id" invisible="0"/>
-                    <field name="operation_ids" invisible="0" widget="one2many_tags" context="{'journal_type': journal_type}"/>
+                    <!-- TODO como no anda el onchange lo cambiamos con boton -->
+                    <label for="plan_id"/>
+                    <div class="oe_inline">
+                        <field name="plan_id" invisible="0" readonly="1" class="oe_inline"/>
+                        <button name="%(action_invoice_operation_wizard)d" class="oe_link oe_inline" groups="base.group_user" string="&#8594; Change" type="action" attrs="{'invisible':[('state','not in',['draft'])]}"/>
+                    </div>
+                    <!-- <field name="plan_id" invisible="0"/> -->
+
+                    <field name="operation_ids" invisible="0" widget="many2many_tags" context="{'journal_type': journal_type}"/>
+                    <!-- <field name="operation_ids" invisible="0" widget="one2many_tags" context="{'journal_type': journal_type}"/> -->
                 </field>
                 <button name="invoice_open" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'draft'), ('operation_ids', '!=', [])]}</attribute>

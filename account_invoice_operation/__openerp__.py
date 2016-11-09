@@ -31,7 +31,7 @@
     ],
     'depends': [
         'account',
-        'web_widget_one2many_tags',
+        # 'web_widget_one2many_tags',
     ],
     'data': [
         'security/security.xml',
@@ -47,7 +47,7 @@
     ],
     'test': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
