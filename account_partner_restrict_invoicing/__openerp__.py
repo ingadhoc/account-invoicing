@@ -19,18 +19,13 @@
 #
 ##############################################################################
 {
-    'name': 'Account Partner Restrict Invoicing',
+    'name': 'Restrict Invoicing for some Partners',
     'version': '9.0.1.0.0',
     'category': 'Accounting & Finance',
     'sequence': 14,
     'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
-    'description': '''
-Account Partner Restrict Invoicing
-==================================
-Add to partner a field to restrict validate invoices
-''',
     'license': 'AGPL-3',
     'images': [
     ],
@@ -44,7 +39,7 @@ Add to partner a field to restrict validate invoices
     ],
     'test': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
