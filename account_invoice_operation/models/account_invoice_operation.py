@@ -4,7 +4,6 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
 
 
 class AccountInvoiceOperation(models.Model):
