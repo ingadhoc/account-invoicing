@@ -24,9 +24,10 @@
         <act_window
             name="Invoice Operation"
             res_model="account.invoice.operation.wizard"
-            src_model="account.invoice"
             view_mode="form"
             target="new"
             id="action_invoice_operation_wizard"/>
+            <!-- no hace falta asi no agrega el menu contextual en actions -->
+            <!-- src_model="account.invoice" -->
     </data>
 </openerp>

@@ -62,27 +62,22 @@ class AccountInvoice(models.Model):
     def run_checks(self):
         self.operation_ids._run_checks()
 
+    # TODO en la v9 no se soporta más el onchange sobr los o2m
+    # ver este issue https://github.com/odoo/odoo/issues/2693
+    # probamos de todo pero no lo pudimos hacer andar
     @api.one
-    @api.onchange('plan_id')
+    # @api.onchange('plan_id')
+    @api.constrains('plan_id')
     def change_plan(self):
         self.operation_ids = False
         if self.plan_id:
             self.operation_ids = self.plan_id.get_plan_vals()
 
-    @api.multi
-    def onchange_partner_id(
-            self, type, partner_id, date_invoice=False,
-            payment_term=False, partner_bank_id=False, company_id=False):
-        result = super(AccountInvoice, self).onchange_partner_id(
-            type, partner_id, date_invoice=date_invoice,
-            payment_term=payment_term, partner_bank_id=partner_bank_id,
-            company_id=company_id)
-        if partner_id:
-            partner = self.env['res.partner'].browse(
-                partner_id).commercial_partner_id
-            result['value'][
-                'plan_id'] = partner.default_sale_invoice_plan_id.id
-        return result
+    @api.onchange('partner_id')
+    def change_partner_set_plan(self):
+        if self.partner_id:
+            partner = self.partner_id.commercial_partner_id
+            self.plan_id = partner.default_sale_invoice_plan_id.id
 
     @api.multi
     def action_run_operations(self):
@@ -96,16 +91,15 @@ class AccountInvoice(models.Model):
             lambda x: x.amount_type == 'balance') and 100.0 or sum(
             self.operation_ids.mapped('percentage'))
         last_quantities = {
-            line.id: line.quantity for line in self.invoice_line}
+            line.id: line.quantity for line in self.invoice_line_ids}
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
-        sale_orders = []
+        sale_installed = False
         purchase_orders = []
         # if sale installed we get linked sales orders to update invoice links
         if self.env['ir.model'].search(
                 [('model', '=', 'sale.order')]):
-            sale_orders = self.env['sale.order'].search(
-                [('invoice_ids', 'in', [self.id])])
+            sale_installed = True
         # if purchase installed we also update links
         if self.env['ir.model'].search(
                 [('model', '=', 'purchase.order')]):
@@ -116,16 +110,8 @@ class AccountInvoice(models.Model):
             default = {
                 'operation_ids': False,
                 # no copiamos para poder hacer control de las cantidades
-                'invoice_line': False,
-                # do not copy period (if we want it we should get right period
-                # for the date, eg. in inter_company_rules)
-                'period_id': False,
+                'invoice_line_ids': False,
             }
-
-            # por compatibilidad con stock_picking_invoice_link
-            # como el campo nuevo tiene copy=False lo copiamos nosotros
-            if 'picking_ids' in self._fields:
-                default['picking_ids'] = [(6, 0, self.sudo().picking_ids.ids)]
 
             company = False
             journal = False
@@ -158,32 +144,29 @@ class AccountInvoice(models.Model):
                 # interesa
                 default['date_invoice'] = operation._get_date()
 
-            # if journal then journal has change and we need to
-            # upate, at least, account_id
-            if journal:
-                partner_data = self.onchange_partner_id(
-                    invoice_type, self.partner_id.id,
-                    date_invoice=default.get(
-                        'date_invoice', False) or self.date_invoice,
-                    payment_term=self.payment_term.id,
-                    company_id=company.id)['value']
-                default.update({
-                    'account_id': partner_data.get('account_id', False),
-                    # we dont want to change fiscal position
-                    # 'fiscal_position': partner_data.get(
-                    #     'fiscal_position', False),
-                    'partner_bank_id': partner_data.get(
-                        'partner_bank_id', False),
-                    'payment_term': partner_data.get('payment_term', False),
-                })
-
             if operation.reference:
                 default['reference'] = "%s%s" % (
                     self.reference or '', operation.reference)
 
+            # if journal then journal has change and we need to
+            # upate, at least, account_id
+            if journal:
+                tmp_inv = self.new(self.copy_data(default)[0])
+                tmp_inv._onchange_partner_id()
+                default.update({
+                    'account_id': tmp_inv.account_id.id,
+                    'partner_bank_id': tmp_inv.partner_bank_id.id,
+                    'payment_term_id': tmp_inv.payment_term_id.id,
+                })
+                fiscal_position = self.fiscal_position_id
+                # we only update fiscal position if original is for a company
+                if fiscal_position and fiscal_position.company_id:
+                    default[
+                        'fiscal_position_id'] = tmp_inv.fiscal_position_id.id
+
             new_invoice = self.copy(default)
 
-            for line in self.invoice_line:
+            for line in self.invoice_line_ids:
                 # if last operation and total perc 100 then we adjust qtys
                 if remaining_op == 1 and total_percentage == 100.0:
                     new_quantity = last_quantities.get(line.id)
@@ -202,35 +185,26 @@ class AccountInvoice(models.Model):
                     'invoice_id': new_invoice.id,
                     'quantity': new_quantity,
                 }
-                # por compatibilidad con stock_picking_invoice_link
-                # como el campo nuevo tiene copy=False lo copiamos nosotros
-                if 'move_line_ids' in self._fields:
-                    default['move_line_ids'] = [
-                        (6, 0, line.sudo().move_line_ids.ids)]
 
                 # if company has change, then we need to update lines
                 if company and company != self.company_id:
-                    line_data = line.with_context(
-                        force_company=company.id).sudo().product_id_change(
-                            line.product_id.id,
-                            line.product_id.uom_id.id,
-                            qty=new_quantity,
-                            name='',
-                            type=invoice_type,
-                            partner_id=self.partner_id.id,
-                            fposition_id=self.fiscal_position.id,
-                            company_id=company.id)
-                    # we only update account and taxes
+                    # with copy data we get vals of copy
+                    # we create record in cache and we call onchange
+                    tmp_line = line.with_context(
+                        force_company=company.id).new(
+                        line.copy_data(line_defaults)[0])
+                    tmp_line._onchange_product_id()
 
-                    account_id = line_data['value'].get('account_id')
+                    account_id = tmp_line.account_id.id
                     # not acconunt usually for lines without product
                     if not account_id:
                         prop = self.env['ir.property'].with_context(
                             force_company=company.id).get(
-                            'property_account_income_categ',
+                            'property_account_income_categ_id',
                             'product.category')
                         prop_id = prop and prop.id or False
-                        account_id = self.fiscal_position.map_account(prop_id)
+                        account_id = self.fiscal_position_id.map_account(
+                            prop_id)
                         if not account_id:
                             raise Warning(_(
                                 'There is no income account defined as global '
@@ -238,15 +212,14 @@ class AccountInvoice(models.Model):
 
                     line_defaults.update({
                         'account_id': account_id,
-                        'invoice_line_tax_id': [
-                            (6, 0, line_data['value'].get(
-                                'invoice_line_tax_id', []))],
+                        'invoice_line_tax_ids': [
+                            (6, 0, tmp_line.invoice_line_tax_ids.ids)],
                     })
 
                 if new_quantity:
                     new_line = line.copy(line_defaults)
                     # if sale_orders we update links
-                    if sale_orders:
+                    if sale_installed:
                         sale_lines = self.env['sale.order.line'].search(
                             [('invoice_lines', 'in', [line.id])])
                         sale_lines.write({'invoice_lines': [(4, new_line.id)]})
@@ -259,20 +232,12 @@ class AccountInvoice(models.Model):
                         purchase_orders.write(
                             {'invoice_ids': [(4, new_invoice.id)]})
 
-            # not sure why but in some cases we need to update this and in
-            # others it is updated automatically
-            for order in sale_orders:
-                if new_invoice not in order.invoice_ids:
-                    self._cr.execute(
-                        'insert into sale_order_invoice_rel (order_id, invoice_id) values (%s,%s)', (
-                            order.id, new_invoice.id))
-
             # if no invoice lines then we unlink the invoice
-            if not new_invoice.invoice_line:
+            if not new_invoice.invoice_line_ids:
                 new_invoice.unlink()
             else:
                 # update amounts for new invoice
-                new_invoice.button_reset_taxes()
+                new_invoice.compute_taxes()
                 if operation.automatic_validation:
                     new_invoice.signal_workflow('invoice_open')
 
@@ -297,21 +262,13 @@ class AccountInvoice(models.Model):
             self.unlink()
             # actualizar pickings
         else:
-            for line in self.invoice_line:
+            for line in self.invoice_line_ids:
                 line_quantity = last_quantities.get(line.id)
                 # if remaining qty = 0 we delete line
                 if not line_quantity or line_quantity == 0.0:
                     line.unlink()
                 else:
                     line.quantity = last_quantities.get(line.id)
-            # self.operation_ids.unlink()
-
-        # por compatibilidad con stock_picking_invoice_link
-        # we set all related pickings on invoiced state
-        if 'picking_ids' in self._fields:
-            pickings = invoices.sudo().mapped('picking_ids').filtered(
-                lambda x: x.state != 'cancel')
-            pickings.write({'invoice_state': 'invoiced'})
 
         # set plan false for all invoices
         invoices.write({'plan_id': False})
@@ -326,7 +283,6 @@ class AccountInvoice(models.Model):
         result = action.read()[0]
 
         if len(invoices) > 1:
-            # result[
             result['domain'] = [('id', 'in', invoices.ids)]
         else:
             form_view = self.env.ref(form_view_ref)
