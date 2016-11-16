@@ -4,49 +4,48 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
-# Javier Diez <jd@adhoc.com.ar>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-14 15:06+0000\n"
 "PO-Revision-Date: 2016-11-14 15:06+0000\n"
-"Last-Translator: Javier Diez <jd@adhoc.com.ar>, 2016\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016\n"
+"Language-Team: Galician (https://www.transifex.com/adhoc/teams/46451/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
+"Language: gl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice_operation.py:72
 #, python-format
 msgid " - Days: %s/%s"
-msgstr " - Días: %s/%s"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_operation_wizard
 msgid "Account Invoice Operation Wizard"
-msgstr "Asistente de Operación de Factura"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_automatic_validation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_plan_line_automatic_validation
 msgid "After running operations, invoice are going to be validated"
-msgstr "Después de correr las operaciones, las facturas van a ser validadas"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_amount_type
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_amount_type
 msgid "Amount Type"
-msgstr "Tipo de Importe"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_automatic_validation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_automatic_validation
 msgid "Automatic validation"
-msgstr "Validación Automática"
+msgstr ""
 
 #. module: account_invoice_operation
 #: selection:account.invoice.operation,amount_type:0
@@ -54,19 +53,19 @@ msgstr "Validación Automática"
 #: code:addons/account_invoice_operation/models/account_invoice_operation.py:68
 #, python-format
 msgid "Balance"
-msgstr "Saldo"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:res.groups,name:account_invoice_operation.invoice_plan_change
 msgid "Choose Plan"
-msgstr "Elegir Plan"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_company_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_company_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_company_id
 msgid "Company"
-msgstr "Compañía"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_create_uid
@@ -74,7 +73,7 @@ msgstr "Compañía"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_create_uid
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_create_date
@@ -82,18 +81,18 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_create_date
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_create_date
 msgid "Created on"
-msgstr "Creadon el"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_date
 msgid "Date"
-msgstr "Fecha"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_days2
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_days2
 msgid "Day of the Month"
-msgstr "Día del Mes"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_days2
@@ -103,31 +102,28 @@ msgid ""
 "positive, it gives the day of the next month. Set 0 for net days (otherwise "
 "it's based on the beginning of the month)."
 msgstr ""
-"Día del mes, introduzca -1 para el último día del mes actual. Si es "
-"positivo, nos indica el día del próximo mes. Introduzca 0 para días netos "
-"(de lo contrario se calcula desde principio del mes)."
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_res_partner_default_sale_invoice_plan_id
 msgid "Default Invoice Plan"
-msgstr "Plan de Facturación por defecto"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_display_name
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_display_name
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_display_name
 msgid "Display Name"
-msgstr "Nombre a Mostrar"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_display_name
 msgid "Display name"
-msgstr "Nombre a Mostrar"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:res.groups,name:account_invoice_operation.invoice_plan_edit
 msgid "Edit Plan"
-msgstr "Editar Plan"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:res.groups,name:account_invoice_operation.invoice_operations_edit
@@ -139,7 +135,6 @@ msgstr ""
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_plan_line_rounding
 msgid "For eg, if you set 0.1, quani will be round to 1 decimal"
 msgstr ""
-"Por ej, si setea 0.1, las cantidades van a ser redondeadas a 1 decimal"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_id
@@ -147,69 +142,66 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_date
 msgid "If you set a date here, then this date will be used and not computed."
 msgstr ""
-"Si setea una fecha aquí, entonce esta fecha va a ser utilizada y no será "
-"computada"
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_invoice_id
 msgid "Invoice"
-msgstr "Factura"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "Número de Línea"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.actions.act_window,name:account_invoice_operation.action_invoice_operation_wizard
 #: model:ir.ui.view,arch_db:account_invoice_operation.account_invoice_operation_form
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
 msgid "Invoice Operation"
-msgstr "Operación de Factura"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.module.category,name:account_invoice_operation.module_category_invoice_operations
 #: model:ir.ui.menu,name:account_invoice_operation.menu_invoice_operations_config
 msgid "Invoice Operations"
-msgstr "Operaciones de Factura"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_reference
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_reference
 msgid "Invoice Reference"
-msgstr "Referencia de Factura"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.account_invoice_plan_form
 msgid "Invoicing Plan"
-msgstr "Plan de Facturación"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.actions.act_window,name:account_invoice_operation.action_invoice_plan_form
 #: model:ir.ui.menu,name:account_invoice_operation.menu_action_invoice_plan_form
 #: model:ir.ui.view,arch_db:account_invoice_operation.account_invoice_plan_tree
 msgid "Invoicing Plans"
-msgstr "Planes de Facturación"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_journal_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_journal_id
 msgid "Journal"
-msgstr "Diarios"
+msgstr "Diario"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_journal_id
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_plan_line_journal_id
 msgid "Journal can only be used if type is configured on plan"
 msgstr ""
-"Los diarios solo pueden ser usados si el tipo está configurado en el plan"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation___last_update
@@ -217,7 +209,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan___last_update
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación el"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_write_uid
@@ -225,7 +217,7 @@ msgstr "Última Modificación el"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_write_uid
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_write_date
@@ -233,61 +225,61 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_write_date
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr ""
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice_plan.py:148
 #, python-format
 msgid "Line with amount type balance must be the last one"
-msgstr "La línea con tipo de importe saldo debe ser la última"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_ids
 msgid "Lines"
-msgstr "Líneas"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
 msgid "Load"
-msgstr "Cargar"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_form
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_supplier_form
 msgid "Load & Run Plan"
-msgstr "Cargar & Correr Plan"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
 msgid "Load and Run Plan"
-msgstr "Cargar y Correr Plan"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_model
 msgid "Model"
-msgstr "Modelo"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_name
 msgid "Name"
-msgstr "Nombre"
+msgstr ""
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice.py:136
 #, python-format
 msgid "No %s journal found on company %s"
-msgstr "Diario de %s no encontrado para la compañía %s"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_number
 msgid "Number"
-msgstr "Número"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_days
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_days
 msgid "Number of Days"
-msgstr "Número de Días"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_days
@@ -296,20 +288,17 @@ msgid ""
 "Number of days to add before computation of the day of month.If Date=15/01, "
 "Number of Days=22, Day of Month=-1, then the due date is 28/02."
 msgstr ""
-"Número de días a añadir antes del cálculo del día de mes. Si la fecha=15/01,"
-" el número de días=22 y el día del mes=-1, entonces la fecha de vencimiento "
-"es el 28/02."
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_ids
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_readonly_operation_ids
 msgid "Operations"
-msgstr "Operaciones"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_res_partner
 msgid "Partner"
-msgstr "Empresa"
+msgstr ""
 
 #. module: account_invoice_operation
 #: selection:account.invoice.operation,amount_type:0
@@ -317,7 +306,7 @@ msgstr "Empresa"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_percentage
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_percentage
 msgid "Percentage"
-msgstr "Porcentaje"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_percentage
@@ -325,8 +314,6 @@ msgstr "Porcentaje"
 msgid ""
 "Percentage of invoice lines quantities that will be used for this operation"
 msgstr ""
-"Porcentaje de la cantidad de las líneas de facturas que va a utilizarse para"
-" esta operación "
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_plan_id
@@ -335,34 +322,34 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_plan_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_readonly_plan_id
 msgid "Plan"
-msgstr "Plan"
+msgstr ""
 
 #. module: account_invoice_operation
 #: selection:account.invoice.plan,type:0
 msgid "Purchase"
-msgstr "Compras"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_res_id
 msgid "Res id"
-msgstr "Id Recurso"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_rounding
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_rounding
 msgid "Rounding Factor"
-msgstr "Factor de Redondeo"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_form
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_supplier_form
 msgid "Run Operations"
-msgstr "Correr Operaciones"
+msgstr ""
 
 #. module: account_invoice_operation
 #: selection:account.invoice.plan,type:0
 msgid "Sale"
-msgstr "Ventas"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_journal_type
@@ -373,19 +360,13 @@ msgid ""
 "journals. Select 'Opening/Closing Situation' for entries generated for new "
 "fiscal years."
 msgstr ""
-"Seleccione 'Ventas' para diarios de facturas de cliente. Seleccione "
-"'Compras' para diarios de facturas de proveedor. Seleccione 'Caja' o 'Banco'"
-" para diarios que se usan para pagos de clientes y proveedores. Seleccione "
-"'General' para diarios que contienen operaciones varias. Seleccione 'Balance"
-" apertura/cierre' para diarios que contendrán asientos creados en el nuevo "
-"ejercicio fiscal."
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_sequence
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_sequence
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_sequence
 msgid "Sequence"
-msgstr "Secuencia"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.account_invoice_plan_form
@@ -394,29 +375,24 @@ msgid ""
 "* If you don't select a type then you can not choose journals on lines<br/>\n"
 "* If sum of lines is not 100 or you don't use \"balance\" type on last line, original invoice will remain with the balance after running operations."
 msgstr ""
-"Algunas notas:\n"
-"* Si no selecciona un tipo luego no puede elegir diarios en las líneas\n"
-"* Si la suma de las líneas no es 100 o no usa el tipo \"saldo\" en la última línea, la factura original permanecerá con el saldo luego de correr las operaciones."
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice_plan.py:154
 #, python-format
 msgid "Sum of lines percentage could not be greater than 100%"
-msgstr "La suma de porcentajes de las líneas no puede ser mayor al 100%"
+msgstr ""
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice.py:209
 #, python-format
 msgid "There is no income account defined as global property."
-msgstr "No hay cuenta de ingresos definida como propiedad global."
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_res_partner_default_sale_invoice_plan_id
 msgid ""
 "This invoice plan will be automatically loaded on invoices and sale orders"
 msgstr ""
-"El plan de facturación va a ser automáticamente cargado en facturas y "
-"ordenes de ventas"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_plan_company_id
@@ -424,19 +400,17 @@ msgid ""
 "This plan will be available only for this company or child ones, if no "
 "company set then it will be available for all companies"
 msgstr ""
-"Esta plan va a estar disponible solo para esta compañía o hijas de la misma,"
-" si no se configura una compañía entonces va a estar disponible para todas"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_reference
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_plan_line_reference
 msgid "This reference will be added to invoice reference."
-msgstr "Esta referencia va a ser agregada a la referencia de las facturas"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.account_invoice_plan_form
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_journal_type
@@ -444,18 +418,18 @@ msgstr "Total"
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_type
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_type
 msgid "Type"
-msgstr "Tipo"
+msgstr ""
 
 #. module: account_invoice_operation
 #: code:addons/account_invoice_operation/models/account_invoice_plan.py:145
 #, python-format
 msgid "You can only configure one line with amount type balance"
-msgstr "Solo puede configurar una línea con tipo de importe saldo"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
 msgid "_Cancel"
-msgstr "_Cancelar"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_operation
@@ -475,10 +449,10 @@ msgstr ""
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
 msgid "or"
-msgstr "o"
+msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_plan_change_form
 #: model:ir.ui.view,arch_db:account_invoice_operation.invoice_supplier_form
 msgid "→ Change"
-msgstr "→ Cambiar"
+msgstr ""
