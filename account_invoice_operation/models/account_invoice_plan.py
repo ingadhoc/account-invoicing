@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-import openerp.addons.decimal_precision as dp
+# import openerp.addons.decimal_precision as dp
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from openerp.exceptions import Warning
@@ -22,8 +22,11 @@ class AccountInvoicePlan(models.Model):
         default=10,
         required=True,
     )
-    type = fields.Selection(
-        [('sale', 'Sale'), ('purchase', 'Purchase')],
+    type = fields.Selection([
+        ('sale', 'Sale'),
+        ('sale_refund', 'Sale Refund'),
+        ('purchase_refund', 'Purchase Refund'),
+        ('purchase', 'Purchase')],
     )
     line_ids = fields.One2many(
         'account.invoice.plan.line',
@@ -36,6 +39,14 @@ class AccountInvoicePlan(models.Model):
         'Company',
         help='This plan will be available only for this company or child ones,'
         ' if no company set then it will be available for all companies'
+    )
+    split_type = fields.Selection([
+        ('by_quantity', 'By Quantity'),
+        ('by_price', 'By Price (not recommended)')],
+        default='by_quantity',
+        required=True,
+        help='By Price is not recommended because it could be not compatible '
+        'with other modules and also because price analysis would not be ok'
     )
 
     @api.one
@@ -96,7 +107,8 @@ class AccountInvoicePlanLine(models.Model):
     )
     percentage = fields.Float(
         'Percentage',
-        digits=dp.get_precision('Discount'),
+        # digits=dp.get_precision('Discount'),
+        digits=(12, 6),
         required=False,
         help='Percentage of invoice lines quantities that will be used for '
         'this operation',
@@ -106,6 +118,8 @@ class AccountInvoicePlanLine(models.Model):
         digits=(12, 6),
         help='For eg, if you set 0.1, quani will be round to 1 decimal',
         # default=0.01,
+    )
+    change_date = fields.Boolean(
     )
     days = fields.Integer(
         'Number of Days',
@@ -179,6 +193,7 @@ class AccountInvoicePlanLine(models.Model):
             'percentage': self.percentage,
             'amount_type': self.amount_type,
             'rounding': self.rounding,
+            'change_date': self.change_date,
             'days': self.days,
             'days2': self.days2,
             'reference': self.reference,

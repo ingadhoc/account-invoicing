@@ -66,11 +66,12 @@ class AccountInvoiceOperation(models.Model):
                 display_name += "%s%%" % operation.percentage
             else:
                 display_name += _("Balance")
-            if operation.date:
-                display_name += " - %s" % operation.date
-            elif operation.days2 and operation.days:
-                display_name += _(" - Days: %s/%s") % (
-                    operation.days, operation.days2)
+            if operation.change_date:
+                if operation.date:
+                    display_name += " - %s" % operation.date
+                else:
+                    display_name += _(" - Days: %s/%s") % (
+                        operation.days, operation.days2)
             if operation.journal_id:
                 display_name += " - %s" % operation.journal_id.name
             elif operation.company_id:
