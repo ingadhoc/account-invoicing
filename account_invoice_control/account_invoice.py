@@ -2,20 +2,30 @@
 ##############################################################################
 # For copyright and license notices, see __openerp__.py file in root directory
 ##############################################################################
-from openerp import fields, models
+from openerp import fields, models, api
 
 
-class account_invoice(models.Model):
+class AccountInvoice(models.Model):
 
     _inherit = 'account.invoice'
 
-    order_ids = fields.Many2many(
+    sale_order_ids = fields.Many2many(
         'sale.order',
-        'sale_order_invoice_rel',
-        'invoice_id',
-        'order_id')
-    purchase_ids = fields.Many2many(
+        compute='compute_sale_orders'
+    )
+    purchase_order_ids = fields.Many2many(
         'purchase.order',
-        'purchase_invoice_rel',
-        'invoice_id',
-        'purchase_id')
+        compute='compute_purchase_orders'
+    )
+
+    @api.multi
+    def compute_purchase_orders(self):
+        self.purchase_order_ids = self.env['purchase.order.line'].search(
+            [('invoice_lines', 'in', self.invoice_line_ids.ids)]).mapped(
+            'order_id')
+
+    @api.multi
+    def compute_sale_orders(self):
+        self.sale_order_ids = self.env['sale.order.line'].search(
+            [('invoice_lines', 'in', self.invoice_line_ids.ids)]).mapped(
+            'order_id')

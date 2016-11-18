@@ -5,18 +5,26 @@
             <field name="name">invoice.form.inherit</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
-            <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="order_ids" invisible="1"/>
-                </field>
-               
-                <field name="invoice_line" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('order_ids','!=',[(6, False, [])])]}</attribute>
-                </field>
-                
+                <notebook>
+                    <page string="Sale Orders" name="sale_orders">
+                        <field name="sale_order_ids" invisible="0"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
 
+        <record id="invoice_restrict_edit_form" model="ir.ui.view">
+            <field name="name">invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="invoice_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">              
+                <field name="invoice_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
             </field>
         </record>
 
@@ -24,18 +32,26 @@
             <field name="name">invoice.supplier.form.inherit</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <notebook>
+                    <page string="Purchase Orders" name="purchase_orders">
+                        <field name="purchase_order_ids" invisible="0"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="invoice_supplier_restrict_invoice_form" model="ir.ui.view">
+            <field name="name">invoice.supplier.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="invoice_supplier_form"/>
             <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
             <field name="priority">20</field>
             <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-                    <field name="purchase_ids" invisible="1"/>
+                <field name="invoice_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','in_invoice'),('purchase_order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
-
-                <field name="invoice_line" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','in_invoice'),('purchase_ids','!=',[(6, False, [])])]}</attribute>
-                </field>
-                
-
             </field>
         </record>
         

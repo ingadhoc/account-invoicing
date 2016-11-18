@@ -25,16 +25,11 @@
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'depends': ['sale', 'purchase'],
-    'description': '''
-Account Invoice Control
-=======================
-
-''',
     'test': [],
     'data': [
         'security/security.xml',
         'views/invoice_view.xml',
     ],
     'website': 'www.adhoc.com.ar',
-    'installable': False,
+    'installable': True,
 }
