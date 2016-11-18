@@ -128,7 +128,8 @@ class AccountInvoice(models.Model):
         else:
             splt_field = 'quantity'
         last_quantities = {
-            line.id: getattr(line, splt_field) for line in self.invoice_line}
+            line.id: getattr(
+                line, splt_field) for line in self.invoice_line_ids}
 
         for operation in self.operation_ids:
             default = {
@@ -198,22 +199,18 @@ class AccountInvoice(models.Model):
                 # if last operation and total perc 100 then we adjust qtys
                 if remaining_op == 1 and total_percentage == 100.0:
                     new_quantity = last_quantities.get(line.id)
-                    print 'new_quantity 1', new_quantity
                 else:
                     line_percentage = line._get_operation_percentage(operation)
 
                     new_quantity = getattr(
                         line, splt_field) * line_percentage / 100.0
-                    print 'new_quantity 2', new_quantity
                     if operation.rounding:
                         new_quantity = float_round(
                             new_quantity,
                             precision_rounding=operation.rounding)
-                        print 'new_quantity 3', new_quantity
                     last_quantities[line.id] = (
                         last_quantities.get(
                             line.id, getattr(line, splt_field)) - new_quantity)
-                    print 'last_quantities', last_quantities
 
                 line_defaults = {
                     'invoice_id': new_invoice.id,
