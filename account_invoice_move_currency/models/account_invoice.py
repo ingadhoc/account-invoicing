@@ -15,19 +15,21 @@ class AccountInvoice(models.Model):
         'Secondary Currency',
         help='If you set a currency here, then this invoice values will be '
         'also stored in the related Account Move Secondary Currency',
-        copy=False,
+        # copy True for compatibility with invoice operation
+        # copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     # TODO implement this
     # move_currency_rate = fields.Float(
     move_inverse_currency_rate = fields.Float(
-        copy=False,
+        # copy True for compatibility with invoice operation
+        # copy=False,
         digits=(16, 4),
         string='Account Move Secondary Currency Rate',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
 
     @api.onchange('move_currency_id')
     def change_move_currency(self):

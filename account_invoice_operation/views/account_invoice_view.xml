@@ -25,8 +25,9 @@
                     <attribute name="states"></attribute>
                 </button>
                 <button name="invoice_proforma2" position="after">
-                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}"/>
-                    <button name="action_run_operations" class="oe_highlight" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}"/>
+                    <!-- special="string" allows you to call button without required fields being required-->
+                    <button name="%(action_invoice_operation_wizard)d" groups="base.group_user" string="Load &amp; Run Plan" type="action" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','!=',[])]}" context="{'load_and_run': 1}" special="string"/>
+                    <button name="action_run_operations" class="oe_highlight" groups="base.group_user" string="Run Operations" type="object" attrs="{'invisible':['|', ('state','not in',['draft']), ('operation_ids','=',[])]}" special="string"/>
                 </button>
             </field>
         </record>

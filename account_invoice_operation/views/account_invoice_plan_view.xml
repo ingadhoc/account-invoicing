@@ -8,6 +8,7 @@
                 <tree string="Invoicing Plans">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
+                    <field name="split_type"/>
                     <field name="type"/>
                     <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                 </tree>
@@ -23,7 +24,9 @@
                         <group>
                             <!-- <field name="date"/> -->
                             <field name="name"/>
+                            <field name="split_type"/>
                             <field name="type"/>
+                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                         </group>
                         <p>
 Some notes:<br/>
@@ -33,8 +36,9 @@ Some notes:<br/>
                             <field name="line_ids" context="{'default_type': type}">
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="days"/>
-                                    <field name="days2"/>
+                                    <field name="change_date"/>
+                                    <field name="days" attrs="{'required': [('change_date', '=', True)], 'readonly': [('change_date', '=', False)]}"/>
+                                    <field name="days2" attrs="{'required': [('change_date', '=', True)], 'readonly': [('change_date', '=', False)]}"/>
                                     <field name="reference"/>
                                     <field name="company_id"/>
                                     <field name="journal_id" attrs="{'readonly': [('company_id', '=', False), ('type', '=', False)]}" domain="[('company_id', '=', company_id), ('type', '=', type)]"/>

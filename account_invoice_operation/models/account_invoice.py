@@ -36,7 +36,8 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]}
     )
     journal_type = fields.Selection(
-        related='journal_id.type'
+        related='journal_id.type',
+        readonly=True,
     )
     plan_id = fields.Many2one(
         'account.invoice.plan',
@@ -57,9 +58,23 @@ class AccountInvoice(models.Model):
         readonly=True,
     )
 
+    # Alternativa 2 (ver sale invoice line op/account_invoice_operation.py)
+    # we call only on write on not with constrains because when we create an
+    # invoice from a sale order operation lines where overwritten
+    # @api.multi
+    # def write(self, vals):
+    #     res = super(AccountInvoice, self).write(vals)
+    #     if vals.get('operation_ids'):
+    #         self.operation_ids._run_checks()
+    #     return res
+
+    # Alternativa 1 (ver sale invoice line op/account_invoice_operation.py)
     @api.one
     @api.constrains('operation_ids')
     def run_checks(self):
+        """
+        If whe change operations the we run checks of that operations
+        """
         self.operation_ids._run_checks()
 
     # TODO en la v9 no se soporta más el onchange sobr los o2m
@@ -90,8 +105,6 @@ class AccountInvoice(models.Model):
         total_percentage = self.operation_ids.filtered(
             lambda x: x.amount_type == 'balance') and 100.0 or sum(
             self.operation_ids.mapped('percentage'))
-        last_quantities = {
-            line.id: line.quantity for line in self.invoice_line_ids}
         invoice_type = self.type
         remaining_op = len(self.operation_ids)
         sale_installed = False
@@ -105,6 +118,18 @@ class AccountInvoice(models.Model):
                 [('model', '=', 'purchase.order')]):
             purchase_orders = self.env['purchase.order'].search(
                 [('invoice_ids', 'in', [self.id])])
+
+        # if manual operations, we split by_quantity by default
+        # split_type = 'by_quantity'
+        # if self.plan_id:
+        split_type = self.plan_id.split_type or 'by_quantity'
+        if split_type == 'by_price':
+            splt_field = 'price_unit'
+        else:
+            splt_field = 'quantity'
+        last_quantities = {
+            line.id: getattr(
+                line, splt_field) for line in self.invoice_line_ids}
 
         for operation in self.operation_ids:
             default = {
@@ -137,12 +162,13 @@ class AccountInvoice(models.Model):
                         self.journal_type, company.name))
                 default['journal_id'] = journal.id
 
-            if operation.date:
-                default['date_invoice'] = operation.date
-            elif operation.days and operation.days2:
-                # TODO tal vez podamos pasar alguna fecha a esta funcion si
-                # interesa
-                default['date_invoice'] = operation._get_date()
+            if operation.change_date:
+                if operation.date:
+                    default['date_invoice'] = operation.date
+                else:
+                    # TODO tal vez podamos pasar alguna fecha a esta funcion si
+                    # interesa
+                    default['date_invoice'] = operation._get_date()
 
             if operation.reference:
                 default['reference'] = "%s%s" % (
@@ -155,8 +181,10 @@ class AccountInvoice(models.Model):
                 tmp_inv._onchange_partner_id()
                 default.update({
                     'account_id': tmp_inv.account_id.id,
-                    'partner_bank_id': tmp_inv.partner_bank_id.id,
-                    'payment_term_id': tmp_inv.payment_term_id.id,
+                    # we dont want to change fiscal position, bank or pay term
+                    # the are share across companies
+                    # 'partner_bank_id': tmp_inv.partner_bank_id.id,
+                    # 'payment_term_id': tmp_inv.payment_term_id.id,
                 })
                 fiscal_position = self.fiscal_position_id
                 # we only update fiscal position if original is for a company
@@ -167,23 +195,26 @@ class AccountInvoice(models.Model):
             new_invoice = self.copy(default)
 
             for line in self.invoice_line_ids:
+                # quantities could be price or quantity depending on split_type
                 # if last operation and total perc 100 then we adjust qtys
                 if remaining_op == 1 and total_percentage == 100.0:
                     new_quantity = last_quantities.get(line.id)
                 else:
                     line_percentage = line._get_operation_percentage(operation)
-                    new_quantity = line.quantity * line_percentage / 100.0
+
+                    new_quantity = getattr(
+                        line, splt_field) * line_percentage / 100.0
                     if operation.rounding:
                         new_quantity = float_round(
                             new_quantity,
                             precision_rounding=operation.rounding)
                     last_quantities[line.id] = (
                         last_quantities.get(
-                            line.id, line.quantity) - new_quantity)
+                            line.id, getattr(line, splt_field)) - new_quantity)
 
                 line_defaults = {
                     'invoice_id': new_invoice.id,
-                    'quantity': new_quantity,
+                    splt_field: new_quantity,
                 }
 
                 # if company has change, then we need to update lines
@@ -259,6 +290,9 @@ class AccountInvoice(models.Model):
             # invoices
             self.redirect_workflow([(self.id, invoices[0].id)])
             # borrar factura
+            # por compatibilidad con sale commission, borramos las lineas y
+            # luego la factura
+            self.invoice_line_ids.unlink()
             self.unlink()
             # actualizar pickings
         else:
@@ -289,3 +323,17 @@ class AccountInvoice(models.Model):
             result['views'] = [(form_view.id, 'form')]
             result['res_id'] = invoices.id
         return result
+
+    @api.multi
+    def signal_workflow(self, signal):
+        """
+        If someone calls "invoice_open" and invoice has operations, we run
+        operations instead. This helps in compatibility, for eg with
+        sale_order_type_automation
+        """
+        if signal == 'invoice_open':
+            for invoice in self:
+                if invoice.operation_ids:
+                    invoice.action_run_operations()
+                    self -= invoice
+        return super(AccountInvoice, self).signal_workflow(signal)
