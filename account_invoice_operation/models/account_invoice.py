@@ -134,6 +134,7 @@ class AccountInvoice(models.Model):
         for operation in self.operation_ids:
             default = {
                 'operation_ids': False,
+                'plan_id': False,
                 # no copiamos para poder hacer control de las cantidades
                 'invoice_line_ids': False,
             }
