@@ -90,9 +90,11 @@ class AccountInvoice(models.Model):
 
     @api.onchange('partner_id')
     def change_partner_set_plan(self):
+        company = self.company_id
         if self.partner_id:
             partner = self.partner_id.commercial_partner_id
-            self.plan_id = partner.default_sale_invoice_plan_id.id
+            self.plan_id = partner.with_context(
+                force_company=company.id).default_sale_invoice_plan_id.id
 
     @api.multi
     def action_run_operations(self):
