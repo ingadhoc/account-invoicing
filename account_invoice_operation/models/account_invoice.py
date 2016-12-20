@@ -160,7 +160,6 @@ class AccountInvoice(models.Model):
                 # we get a journal in new company
                 journal = self.with_context(
                     company_id=company.id)._default_journal()
-                raise ValidationError('asdasd')
                 if not journal:
                     raise ValidationError(_(
                         'No %s journal found on company %s') % (
