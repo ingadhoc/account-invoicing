@@ -4,6 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 
 class account_invoice_operation_wizard(models.TransientModel):
