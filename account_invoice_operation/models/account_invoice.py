@@ -5,7 +5,7 @@
 ##############################################################################
 from openerp import models, fields, api, _
 from openerp.tools import float_round
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -160,8 +160,10 @@ class AccountInvoice(models.Model):
                 # we get a journal in new company
                 journal = self.with_context(
                     company_id=company.id)._default_journal()
+                raise ValidationError('asdasd')
                 if not journal:
-                    raise Warning(_('No %s journal found on company %s') % (
+                    raise ValidationError(_(
+                        'No %s journal found on company %s') % (
                         self.journal_type, company.name))
                 default['journal_id'] = journal.id
 
@@ -240,7 +242,7 @@ class AccountInvoice(models.Model):
                         account_id = self.fiscal_position_id.map_account(
                             prop_id)
                         if not account_id:
-                            raise Warning(_(
+                            raise ValidationError(_(
                                 'There is no income account defined as global '
                                 'property.'))
 

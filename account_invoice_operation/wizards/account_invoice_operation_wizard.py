@@ -44,7 +44,7 @@ class account_invoice_operation_wizard(models.TransientModel):
             elif model == 'sale.order':
                 types = ['sale', False]
             else:
-                raise Warning(
+                raise ValidationError(
                     'Invoice operation with active_model %s not implemented '
                     'yet' % self.model)
             self.plan_id = self.env['account.invoice.plan'].search(

@@ -7,7 +7,7 @@ from openerp import models, fields, api, _
 # import openerp.addons.decimal_precision as dp
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class AccountInvoicePlan(models.Model):
@@ -156,16 +156,16 @@ class AccountInvoicePlanLine(models.Model):
         balance_type_lines = self.search(
             [('id', 'in', self.ids), ('amount_type', '=', 'balance')])
         if len(balance_type_lines) > 1:
-            raise Warning(_(
+            raise ValidationError(_(
                 'You can only configure one line with amount type balance'))
         elif balance_type_lines and balance_type_lines[0].id != last_line.id:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Line with amount type balance must be the last one'))
         percentage_lines = self.search([
             ('id', 'in', self.ids),
             ('amount_type', '=', 'percentage')])
         if sum(percentage_lines.mapped('percentage')) > 100.0:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Sum of lines percentage could not be greater than 100%'))
 
     @api.multi

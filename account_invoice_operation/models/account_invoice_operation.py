@@ -41,7 +41,7 @@ class AccountInvoiceOperation(models.Model):
     #     other_currency = (
     #         self.journal_id.currency or self.company_id.currency_id)
     #     if other_currency and self.invoice_id.currency_id != other_currency:
-    #         raise Warning(_(
+    #         raise ValidationError(_(
     #             'You can not use a journal or company of different currency '
     #             'than invoice currency yet. Operation "%s"') % (
     #                 self.display_name))
