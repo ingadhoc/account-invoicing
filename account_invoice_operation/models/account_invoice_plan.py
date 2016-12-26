@@ -24,8 +24,6 @@ class AccountInvoicePlan(models.Model):
     )
     type = fields.Selection([
         ('sale', 'Sale'),
-        ('sale_refund', 'Sale Refund'),
-        ('purchase_refund', 'Purchase Refund'),
         ('purchase', 'Purchase')],
     )
     line_ids = fields.One2many(
