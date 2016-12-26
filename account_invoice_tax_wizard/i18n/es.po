@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
+# Javier Diez <jd@adhoc.com.ar>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: account-invoicing (8.0)\n"
+"Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 22:59+0000\n"
-"PO-Revision-Date: 2016-05-24 22:56+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-account-invoicing-8-0/language/es/)\n"
+"POT-Creation-Date: 2016-12-20 13:38+0000\n"
+"PO-Revision-Date: 2016-12-20 13:38+0000\n"
+"Last-Translator: Javier Diez <jd@adhoc.com.ar>, 2016\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -29,109 +30,102 @@ msgid "Add Invoice Tax"
 msgstr "Agregar Impuesto de Factura"
 
 #. module: account_invoice_tax_wizard
-#: view:account.invoice.tax.wizard:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
 msgid "Add Tax"
 msgstr "Agregar Impuesto"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,amount:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_amount
 msgid "Amount"
 msgstr "Importe"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,base:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_account_analytic_id
+msgid "Analytic account"
+msgstr "Cuenta analítica"
+
+#. module: account_invoice_tax_wizard
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_base
 msgid "Base"
 msgstr "Base"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,invoice_company_id:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_invoice_company_id
 msgid "Company"
-msgstr "Compania"
+msgstr "Compañía"
 
 #. module: account_invoice_tax_wizard
-#: view:account.invoice.tax.wizard:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
 msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,create_uid:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,create_date:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_create_date
 msgid "Created on"
-msgstr "Creadon en"
+msgstr "Creado el"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,display_name:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_display_name
 msgid "Display Name"
 msgstr "Nombre a Mostrar"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,id:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_id
 msgid "ID"
 msgstr "ID"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,invoice_id:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_invoice_id
 msgid "Invoice"
 msgstr "Factura"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,invoice_type:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_invoice_type
 msgid "Invoice Type"
 msgstr "Tipo de Factura"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,__last_update:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard___last_update
 msgid "Last Modified on"
 msgstr "Última Modificación el"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,write_uid:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Última actualización por"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,write_date:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_write_date
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr "Última actualización el"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,tax_id:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_tax_id
 msgid "Tax"
 msgstr "Impuesto"
 
 #. module: account_invoice_tax_wizard
-#: field:account.invoice.tax.wizard,name:0
+#: model:ir.model.fields,field_description:account_invoice_tax_wizard.field_account_invoice_tax_wizard_name
 msgid "Tax Description"
 msgstr "Descripción de Impuesto"
 
 #. module: account_invoice_tax_wizard
-#: view:account.invoice:account_invoice_tax_wizard.invoice_form
-#: view:account.invoice:account_invoice_tax_wizard.invoice_supplier_form
-msgid "Taxes"
-msgstr "Impuestos"
-
-#. module: account_invoice_tax_wizard
-#: view:account.invoice:account_invoice_tax_wizard.invoice_form
-#: view:account.invoice:account_invoice_tax_wizard.invoice_supplier_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.invoice_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.invoice_supplier_form
 msgid "_Add_Tax"
 msgstr "_Agregar_Impuesto"
 
 #. module: account_invoice_tax_wizard
-#: view:account.invoice.tax.wizard:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
 msgid "_Cancel"
 msgstr "_Cancelar"
 
 #. module: account_invoice_tax_wizard
-#: view:account.invoice:account_invoice_tax_wizard.invoice_form
-#: view:account.invoice:account_invoice_tax_wizard.invoice_supplier_form
-msgid "false"
-msgstr "false"
-
-#. module: account_invoice_tax_wizard
-#: view:account.invoice.tax.wizard:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
+#: model:ir.ui.view,arch_db:account_invoice_tax_wizard.view_account_invoice_tax_wizard_form
 msgid "or"
 msgstr "o"
