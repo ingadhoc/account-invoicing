@@ -25,6 +25,36 @@
                 <field name="invoice_line_ids" position="attributes">
                     <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
+                <button name="%(account_invoice_prices_update.action_update_prices_list)d" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </button>
+                <field name="origin" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="date_invoice" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="currency_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="user_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="fiscal_position_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="date_due" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="payment_term_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
+                <field name="partner_bank_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
             </field>
         </record>
 

@@ -6,7 +6,6 @@
         <field name="name">Restrict Edit Invoice</field>
     </record>
      
-
     </data> 
 </openerp>
 
