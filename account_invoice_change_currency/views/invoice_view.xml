@@ -14,6 +14,18 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="invoice_no_exchange_form">
+            <field name="name">account.invoice_supplier.view</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="groups_id" eval="[(4, ref('group_restrict_change_currency_exchange'))]"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="invoice_supplier_form">
             <field name="name">account.invoice_supplier.view</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
@@ -26,6 +38,18 @@
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="invoice_no_exchange_supplier_form">
+            <field name="name">account.invoice_supplier.view</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="groups_id" eval="[(4, ref('group_restrict_change_currency_exchange'))]"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+            </field>
+        </record>
 
     </data>
 </openerp>

@@ -8,7 +8,7 @@ Invoice origin and control
 
 This module add a link from invoices to the purchase orders and sale orders that generate it.
 
-It also creates a new users group "Restrict Edit Invoice", users in that group can not edit lines of invoices generated from Sale Orders or Purchase Orders
+It also creates a new users group "Restrict Edit Invoice", users in that group can not edit lines of invoices generated from Sale Orders
 
 WARNING: this module depends on sale and purchase (and purchase on stock), so lot of modules will be installed.
 

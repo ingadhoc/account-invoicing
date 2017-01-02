@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    <!-- CUSTOMER INVOICES -->
         <record id="invoice_form" model="ir.ui.view">
             <field name="name">invoice.form.inherit</field>
             <field name="model">account.invoice</field>
@@ -24,10 +25,19 @@
             <field name="arch" type="xml">              
                 <field name="invoice_line_ids" position="attributes">
                     <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
-                </field>
+                </field>              
                 <button name="%(account_invoice_prices_update.action_update_prices_list)d" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </button>
+                <xpath expr="//page[2]//field[@name='account_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </xpath>
+                <xpath expr="//page[2]//field[@name='company_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </xpath>
+                <field name="team_id" position="attributes">
+                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
+                </field>
                 <field name="origin" position="attributes">
                     <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
@@ -35,9 +45,6 @@
                     <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
                 <field name="partner_id" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
-                </field>
-                <field name="currency_id" position="attributes">
                     <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[(6, False, [])])]}</attribute>
                 </field>
                 <field name="user_id" position="attributes">
@@ -58,32 +65,6 @@
             </field>
         </record>
 
-        <record id="invoice_supplier_form" model="ir.ui.view">
-            <field name="name">invoice.supplier.form.inherit</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="account.invoice_supplier_form"/>
-            <field name="priority">20</field>
-            <field name="arch" type="xml">
-                <notebook>
-                    <page string="Purchase Orders" name="purchase_orders">
-                        <field name="purchase_order_ids" invisible="0"/>
-                    </page>
-                </notebook>
-            </field>
-        </record>
-
-        <record id="invoice_supplier_restrict_invoice_form" model="ir.ui.view">
-            <field name="name">invoice.supplier.form.inherit</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="invoice_supplier_form"/>
-            <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
-            <field name="priority">20</field>
-            <field name="arch" type="xml">
-                <field name="invoice_line_ids" position="attributes">
-                    <attribute name="attrs">{'readonly':[('type','=','in_invoice'),('purchase_order_ids','!=',[(6, False, [])])]}</attribute>
-                </field>
-            </field>
-        </record>
         
     </data>
 </openerp>

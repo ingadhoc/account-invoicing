@@ -18,6 +18,10 @@ class account_change_currency(models.TransientModel):
         required=True,
         help="Select a currency to apply on the invoice"
     )
+    currency_rate_readonly = fields.Float(
+        related='currency_rate',
+        readonly=True,
+    )
 
     @api.multi
     def get_invoice(self):
