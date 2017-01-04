@@ -21,7 +21,7 @@
 {
     'name': 'Account Invoice Control',
     'author': 'ADHOC SA',
-    'version': '9.0.1.2.0',
+    'version': '9.0.1.3.0',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'depends': [
