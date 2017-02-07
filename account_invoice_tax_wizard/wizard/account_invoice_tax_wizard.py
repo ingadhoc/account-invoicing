@@ -30,10 +30,10 @@ class account_invoice_tax_wizard(models.TransientModel):
     account_analytic_id = fields.Many2one(
         'account.analytic.account', string='Analytic account')
     invoice_type = fields.Selection(
-        related='invoice_id.type', string='Invoice Type')
+        related='invoice_id.type', string='Invoice Type', readonly=True,)
     invoice_company_id = fields.Many2one(
         'res.company', string='Company',
-        related='invoice_id.company_id')
+        related='invoice_id.company_id', readonly=True,)
 
     @api.onchange('invoice_id')
     def onchange_invoice(self):
