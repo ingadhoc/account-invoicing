@@ -12,4 +12,10 @@ class invoice(models.Model):
     @api.multi
     def clean_internal_number(self):
         # We also clean reference for compatibility with argentinian loc
-        self.write({'move_name': False, 'document_number': False})
+        for rec in self:
+            # if document type has a sequence then a new sequence must be
+            # requested. Otherwise, we want to keep number introduced by user
+            if rec.document_sequence_id:
+                rec.write({'move_name': False, 'document_number': False})
+            else:
+                rec.write({'move_name': False})
