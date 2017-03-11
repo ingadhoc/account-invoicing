@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <!-- Supplier Invoice -->
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="date_due" position="attributes">
+                    <attribute name="attrs">{'invisible': [('pay_now', '=', 'pay_now')]}</attribute>
+                </field>
+                <field name="date_due" position="before">
+                    <field name="pay_now"/>
+                    <field name="payment_account_id" attrs="{'invisible': [('pay_now', '!=', 'pay_now')]}"/>
+                </field>
+                <button name="invoice_cancel" position="after">
+                    <!-- add a button to cancel paid invoices with direct payment -->
+                    <button name="direct_pay_invoice_cancel" type="object" attrs="{'invisible': ['|', ('state', '!=', 'paid'), ('pay_now', '!=', 'pay_now')]}" string="Cancel Invoice" groups="account.group_account_invoice"/>
+                </button>
+            </field>
+        </record>
+
+    <!-- Customer Invoice (not implemented yet) -->
+    <!--     <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="sequence" position="after">
+                    <field name="number" string="nbr"/>
+                </field>
+            </field>
+        </record> -->
+
+    </data>
+</openerp>
