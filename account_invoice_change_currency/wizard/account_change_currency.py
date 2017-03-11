@@ -58,4 +58,5 @@ class account_change_currency(models.TransientModel):
             line.price_unit = self.currency_id.round(
                 line.price_unit * self.currency_rate)
         invoice.currency_id = self.currency_id.id
+        invoice.compute_taxes()
         return {'type': 'ir.actions.act_window_close'}
