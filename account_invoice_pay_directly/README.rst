@@ -6,6 +6,8 @@
 Supplier Invoices with Direct Payment
 =====================================
 
+NOTE: we have disable this module because we are not yet sure tu use it this way. Becasue this way, as none debt line is generated, operations wont appear on partner account summary. Perhups we can modify it to generate an account.payment automatically afer invoice validation
+
 This module extends the functionality of invoices to allow the invoice to be paid directly upon invoice confirmation.
 
 NOTES:
