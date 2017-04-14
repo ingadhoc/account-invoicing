@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016
+# Nicolas Mac Rouillon <nmr@ingadhoc.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-20 13:38+0000\n"
-"PO-Revision-Date: 2016-12-20 13:38+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2016\n"
+"POT-Creation-Date: 2017-01-04 18:38+0000\n"
+"PO-Revision-Date: 2017-01-04 18:38+0000\n"
+"Last-Translator: Nicolas Mac Rouillon <nmr@ingadhoc.com>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,6 +67,8 @@ msgid ""
 "By Price is not recommended because it could be not compatible with other "
 "modules and also because price analysis would not be ok"
 msgstr ""
+"Por Precio no se recomienda porque podría no ser compatible con otros "
+"módulos y también porque el análisis de precios no sería aceptable"
 
 #. module: account_invoice_operation
 #: selection:account.invoice.plan,split_type:0
@@ -154,7 +157,7 @@ msgstr "Editar Plan"
 #. module: account_invoice_operation
 #: model:res.groups,name:account_invoice_operation.invoice_operations_edit
 msgid "Editar Operaciones"
-msgstr ""
+msgstr "Editar Operaciones"
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_operation_rounding
@@ -258,7 +261,7 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: account_invoice_operation
-#: code:addons/account_invoice_operation/models/account_invoice_plan.py:162
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:160
 #, python-format
 msgid "Line with amount type balance must be the last one"
 msgstr "La línea con tipo de importe saldo debe ser la última"
@@ -353,7 +356,7 @@ msgstr ""
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_plan_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_plan_id
-#: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_id_3634
+#: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_id_3635
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_line_plan_id
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_readonly_plan_id
 msgid "Plan"
@@ -363,11 +366,6 @@ msgstr "Plan"
 #: selection:account.invoice.plan,type:0
 msgid "Purchase"
 msgstr "Compras"
-
-#. module: account_invoice_operation
-#: selection:account.invoice.plan,type:0
-msgid "Purchase Refund"
-msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_operation_wizard_res_id
@@ -390,11 +388,6 @@ msgstr "Correr Operaciones"
 #: selection:account.invoice.plan,type:0
 msgid "Sale"
 msgstr "Ventas"
-
-#. module: account_invoice_operation
-#: selection:account.invoice.plan,type:0
-msgid "Sale Refund"
-msgstr ""
 
 #. module: account_invoice_operation
 #: model:ir.model.fields,help:account_invoice_operation.field_account_invoice_journal_type
@@ -433,10 +426,10 @@ msgstr ""
 #. module: account_invoice_operation
 #: model:ir.model.fields,field_description:account_invoice_operation.field_account_invoice_plan_split_type
 msgid "Split type"
-msgstr ""
+msgstr "Clase dividida"
 
 #. module: account_invoice_operation
-#: code:addons/account_invoice_operation/models/account_invoice_plan.py:168
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:166
 #, python-format
 msgid "Sum of lines percentage could not be greater than 100%"
 msgstr "La suma de porcentajes de las líneas no puede ser mayor al 100%"
@@ -484,7 +477,7 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: account_invoice_operation
-#: code:addons/account_invoice_operation/models/account_invoice_plan.py:159
+#: code:addons/account_invoice_operation/models/account_invoice_plan.py:157
 #, python-format
 msgid "You can only configure one line with amount type balance"
 msgstr "Solo puede configurar una línea con tipo de importe saldo"
@@ -497,17 +490,17 @@ msgstr "_Cancelar"
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_operation
 msgid "account.invoice.operation"
-msgstr ""
+msgstr "account.invoice.operation"
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_plan
 msgid "account.invoice.plan"
-msgstr ""
+msgstr "account.invoice.plan"
 
 #. module: account_invoice_operation
 #: model:ir.model,name:account_invoice_operation.model_account_invoice_plan_line
 msgid "account.invoice.plan.line"
-msgstr ""
+msgstr "account.invoice.plan.line"
 
 #. module: account_invoice_operation
 #: model:ir.ui.view,arch_db:account_invoice_operation.view_invoice_operation_wizard_form
