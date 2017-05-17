@@ -66,7 +66,7 @@ class sale_advance_payment_inv(models.TransientModel):
     @api.multi
     def create_invoices(self):
         self.ensure_one()
-        if self.advance_payment_method in ('lines'):
+        if self.invoice_currency_id and self.advance_payment_method in ('lines'):
             raise Warning(_(
                 "Configuration Error!\n"
                 "If Invoice in different Currency you can not select "
