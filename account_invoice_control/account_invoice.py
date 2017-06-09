@@ -20,12 +20,14 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def compute_purchase_orders(self):
-        self.purchase_order_ids = self.env['purchase.order.line'].search(
-            [('invoice_lines', 'in', self.invoice_line_ids.ids)]).mapped(
-            'order_id')
+        for rec in self:
+            rec.purchase_order_ids = self.env['purchase.order.line'].search(
+                [('invoice_lines', 'in', rec.invoice_line_ids.ids)]).mapped(
+                'order_id')
 
     @api.multi
     def compute_sale_orders(self):
-        self.sale_order_ids = self.env['sale.order.line'].search(
-            [('invoice_lines', 'in', self.invoice_line_ids.ids)]).mapped(
-            'order_id')
+        for rec in self:
+            rec.sale_order_ids = self.env['sale.order.line'].search(
+                [('invoice_lines', 'in', rec.invoice_line_ids.ids)]).mapped(
+                'order_id')
