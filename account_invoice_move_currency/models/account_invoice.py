@@ -5,6 +5,7 @@
 ##############################################################################
 from openerp import models, fields, api, _
 from openerp.exceptions import ValidationError
+from openerp.tools import float_is_zero
 
 
 class AccountInvoice(models.Model):
@@ -30,6 +31,42 @@ class AccountInvoice(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
+
+    @api.one
+    @api.depends(
+        # 'state', 'currency_id', 'invoice_line_ids.price_subtotal',
+        # 'move_id.line_ids.amount_residual',
+        # 'move_id.line_ids.currency_id'
+        'move_currency_id'
+    )
+    def _compute_residual(self):
+        """
+        Arreglamos que odoo nos convierte la deuda del asiento, expresada
+        en otra moneda, a pesos que es lo que tenemos en la factura.
+        Modificamos para que no lo convierta y muestre deuda en pesos si hay
+        secondary currency
+        """
+        if not self.move_currency_id:
+            return super(AccountInvoice, self)._compute_residual()
+
+        # si tenemos secondary currency no lo convertimos, mostramos
+        # la deuda en moneda de cia
+        residual = 0.0
+        residual_company_signed = 0.0
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
+        for line in self.sudo().move_id.line_ids:
+            if line.account_id.internal_type in ('receivable', 'payable'):
+                residual_company_signed += line.amount_residual
+                residual += line.amount_residual
+        self.residual_company_signed = abs(residual_company_signed) * sign
+        self.residual_signed = abs(residual) * sign
+        self.residual = abs(residual)
+        digits_rounding_precision = self.currency_id.rounding
+        if float_is_zero(
+                self.residual, precision_rounding=digits_rounding_precision):
+            self.reconciled = True
+        else:
+            self.reconciled = False
 
     @api.onchange('move_currency_id')
     def change_move_currency(self):
