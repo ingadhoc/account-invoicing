@@ -31,7 +31,7 @@
         'wizard/account_change_currency_view.xml',
         'views/invoice_view.xml',
     ],
-    'version': '9.0.1.1.0',
+    'version': '9.0.1.2.0',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3'
 }
