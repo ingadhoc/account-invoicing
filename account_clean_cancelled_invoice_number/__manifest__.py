@@ -4,6 +4,8 @@
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
 #    All Rights Reserved.
 #
+#    Contributor: iterativo SRL (https://www.iterativo.do)
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -20,7 +22,7 @@
 ##############################################################################
 {
     'name': 'Clean Cancelled Invoice Number',
-    'version': '9.0.1.0.0',
+    'version': '10.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Invoicing, Number, Cancelled',
