@@ -58,7 +58,11 @@ Images
 
 Contributors
 ------------
-* iterativo SRL: `Icon <https://iterativo.do/web/image/1451>`_.
+* iterativo SRL
+
+. image:: https://iterativo.do/web/image/1451
+   :alt: iterativo SRL
+   :target: https://www.iterativo.do
 
 Maintainer
 ----------
