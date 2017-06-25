@@ -13,7 +13,7 @@
                     <!--<field name="internal_number" invisible="1"/>-->
                     <field name="move_name" invisible="1"/>
                 </form>
-                <button name="invoice_cancel" position="after">
+                <button name="action_invoice_cancel" position="after">
                     <!--<button name="clean_internal_number" string="Clean Internal Number"  attrs="{'invisible':['|',('state','!=','cancel'),('internal_number','=',False)]}" type="object" help="Cleaning the invoice internal number will allow you to delete this invoice or to get a new number if you re-validate it. If this invoice represents a voided invoice, then you should not clean it." groups="account.group_account_manager"/>-->
                     <button name="clean_internal_number" string="Clean Internal Number"  attrs="{'invisible':['|',('state','!=','cancel'),('move_name','=',False)]}" type="object" help="Cleaning the invoice internal number will allow you to delete this invoice or to get a new number if you re-validate it. If this invoice represents a voided invoice, then you should not clean it." groups="account.group_account_manager"/>
                 </button>
@@ -29,7 +29,7 @@
                     <!--<field name="internal_number" invisible="1"/>-->
                     <field name="move_name" invisible="1"/>
                 </form>
-                <button name="invoice_cancel" position="after">
+                <button name="action_invoice_cancel" position="after">
                     <!--<button name="clean_internal_number" string="Clean Internal Number"  attrs="{'invisible':['|',('state','!=','cancel'),('internal_number','=',False)]}" type="object" help="Cleaning the invoice internal number will allow you to delete this invoice or to get a new number if you re-validate it. If this invoice represents a voided invoice, then you should not clean it." groups="account.group_account_manager"/>-->
                     <button name="clean_internal_number" string="Clean Internal Number"  attrs="{'invisible':['|',('state','!=','cancel'),('move_name','=',False)]}" type="object" help="Cleaning the invoice internal number will allow you to delete this invoice or to get a new number if you re-validate it. If this invoice represents a voided invoice, then you should not clean it." groups="account.group_account_manager"/>
                 </button>
