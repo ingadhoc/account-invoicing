@@ -58,11 +58,7 @@ Images
 
 Contributors
 ------------
-* iterativo SRL
-
-. image:: https://iterativo.do/web/image/1451
-   :alt: iterativo SRL
-   :target: https://www.iterativo.do
+* iterativo SRL www.iterativo.do
 
 Maintainer
 ----------
