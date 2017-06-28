@@ -38,7 +38,7 @@ To use this module, you need to:
 Known issues / Roadmap
 ======================
 
-* ...
+* Will clear any value in the move_name field of all invoices when installing or uninstalling it. 
 
 Bug Tracker
 ===========
@@ -58,7 +58,7 @@ Images
 
 Contributors
 ------------
-
+* iterativo SRL www.iterativo.do
 
 Maintainer
 ----------
