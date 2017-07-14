@@ -14,10 +14,7 @@ class account_invoice_prices_update(models.TransientModel):
         invoice_id = self._context.get('active_id', False)
         if invoice_id:
             invoice = self.env['account.invoice'].browse(invoice_id)
-            if invoice.type in ('out_invoice', 'out_refund'):
-                return invoice.partner_id.property_product_pricelist
-            else:
-                return invoice.partner_id.property_product_pricelist_purchase
+            return invoice.partner_id.property_product_pricelist
 
     pricelist_id = fields.Many2one(
         'product.pricelist', string="Price List",
