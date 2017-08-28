@@ -54,18 +54,16 @@ class AccountCommissionRule(models.Model):
         "products belonging to this category or its children categories. "
         "Keep empty otherwise."
     )
+    min_amount = fields.Float(
+        help='Minimun Amount on company currency of the invoice to be '
+        'evaluated'
+    )
     percent_commission = fields.Float(
         'Percentage Commission'
     )
-    # TODO
-    # Por ahora no implementamos ya que habria que tener en cuenta monedas, si
-    # incluye o no impuestos y demas, lo dejamos para mas adelante y que
-    # alguien lo pague
-    # min_amount = fields.Float(
-    # )
 
     @api.model
-    def _get_rule(self, date, product, partner_id, customer):
+    def _get_rule(self, date, product, partner_id, customer, amount):
         domain = [
             '|',
             ('date_start', '=', False),
@@ -73,6 +71,9 @@ class AccountCommissionRule(models.Model):
             '|',
             ('date_end', '=', False),
             ('date_end', '>=', date),
+            '|',
+            ('min_amount', '=', False),
+            ('min_amount', '<=', amount),
             ('partner_id', 'in', [False, partner_id]),
             ('customer_id', 'in', [False, customer.id]),
         ]
