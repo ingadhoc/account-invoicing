@@ -1,0 +1,30 @@
+<odoo>
+
+    <record id="account_commission_rule_tree" model="ir.ui.view">
+        <field name="name">account.commission.rule.tree</field>
+        <field name="model">account.commission.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Rules" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="partner_id"/>
+                <field name="customer_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="categ_id"/>
+                <field name="percent_commission"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_commission_rule_form" model="ir.actions.act_window">
+        <field name="name">Commission Rules</field>
+        <field name="res_model">account.commission.rule</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_commission_rule_form"
+        id="menu_action_commission_rule_form" parent="account.account_management_menu" sequence="15"/>
+
+</odoo>

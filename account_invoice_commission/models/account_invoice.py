@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+# For copyright and license notices, see __openerp__.py file in module root
+# directory
+##############################################################################
+from openerp import models, fields, api
+# from openerp.exceptions import ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class AccountInvoice(models.Model):
+
+    _inherit = "account.invoice"
+
+    commission_amount = fields.Monetary(
+        compute='_compute_commission_amount',
+        currency_field='company_currency_id',
+    )
+    commission_invoice_ids = fields.Many2many(
+        'account.invoice',
+        'account_invoice_commission_inv_rel',
+        'commissioned_id',
+        'commission_id',
+        string='Commission Invoices',
+        domain=[('type', 'in', ('in_invoice', 'in_refund'))],
+        readonly=True,
+        help='Commision invoices where this invoice is commissioned',
+        copy=False,
+    )
+    commissioned_invoice_ids = fields.Many2many(
+        'account.invoice',
+        'account_invoice_commission_inv_rel',
+        'commission_id',
+        'commissioned_id',
+        # 'commission_invoice_id',
+        domain=[('type', 'in', ('out_invoice', 'out_refund'))],
+        string='Commissioned invoices',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        help='The invoices that this commission invoice is commissioning',
+        copy=False,
+    )
+
+    @api.multi
+    @api.depends('invoice_line_ids.commission_amount')
+    def _compute_commission_amount(self):
+        commissioned_partner_id = self._context.get('commissioned_partner_id')
+        if commissioned_partner_id:
+            _logger.info('Computing commission amount')
+            for rec in self:
+                rec.commission_amount = sum(
+                    rec.mapped('invoice_line_ids.commission_amount'))
