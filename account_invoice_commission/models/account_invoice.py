@@ -42,6 +42,20 @@ class AccountInvoice(models.Model):
         help='The invoices that this commission invoice is commissioning',
         copy=False,
     )
+    # este campo lo agregamos aca y no en account_usability para no perjudicar
+    # a quien no usa comisiones en temas de performance
+    date_last_payment = fields.Date(
+        compute='_compute_date_last_payment',
+        string='Last Payment Date',
+        store=True,
+    )
+
+    @api.multi
+    @api.depends('payment_move_line_ids.date')
+    def _compute_date_last_payment(self):
+        for rec in self:
+            rec.date_last_payment = rec.payment_move_line_ids and \
+                rec.payment_move_line_ids[0].date
 
     @api.multi
     @api.depends('invoice_line_ids.commission_amount')

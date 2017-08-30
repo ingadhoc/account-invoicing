@@ -31,9 +31,11 @@ class AccountCommissionRule(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         ondelete='cascade',
+        auto_join=True,
     )
     customer_id = fields.Many2one(
         'res.partner',
+        auto_join=True,
         ondelete='cascade',
         domain=[('customer', '=', True)],
         context={'default_customer': True},
@@ -42,6 +44,7 @@ class AccountCommissionRule(models.Model):
     product_tmpl_id = fields.Many2one(
         'product.template',
         'Product Template',
+        auto_join=True,
         ondelete='cascade',
         help="Specify a template if this rule only applies to one product "
         "template. Keep empty otherwise."
@@ -49,6 +52,7 @@ class AccountCommissionRule(models.Model):
     categ_id = fields.Many2one(
         'product.category',
         'Product Category',
+        auto_join=True,
         ondelete='cascade',
         help="Specify a product category if this rule only applies to "
         "products belonging to this category or its children categories. "
@@ -56,7 +60,8 @@ class AccountCommissionRule(models.Model):
     )
     min_amount = fields.Float(
         help='Minimun Amount on company currency of the invoice to be '
-        'evaluated'
+        'evaluated',
+        default=0.0,
     )
     percent_commission = fields.Float(
         'Percentage Commission'
@@ -72,7 +77,7 @@ class AccountCommissionRule(models.Model):
             ('date_end', '=', False),
             ('date_end', '>=', date),
             '|',
-            ('min_amount', '=', False),
+            ('min_amount', '=', 0.0),
             ('min_amount', '<=', amount),
             ('partner_id', 'in', [False, partner_id]),
             ('customer_id', 'in', [False, customer.id]),

@@ -11,6 +11,8 @@ Simple module that links a commission invoice (supplier invoice) to the commissi
 TODO
 ====
 
+Para mejora de performance, cuando se buscan facturas a agregar, no deberiamos mandar en el contexto el "commissioned_partner_id" así no calcula hasta que se agregaron las facturas.
+
 Some other similar modules and some ideas:
     * agregar campo "commission" en lineas de factura y factura que se calcule en función a otros campos a
     * agregar en productos y partners para definir las comisiones
