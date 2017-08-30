@@ -11,6 +11,13 @@
                     <field name="commission_invoice_ids"/>
                 </page>
             </notebook>
+            <!-- TODO la idea seria hacer esto mas lindo, estamos re-escribiendo el contexto -->
+            <field name="invoice_line_ids" position="attributes">
+                <attribute name="context">{'type': type, 'journal_id': journal_id, 'default_invoice_id': id, 'commissioned_partner_id': context.get('commissioned_partner_id')}</attribute>
+            </field>
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
+                <field name="commission_amount" invisible="not context.get('commissioned_partner_id', False)" sum="Total"/>
+            </xpath>
         </field>
     </record>
 
@@ -21,7 +28,7 @@
         <field name="arch" type="xml">
             <notebook>
                 <page string="Commission">
-                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account.invoice_tree', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True}"/>
+                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True}"/>
                 </page>
             </notebook>
         </field>
