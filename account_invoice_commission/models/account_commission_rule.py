@@ -68,7 +68,7 @@ class AccountCommissionRule(models.Model):
     )
 
     @api.model
-    def _get_rule(self, date, product, partner_id, customer, amount):
+    def _get_rule_domain(self, date, product, partner_id, customer, amount):
         domain = [
             '|',
             ('date_start', '=', False),
@@ -93,6 +93,12 @@ class AccountCommissionRule(models.Model):
                 ('categ_id', '=', False),
                 ('categ_id', 'parent_of', product.categ_id.id),
             ]
+        return domain
+
+    @api.model
+    def _get_rule(self, date, product, partner_id, customer, amount):
+        domain = self._get_rule_domain(
+            date, product, partner_id, customer, amount)
         res = self.search(domain, limit=1)
         if not res:
             raise ValidationError(_(
