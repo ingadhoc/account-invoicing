@@ -29,12 +29,15 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
+            <form>
+                <field name="partner_user_id"/>
+            </form>
             <field name="date_invoice" position="after">
                 <field name="date_last_payment" states="open,paid"/>
             </field>
             <notebook>
                 <page string="Commission">
-                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True}"/>
+                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_user_id': partner_user_id}"/>
                 </page>
             </notebook>
         </field>
@@ -56,6 +59,9 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.view_account_invoice_filter"/>
         <field name="arch" type="xml">
+            <filter name="unpaid" position="after">
+                <filter name="paid" string="Paid" domain="[('state','=','paid')]"/>
+            </filter>
             <field name="date" position="after">
                 <field name="date_last_payment"/>
             </field>

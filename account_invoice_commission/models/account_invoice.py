@@ -49,6 +49,17 @@ class AccountInvoice(models.Model):
         string='Last Payment Date',
         store=True,
     )
+    partner_user_id = fields.Many2one(
+        'res.users',
+        compute='_compute_partner_user',
+    )
+
+    @api.multi
+    @api.depends('partner_id.user_ids')
+    def _compute_partner_user(self):
+        for rec in self:
+            users = rec.partner_id.user_ids
+            rec.partner_user_id = users and users[0] or False
 
     @api.multi
     @api.depends('payment_move_line_ids.date')
