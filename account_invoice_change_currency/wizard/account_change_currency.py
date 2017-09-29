@@ -54,6 +54,9 @@ class account_change_currency(models.TransientModel):
         """
         self.ensure_one()
         invoice = self.get_invoice()
+        message = _("Currency changed from %s to %s with rate %s") % (
+            invoice.currency_id.name, self.currency_id.name,
+             self.currency_rate)
         for line in invoice.invoice_line_ids:
             line.price_unit = self.currency_id.round(
                 line.price_unit * self.currency_rate)
@@ -65,4 +68,5 @@ class account_change_currency(models.TransientModel):
                 line.amount * self.currency_rate)
 
         invoice.compute_taxes()
+        invoice.message_post(message)
         return {'type': 'ir.actions.act_window_close'}
