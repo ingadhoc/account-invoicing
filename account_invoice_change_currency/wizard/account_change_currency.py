@@ -56,7 +56,7 @@ class account_change_currency(models.TransientModel):
         invoice = self.get_invoice()
         message = _("Currency changed from %s to %s with rate %s") % (
             invoice.currency_id.name, self.currency_id.name,
-             self.currency_rate)
+            self.currency_rate)
         for line in invoice.invoice_line_ids:
             line.price_unit = self.currency_id.round(
                 line.price_unit * self.currency_rate)

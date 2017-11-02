@@ -19,7 +19,7 @@
 #
 ##############################################################################
 {
-    'author': 'ADHOC SA',
+    'author': 'ADHOC SA,Odoo Community Association (OCA)',
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
