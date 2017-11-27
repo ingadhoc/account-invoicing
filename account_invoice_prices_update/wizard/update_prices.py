@@ -31,4 +31,5 @@ class account_invoice_prices_update(models.TransientModel):
                     line.product_id.id, line.quantity or 1.0,
                     partner=line.partner_id.id)[self.pricelist_id.id]
             line.price_unit = price
+        invoice.compute_taxes()
         return True
