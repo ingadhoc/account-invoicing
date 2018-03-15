@@ -29,7 +29,7 @@
     ],
     'demo': [],
     'depends': ['account'],
-    'installable': True,
+    'installable': False,
     'name': 'Account Invoice Tax Wizard',
     'test': [],
     'version': '9.0.1.1.0'}

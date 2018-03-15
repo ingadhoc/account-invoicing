@@ -23,7 +23,7 @@
     'category': 'Accounting & Finance',
     'demo_xml': [],
     'depends': ['account'],
-    'installable': True,
+    'installable': False,
     'name': 'Account Invoice Prices Update',
     'test': [],
     'data': [

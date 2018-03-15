@@ -45,7 +45,7 @@ It also choose the salesperson when creating invoices from stock.picking
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
