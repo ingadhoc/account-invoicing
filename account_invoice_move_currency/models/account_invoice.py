@@ -3,9 +3,9 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api, _
-from openerp.exceptions import ValidationError
-from openerp.tools import float_is_zero
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
+from odoo.tools import float_is_zero
 
 
 class AccountInvoice(models.Model):

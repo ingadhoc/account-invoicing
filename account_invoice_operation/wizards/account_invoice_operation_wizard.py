@@ -3,8 +3,8 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class account_invoice_operation_wizard(models.TransientModel):
