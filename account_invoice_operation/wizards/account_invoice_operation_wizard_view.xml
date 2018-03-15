@@ -30,4 +30,4 @@
             <!-- no hace falta asi no agrega el menu contextual en actions -->
             <!-- src_model="account.invoice" -->
     </data>
-</openerp>
+</odoo>

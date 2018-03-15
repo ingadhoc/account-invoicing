@@ -71,4 +71,4 @@
             <field name="amount_type">balance</field>
         </record>
     </data>
-</openerp>
+</odoo>
