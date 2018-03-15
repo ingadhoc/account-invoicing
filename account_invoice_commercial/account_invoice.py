@@ -1,4 +1,4 @@
-from openerp import models, api
+from odoo import models, api
 
 
 class account_invoice(models.Model):
