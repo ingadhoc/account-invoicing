@@ -16,5 +16,5 @@ class AccountInvoiceLine(models.Model):
         for invoice in self.mapped('invoice_id'):
             number = 1
             for line in invoice.invoice_line_ids:
-                line.update({'number':number})
+                line.update({'number': number})
                 number += 1
