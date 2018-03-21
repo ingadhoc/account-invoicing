@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,18 +18,27 @@
 #
 ##############################################################################
 {
-    'author': 'ADHOC SA',
+    'name': 'Supplier Invoices with Direct Payment',
+    'version': '9.0.1.0.0',
     'category': 'Accounting & Finance',
-    'demo_xml': [],
-    'depends': ['account'],
-    'installable': True,
-    'name': 'Account Invoice Prices Update',
-    'test': [],
-    'data': [
-        'wizard/update_prices_wizard_view.xml',
-        'views/invoice_view.xml',
-    ],
-    'version': '9.0.1.1.0',
+    'sequence': 14,
+    'summary': '',
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
+    'images': [
+    ],
+    'depends': [
+        'account',
+    ],
+    'data': [
+        'views/account_invoice_view.xml',
+    ],
+    'demo': [
+    ],
+    'test': [
+    ],
+    'installable': False,
+    'auto_install': False,
+    'application': False,
 }

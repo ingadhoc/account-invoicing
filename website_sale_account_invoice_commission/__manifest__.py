@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,19 +18,28 @@
 #
 ##############################################################################
 {
-    'author': 'ADHOC SA,Odoo Community Association (OCA)',
-    'category': 'Accounting & Finance',
-    'demo_xml': [],
-    'depends': ['account'],
-    'installable': True,
-    'name': 'Account Invoice Change Currency',
-    'test': [],
-    'data': [
-        'security/security.xml',
-        'wizard/account_change_currency_view.xml',
-        'views/invoice_view.xml',
-    ],
-    'version': '9.0.1.2.0',
+    'name': 'Commission Invoices with Public Categories',
+    'version': '9.0.1.0.0',
+    'category': 'Accounting',
+    'sequence': 14,
+    'summary': '',
+    'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
+    'images': [
+    ],
+    'depends': [
+        'account_invoice_commission',
+        'website_sale',
+    ],
+    'data': [
+        'views/account_commission_rule_view.xml',
+    ],
+    'demo': [
+    ],
+    'test': [
+    ],
+    'installable': False,
+    'auto_install': False,
+    'application': False,
 }

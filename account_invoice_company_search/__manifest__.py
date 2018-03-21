@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,22 +18,19 @@
 #
 ##############################################################################
 {
-    'name': 'Account Invoice Control',
+    "name": "Account Invioce Company Search",
+    "version": "9.0.1.0.0",
     'author': 'ADHOC SA',
-    'version': '9.0.1.3.0',
-    'license': 'AGPL-3',
-    'category': 'Accounting & Finance',
-    'depends': [
-        'sale',
-        'purchase',
-        'account_invoice_prices_update',
-    ],
-    'test': [],
-    'data': [
-        'security/security.xml',
-        'views/account_invoice_view.xml',
-        'views/account_invoice_supplier_view.xml',
-    ],
     'website': 'www.adhoc.com.ar',
-    'installable': True,
+    'license': 'AGPL-3',
+    "category": "Accounting",
+    'depends': [
+        'account'
+    ],
+    'data': [
+        'views/invoice_view.xml'
+    ],
+    'demo': [],
+    'test': [],
+    'installable': False,
 }

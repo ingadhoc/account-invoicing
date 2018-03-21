@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,17 +18,19 @@
 #
 ##############################################################################
 {
-    'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
+    'author': 'ADHOC SA,Odoo Community Association (OCA)',
     'category': 'Accounting & Finance',
-    'data': [
-        'wizard/account_invoice_tax_wizard_view.xml',
-        'account_invoice_view.xml',
-    ],
-    'demo': [],
+    'demo_xml': [],
     'depends': ['account'],
-    'installable': True,
-    'name': 'Account Invoice Tax Wizard',
+    'installable': False,
+    'name': 'Account Invoice Change Currency',
     'test': [],
-    'version': '9.0.1.1.0'}
+    'data': [
+        'security/security.xml',
+        'wizard/account_change_currency_view.xml',
+        'views/invoice_view.xml',
+    ],
+    'version': '9.0.1.2.0',
+    'website': 'www.adhoc.com.ar',
+    'license': 'AGPL-3'
+}

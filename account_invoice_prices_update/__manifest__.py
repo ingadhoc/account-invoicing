@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,33 +18,18 @@
 #
 ##############################################################################
 {
-    'name': 'Account Invoice Commercial',
-    'version': '9.0.1.0.0',
-    'category': 'Accounting',
-    'sequence': 14,
-    'summary': 'Invoicing, Commercial',
-    'description': """
-Account Invoice Commercial
-==========================
-By default, when creating invoices manually, actual partner is choose,
-with this module the partner salesperson will be choosen.
-It also choose the salesperson when creating invoices from stock.picking
-    """,
     'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
-    'images': [
-    ],
-    'depends': [
-        'account',
-    ],
+    'category': 'Accounting & Finance',
+    'demo_xml': [],
+    'depends': ['account'],
+    'installable': False,
+    'name': 'Account Invoice Prices Update',
+    'test': [],
     'data': [
+        'wizard/update_prices_wizard_view.xml',
+        'views/invoice_view.xml',
     ],
-    'demo': [
-    ],
-    'test': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    'version': '9.0.1.1.0',
+    'website': 'www.adhoc.com.ar',
+    'license': 'AGPL-3'
 }

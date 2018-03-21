@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,29 +18,17 @@
 #
 ##############################################################################
 {
-    'name': 'Commission Invoices',
-    'version': '9.0.1.2.0',
-    'category': 'Accounting',
-    'sequence': 14,
-    'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    'images': [
-    ],
-    'depends': [
-        'account',
-    ],
+    'category': 'Accounting & Finance',
     'data': [
-        'views/account_invoice_view.xml',
-        'views/account_commission_rule_view.xml',
-        'security/ir.model.access.csv',
+        'wizard/account_invoice_tax_wizard_view.xml',
+        'account_invoice_view.xml',
     ],
-    'demo': [
-    ],
-    'test': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
-}
+    'demo': [],
+    'depends': ['account'],
+    'installable': False,
+    'name': 'Account Invoice Tax Wizard',
+    'test': [],
+    'version': '9.0.1.1.0'}

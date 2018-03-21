@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,11 +18,10 @@
 #
 ##############################################################################
 {
-    "name": "Group by Journal on Invoices",
+    'name': 'Set default invoicing journal for users',
     'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
-    'summary': 'Quotations, Sales Orders, Invoicing',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -33,13 +31,15 @@
         'account',
     ],
     'data': [
-        'invoice_view.xml',
+        'res_users_view.xml'
     ],
     'demo': [
     ],
     'test': [
     ],
-    'installable': True,
+    # Not installable as from v9 it does not make muche scense as you are
+    # supose to choose journal first
+    'installable': False,
     'auto_install': False,
-    'application': True,
+    'application': False,
 }

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,27 +18,22 @@
 #
 ##############################################################################
 {
-    'name': 'Clean Cancelled Invoice Number',
-    'version': '9.0.1.0.0',
-    'category': 'Accounting',
-    'sequence': 14,
-    'summary': 'Invoicing, Number, Cancelled',
+    'name': 'Account Invoice Control',
     'author': 'ADHOC SA',
-    'website': 'www.adhoc.com.ar',
+    'version': '9.0.1.3.0',
     'license': 'AGPL-3',
-    'images': [
-    ],
+    'category': 'Accounting & Finance',
     'depends': [
-        'account_cancel'
+        'sale',
+        'purchase',
+        'account_invoice_prices_update',
     ],
+    'test': [],
     'data': [
-        'account_invoice_view.xml',
+        'security/security.xml',
+        'views/account_invoice_view.xml',
+        'views/account_invoice_supplier_view.xml',
     ],
-    'demo': [
-    ],
-    'test': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    'website': 'www.adhoc.com.ar',
+    'installable': False,
 }

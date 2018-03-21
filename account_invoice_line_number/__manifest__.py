@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,11 +18,10 @@
 #
 ##############################################################################
 {
-    'name': 'Account Invoice Operation',
-    'version': '9.0.1.1.0',
+    'name': 'Account Invoice Line Number',
+    'version': '11.0.1.0.0',
     'category': 'Accounting & Finance',
     'sequence': 14,
-    'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -31,19 +29,11 @@
     ],
     'depends': [
         'account',
-        # 'web_widget_one2many_tags',
     ],
     'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'wizards/account_invoice_operation_wizard_view.xml',
-        'views/res_partner_view.xml',
         'views/account_invoice_view.xml',
-        'views/account_invoice_operation_view.xml',
-        'views/account_invoice_plan_view.xml',
     ],
     'demo': [
-        'demo/account_invoice_plan_demo.xml',
     ],
     'test': [
     ],

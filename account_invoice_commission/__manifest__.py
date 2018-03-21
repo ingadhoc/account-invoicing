@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,19 +18,29 @@
 #
 ##############################################################################
 {
-    "name": "Account Invioce Company Search",
-    "version": "9.0.1.0.0",
+    'name': 'Commission Invoices',
+    'version': '9.0.1.2.0',
+    'category': 'Accounting',
+    'sequence': 14,
+    'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    "category": "Accounting",
+    'images': [
+    ],
     'depends': [
-        'account'
+        'account',
     ],
     'data': [
-        'views/invoice_view.xml'
+        'views/account_invoice_view.xml',
+        'views/account_commission_rule_view.xml',
+        'security/ir.model.access.csv',
     ],
-    'demo': [],
-    'test': [],
-    'installable': True,
+    'demo': [
+    ],
+    'test': [
+    ],
+    'installable': False,
+    'auto_install': False,
+    'application': False,
 }

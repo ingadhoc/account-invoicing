@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,27 +18,26 @@
 #
 ##############################################################################
 {
-    'name': 'Set default invoicing journal for users',
+    'name': 'Clean Cancelled Invoice Number',
     'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
+    'summary': 'Invoicing, Number, Cancelled',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [
     ],
     'depends': [
-        'account',
+        'account_cancel'
     ],
     'data': [
-        'res_users_view.xml'
+        'account_invoice_view.xml',
     ],
     'demo': [
     ],
     'test': [
     ],
-    # Not installable as from v9 it does not make muche scense as you are
-    # supose to choose journal first
     'installable': False,
     'auto_install': False,
     'application': False,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,28 +18,33 @@
 #
 ##############################################################################
 {
-    'name': 'Commission Invoices with Public Categories',
+    'name': 'Account Invoice Commercial',
     'version': '9.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
-    'summary': '',
+    'summary': 'Invoicing, Commercial',
+    'description': """
+Account Invoice Commercial
+==========================
+By default, when creating invoices manually, actual partner is choose,
+with this module the partner salesperson will be choosen.
+It also choose the salesperson when creating invoices from stock.picking
+    """,
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'images': [
     ],
     'depends': [
-        'account_invoice_commission',
-        'website_sale',
+        'account',
     ],
     'data': [
-        'views/account_commission_rule_view.xml',
     ],
     'demo': [
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }

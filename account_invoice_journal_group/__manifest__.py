@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
@@ -19,10 +18,11 @@
 #
 ##############################################################################
 {
-    'name': 'Account Invoice Line Number',
-    'version': '11.0.1.0.0',
-    'category': 'Accounting & Finance',
+    "name": "Group by Journal on Invoices",
+    'version': '9.0.1.0.0',
+    'category': 'Accounting',
     'sequence': 14,
+    'summary': 'Quotations, Sales Orders, Invoicing',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -32,13 +32,13 @@
         'account',
     ],
     'data': [
-        'views/account_invoice_view.xml',
+        'invoice_view.xml',
     ],
     'demo': [
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
-    'application': False,
+    'application': True,
 }
