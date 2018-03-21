@@ -20,11 +20,9 @@
 ##############################################################################
 {
     'name': 'Account Invoice Line Number',
-    'description': 'Add automatic numeration for invoice lines',
-    'version': '9.0.1.0.0',
+    'version': '11.0.1.0.0',
     'category': 'Accounting & Finance',
     'sequence': 14,
-    'summary': '',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
