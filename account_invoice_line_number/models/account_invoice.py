@@ -10,7 +10,6 @@ class AccountInvoiceLine(models.Model):
 
     number = fields.Integer(compute='_compute_number', store=True)
 
-    @api.multi
     @api.depends('sequence', 'invoice_id')
     def _compute_number(self):
         for invoice in self.mapped('invoice_id'):
