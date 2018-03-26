@@ -8,11 +8,10 @@ from odoo import models, fields, api
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    number = fields.Integer(compute='get_number', store=True)
+    number = fields.Integer(compute='_compute_number', store=True)
 
-    @api.multi
     @api.depends('sequence', 'invoice_id')
-    def get_number(self):
+    def _compute_number(self):
         for invoice in self.mapped('invoice_id'):
             number = 1
             for line in invoice.invoice_line_ids:
