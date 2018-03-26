@@ -2,8 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api
-# from odoo.exceptions import ValidationError
+from odoo import models, fields
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -18,14 +17,12 @@ class AccountInvoiceLine(models.Model):
         currency_field='company_currency_id',
     )
 
-    @api.multi
-    @api.depends('commission_amount')
     def _compute_commission_amount(self):
         commissioned_partner_id = self._context.get('commissioned_partner_id')
         if commissioned_partner_id:
             today = fields.Date.context_today(self)
             rules = self.env['account.commission.rule']
-            _logger.info('Computing commission amount')
+            _logger.info('Computing commission amount line')
             for rec in self:
                 date = rec.invoice_id.date_invoice or today
                 rec.commission_amount = rules._get_rule(

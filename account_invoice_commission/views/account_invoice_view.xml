@@ -37,7 +37,7 @@
             </field>
             <notebook>
                 <page string="Commission">
-                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_user_id': partner_user_id}"/>
+                    <field name="commissioned_invoice_ids"  context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_user_id': partner_user_id}"/>
                 </page>
             </notebook>
         </field>
@@ -46,10 +46,12 @@
     <record id="invoice_tree" model="ir.ui.view">
         <field name="name">account.invoice.tree</field>
         <field name="model">account.invoice</field>
+        <field name="mode">primary</field>
+        <field name="priority">90</field>
         <field name="inherit_id" ref="account.invoice_tree"/>
         <field name="arch" type="xml">
             <field name="residual_signed" position="after">
-                <field name="commission_amount" invisible="not context.get('commissioned_partner_id', False)" sum="Total"/>
+                <field name="commission_amount" sum="Total"/>
             </field>
         </field>
     </record>
