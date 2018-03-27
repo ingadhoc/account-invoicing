@@ -37,7 +37,7 @@
             </field>
             <notebook>
                 <page string="Commission">
-                    <field name="commissioned_invoice_ids"  context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_user_id': partner_user_id}"/>
+                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.invoice_tree', 'form_view_ref':'account.invoice_form', 'search_default_invoices': 1, 'search_default_refunds': 1, 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_user_id': partner_user_id}"/>
                 </page>
             </notebook>
         </field>
