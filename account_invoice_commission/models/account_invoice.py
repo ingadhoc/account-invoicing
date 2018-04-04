@@ -3,7 +3,6 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api
-# from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -53,21 +52,18 @@ class AccountInvoice(models.Model):
         compute='_compute_partner_user',
     )
 
-    @api.multi
     @api.depends('partner_id.user_ids')
     def _compute_partner_user(self):
         for rec in self:
             users = rec.partner_id.user_ids
             rec.partner_user_id = users and users[0] or False
 
-    @api.multi
     @api.depends('payment_move_line_ids.date')
     def _compute_date_last_payment(self):
         for rec in self:
             rec.date_last_payment = rec.payment_move_line_ids and \
                 rec.payment_move_line_ids[0].date
 
-    @api.multi
     @api.depends('invoice_line_ids.commission_amount')
     def _compute_commission_amount(self):
         commissioned_partner_id = self._context.get('commissioned_partner_id')
