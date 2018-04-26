@@ -5,7 +5,7 @@
 from odoo import models, api
 
 
-class invoice(models.Model):
+class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     @api.multi
@@ -14,7 +14,8 @@ class invoice(models.Model):
         for rec in self:
             # if document type has a sequence then a new sequence must be
             # requested. Otherwise, we want to keep number introduced by user
-            if rec.document_sequence_id:
-                rec.write({'move_name': False, 'document_number': False})
+            if rec._fields in ['document_sequence_id']:
+                rec.update({'move_name': False,
+                            'document_number': False})
             else:
-                rec.write({'move_name': False})
+                rec.update({'move_name': False})
