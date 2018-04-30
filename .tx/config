@@ -1,0 +1,63 @@
+[main]
+host = https://www.transifex.com
+type = PO
+
+[ingadhoc-account-invoicing-11-0.account_invoice_tax_wizard]
+file_filter = account_invoice_tax_wizard/i18n/<lang>.po
+source_file = account_invoice_tax_wizard/i18n/account_invoice_tax_wizard.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_commission]
+file_filter = account_invoice_commission/i18n/<lang>.po
+source_file = account_invoice_commission/i18n/account_invoice_commission.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_control]
+file_filter = account_invoice_control/i18n/<lang>.po
+source_file = account_invoice_control/i18n/account_invoice_control.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_line_number]
+file_filter = account_invoice_line_number/i18n/<lang>.po
+source_file = account_invoice_line_number/i18n/account_invoice_line_number.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_journal_group]
+file_filter = account_invoice_journal_group/i18n/<lang>.po
+source_file = account_invoice_journal_group/i18n/account_invoice_journal_group.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_journal_filter]
+file_filter = account_invoice_journal_filter/i18n/<lang>.po
+source_file = account_invoice_journal_filter/i18n/account_invoice_journal_filter.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_move_currency]
+file_filter = account_invoice_move_currency/i18n/<lang>.po
+source_file = account_invoice_move_currency/i18n/account_invoice_move_currency.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_user_default_journals]
+file_filter = account_user_default_journals/i18n/<lang>.po
+source_file = account_user_default_journals/i18n/account_user_default_journals.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_change_currency]
+file_filter = account_invoice_change_currency/i18n/<lang>.po
+source_file = account_invoice_change_currency/i18n/account_invoice_change_currency.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_partner_restrict_invoicing]
+file_filter = account_partner_restrict_invoicing/i18n/<lang>.po
+source_file = account_partner_restrict_invoicing/i18n/account_partner_restrict_invoicing.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_clean_cancelled_invoice_number]
+file_filter = account_clean_cancelled_invoice_number/i18n/<lang>.po
+source_file = account_clean_cancelled_invoice_number/i18n/account_clean_cancelled_invoice_number.pot
+source_lang = en
+
+[ingadhoc-account-invoicing-11-0.account_invoice_company_search]
+file_filter = account_invoice_company_search/i18n/<lang>.po
+source_file = account_invoice_company_search/i18n/account_invoice_company_search.pot
+source_lang = en
