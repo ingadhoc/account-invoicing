@@ -1,1 +1,2 @@
 # web
+ingadhoc-enterprise-extensions https://github.com/ingadhoc/enterprise-extensions.git
