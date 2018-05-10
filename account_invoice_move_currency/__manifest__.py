@@ -30,7 +30,7 @@
         'wizards/account_change_currency_views.xml',
     ],
     'demo': [
-        # 'demo/account_invoice_demo.yml',
+        'demo/account_invoice_demo.yml',
     ],
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
