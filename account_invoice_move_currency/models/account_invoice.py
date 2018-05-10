@@ -15,16 +15,12 @@ class AccountInvoice(models.Model):
         'Secondary Currency',
         help='If you set a currency here, then this invoice values will be '
         'also stored in the related Account Move Secondary Currency',
-        # copy True for compatibility with invoice operation
-        # copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
     # TODO implement this
     # move_currency_rate = fields.Float(
     move_inverse_currency_rate = fields.Float(
-        # copy True for compatibility with invoice operation
-        # copy=False,
         digits=(16, 4),
         string='Account Move Secondary Currency Rate',
         readonly=True,
@@ -62,14 +58,10 @@ class AccountInvoice(models.Model):
                 {'residual_company_signed': abs(
                     residual_company_signed) * sign,
                  'residual_signed': abs(residual) * sign,
-                 'residual': abs(residual)})
-            digits_rounding_precision = rec.currency_id.rounding
-            if float_is_zero(
-                rec.residual,
-                    precision_rounding=digits_rounding_precision):
-                rec.reconciled = True
-            else:
-                rec.reconciled = False
+                 'residual': abs(residual),
+                 'reconciled': True if float_is_zero(
+                    abs(residual),
+                    precision_rounding=rec.currency_id.rounding) else False})
 
     @api.onchange('move_currency_id')
     def change_move_currency(self):
@@ -84,16 +76,15 @@ class AccountInvoice(models.Model):
     @api.multi
     @api.constrains('move_currency_id', 'currency_id')
     def check_move_currency(self):
-        for rec in self:
-            if rec.move_currency_id:
-                if rec.move_currency_id == rec.currency_id:
-                    raise UserError(_(
-                        'Secondary currency can not be the same as Invoice '
-                        'Currency'))
-                if rec.currency_id != rec.company_id.currency_id:
-                    raise UserError(_(
-                        'Can not use Secondary currency if invoice is in a '
-                        'Currency different from Company Currency'))
+        for rec in self.filtered('move_currency_id'):
+            if rec.move_currency_id == rec.currency_id:
+                raise UserError(_(
+                    'Secondary currency can not be the same as Invoice '
+                    'Currency'))
+            if rec.currency_id != rec.company_id.currency_id:
+                raise UserError(_(
+                    'Can not use Secondary currency if invoice is in a '
+                    'Currency different from Company Currency'))
 
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
@@ -107,19 +98,16 @@ class AccountInvoice(models.Model):
             :return: the (possibly updated) final move_lines to create for this
                 invoice
         """
+        self.ensure_one()
         move_lines = super(
             AccountInvoice, self).finalize_invoice_move_lines(move_lines)
+        if not self.move_inverse_currency_rate:
+            raise UserError(_(
+                'If Secondary currency select you must set rate'))
         if self.move_currency_id:
             for a, b, line in move_lines:
-                if not self.move_inverse_currency_rate:
-                    raise UserError(_(
-                        'If Secondary currency select you must set rate'))
-                if line['debit']:
-                    amount = line['debit']
-                    sign = 1.0
-                else:
-                    amount = line['credit']
-                    sign = -1.0
+                amount = line['debit'] if line['debit'] else line['credit']
+                sign = 1.0 if line['debit'] else -1.0
                 line['currency_id'] = self.move_currency_id.id
                 line['amount_currency'] = sign * self.move_currency_id.round(
                     amount / self.move_inverse_currency_rate)
