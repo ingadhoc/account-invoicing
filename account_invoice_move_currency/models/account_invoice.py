@@ -42,7 +42,8 @@ class AccountInvoice(models.Model):
         """
         for rec in self:
             if not rec.move_currency_id:
-                return super(AccountInvoice, self)._compute_residual()
+                super(AccountInvoice, self)._compute_residual()
+                continue
 
             # si tenemos secondary currency no lo convertimos, mostramos
             # la deuda en moneda de cia

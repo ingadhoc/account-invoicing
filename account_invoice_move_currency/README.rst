@@ -15,7 +15,7 @@ Account Invoice Move Currency
 =============================
 
 This module extends the functionality of account invoice to
-allows force the seat on an invoice generated save the data in another currency. This module adds funcionality to save the secondary currency in the wizard "change" that introduce the module "Account Usability"
+allows force the journal entries on an invoice generated save the data in another currency. This module adds funcionality to save the secondary currency in the wizard "change" that introduce the module "Account Ux"
 
 Installation
 ============
@@ -39,7 +39,7 @@ Usage
 To use this module, you need to:
 
 #. Go to an invoice and use the button "change"
-#. If you select an currency to and it's the same as company currency, it's able to set to save the actual currency into "Secondary Currency"
+#. If you have an invoice which currency is different from the company's currency, and you choose to change it to the company currency, you are able to record the information of the first one (both currency and rate) in order to be able to know the equivalent value in the foreign currency as a informative data.
 
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
