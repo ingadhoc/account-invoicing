@@ -27,12 +27,12 @@
     journal_id: my_sales_journal
     date_invoice: !eval time.strftime('%Y-%m')+'-01'
     invoice_line_ids:
-      - name: 'Dell Inspiron Laptop without OS'
-        product_id: product.product_product_49
+      - name: 'Mouse inalámbrico'
+        product_id: product.product_product_12
         price_unit: 642.0
         quantity: 5
-      - name: 'Linutop'
-        product_id: product.product_product_50
+      - name: 'Computer SC234'
+        product_id: product.product_product_3
         price_unit: 280.0
         quantity: 5.0
 
@@ -65,12 +65,12 @@
     journal_id: my_sales_journal2
     date_invoice: !eval time.strftime('%Y-%m')+'-01'
     invoice_line_ids:
-      - name: 'TypeMatrix Dvorak Keyboard'
-        product_id: product.product_product_49
+      - name: 'Tarjeta de datos'
+        product_id: product.product_delivery_02
         price_unit: 300.0
         quantity: 5
-      - name: 'Ergonomic Mouse '
-        product_id: product.product_product_50
+      - name: 'RAM SR5'
+        product_id: product.product_product_13
         price_unit: 200.0
         quantity: 5.0
 
