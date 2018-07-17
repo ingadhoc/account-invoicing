@@ -102,10 +102,10 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         move_lines = super(
             AccountInvoice, self).finalize_invoice_move_lines(move_lines)
-        if not self.move_inverse_currency_rate:
-            raise UserError(_(
-                'If Secondary currency select you must set rate'))
         if self.move_currency_id:
+            if not self.move_inverse_currency_rate:
+                raise UserError(_(
+                    'If Secondary currency select you must set rate'))
             for a, b, line in move_lines:
                 amount = line['debit'] if line['debit'] else line['credit']
                 sign = 1.0 if line['debit'] else -1.0
