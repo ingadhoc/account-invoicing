@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- CUSTOMER INVOICES -->
+    <record id="invoice_restrict_edit_form" model="ir.ui.view">
+        <field name="name">invoice.form.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="sale_ux.invoice_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <field name="invoice_line_ids" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <xpath expr="//page[2]//field[@name='account_id']" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </xpath>
+            <xpath expr="//page[2]//field[@name='company_id']" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </xpath>
+            <field name="team_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </xpath>
+            <field name="date_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="user_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="fiscal_position_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="date_due" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+            <field name="partner_bank_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>

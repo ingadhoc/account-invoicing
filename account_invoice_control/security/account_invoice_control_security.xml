@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
-<openerp>
-    <data>
+<odoo>
 
     <record model="res.groups" id="group_restrict_edit_invoice">
         <field name="name">Restrict Edit Invoice</field>
     </record>
-     
-    </data> 
-</odoo>
 
+</odoo>
