@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 from openerp import models, api
 
 
-class account_invoice(models.Model):
+class AccountInvoice(models.Model):
 
     _inherit = 'account.invoice'
 
