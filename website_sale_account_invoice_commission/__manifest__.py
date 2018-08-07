@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Commission Invoices with Public Categories',
-    'version': '9.0.1.0.0',
+    'version': '11.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'summary': '',
@@ -33,13 +33,11 @@
         'website_sale',
     ],
     'data': [
-        'views/account_commission_rule_view.xml',
+        'views/account_commission_rule_views.xml',
     ],
     'demo': [
     ],
-    'test': [
-    ],
-    'installable': False,
-    'auto_install': False,
+    'installable': True,
+    'auto_install': True,
     'application': False,
 }
