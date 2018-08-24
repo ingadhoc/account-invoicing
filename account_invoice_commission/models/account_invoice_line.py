@@ -28,5 +28,6 @@ class AccountInvoiceLine(models.Model):
                 rec.commission_amount = rules._get_rule(
                     date, rec.product_id, commissioned_partner_id,
                     rec.invoice_id.commercial_partner_id,
-                    rec.price_subtotal_signed
+                    rec.price_subtotal_signed,
+                    rec.account_analytic_id,
                 ).percent_commission * rec.price_subtotal_signed / 100.0
