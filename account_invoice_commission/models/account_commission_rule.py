@@ -65,13 +65,21 @@ class AccountCommissionRule(models.Model):
     percent_commission = fields.Float(
         'Percentage Commission'
     )
+    account_analytic_id = fields.Many2one(
+        'account.analytic.account',
+        'Analytic Account',
+    )
 
     @api.model
-    def _get_rule_domain(self, date, product, partner_id, customer, amount):
+    def _get_rule_domain(self, date, product, partner_id, customer, amount,
+                         analytic_acc):
         domain = [
             '|',
             ('date_start', '=', False),
             ('date_start', '<=', date),
+            '|',
+            ('account_analytic_id', '=', False),
+            ('account_analytic_id', '=', analytic_acc.id),
             '|',
             ('date_end', '=', False),
             ('date_end', '>=', date),
@@ -95,13 +103,18 @@ class AccountCommissionRule(models.Model):
         return domain
 
     @api.model
-    def _get_rule(self, date, product, partner_id, customer, amount):
+    def _get_rule(self, date, product, partner_id, customer, amount,
+                  analytic_acc):
         domain = self._get_rule_domain(
-            date, product, partner_id, customer, amount)
+            date, product, partner_id, customer, amount, analytic_acc)
         res = self.search(domain, limit=1)
         if not res:
             raise ValidationError(_(
                 'No commission rule found for product id "%s", partner id "%s"'
                 ' date "%s" and customer "%s"') % (
-                product.id, partner_id, date, customer.id))
+                    ' - '.join([str(product.id), product.name]),
+                    partner_id,
+                    date,
+                    ' - '.join([str(customer.id), customer.name])
+                ))
         return res
