@@ -112,5 +112,9 @@ class AccountCommissionRule(models.Model):
             raise ValidationError(_(
                 'No commission rule found for product id "%s", partner id "%s"'
                 ' date "%s" and customer "%s"') % (
-                product.id, partner_id, date, customer.id))
+                    ' - '.join([str(product.id), product.name]),
+                    partner_id,
+                    date,
+                    ' - '.join([str(customer.id), customer.name])
+                ))
         return res
