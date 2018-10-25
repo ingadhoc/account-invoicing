@@ -14,8 +14,10 @@ class AccountInvoice(models.Model):
         for rec in self:
             # if document type has a sequence then a new sequence must be
             # requested. Otherwise, we want to keep number introduced by user
-            if rec._fields in ['document_sequence_id']:
-                rec.update({'move_name': False,
-                            'document_number': False})
+            if 'document_sequence_id' in rec._fields and \
+                    rec.document_sequence_id:
+                rec.write({
+                    'move_name': False,
+                    'document_number': False})
             else:
-                rec.update({'move_name': False})
+                rec.write({'move_name': False})
