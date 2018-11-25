@@ -41,3 +41,4 @@ class AccountInvoicePartialWizard(models.TransientModel):
             line.quantity = float_round(
                 quantity, precision_rounding=self.rounding,
                 rounding_method=self.rounding_method)
+        self.invoice_id.compute_taxes()
