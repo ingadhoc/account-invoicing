@@ -32,7 +32,8 @@ class AccountChangeCurrency(models.TransientModel):
             self.invoice_id.move_inverse_currency_rate = False
         currency_from_id = self.currency_from_id
         res = super(AccountChangeCurrency, self).change_currency()
-        if self.save_secondary_currency:
+        if self.save_secondary_currency and not self.same_currency and \
+                self.change_type == 'value':
             self.invoice_id.move_currency_id = currency_from_id.id
             self.invoice_id.move_inverse_currency_rate = self.currency_rate
         return res
