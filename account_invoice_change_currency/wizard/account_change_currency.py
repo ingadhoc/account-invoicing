@@ -58,8 +58,9 @@ class account_change_currency(models.TransientModel):
             invoice.currency_id.name, self.currency_id.name,
             self.currency_rate)
         for line in invoice.invoice_line_ids:
-            line.price_unit = self.currency_id.round(
-                line.price_unit * self.currency_rate)
+            # do not round on currency digits, it is rounded automatically
+            # on price_unit precision
+            line.price_unit = line.price_unit * self.currency_rate
         invoice.currency_id = self.currency_id.id
 
         # update manual taxes
