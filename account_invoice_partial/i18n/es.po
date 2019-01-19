@@ -5,13 +5,15 @@
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018
 # andressl <aleibrecht@gmail.com>, 2018
+# Mariana Luz Torres <mt@adhoc.com.ar>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-20 16:26+0000\n"
+"POT-Creation-Date: 2018-12-12 16:00+0000\n"
 "PO-Revision-Date: 2018-09-20 16:26+0000\n"
-"Last-Translator: andressl <aleibrecht@gmail.com>, 2018\n"
+"Last-Translator: Mariana Luz Torres <mt@adhoc.com.ar>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +90,7 @@ msgstr "Última actualización el"
 #. module: account_invoice_partial
 #: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard_percentage_to_invoice
 msgid "Percentage To Invoice"
-msgstr ""
+msgstr "Porcentaje a facturar"
 
 #. module: account_invoice_partial
 #: model:ir.model.fields,help:account_invoice_partial.field_account_invoice_partial_wizard_rounding

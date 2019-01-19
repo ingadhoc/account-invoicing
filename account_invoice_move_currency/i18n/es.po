@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018
+# Mariana Luz Torres <mt@adhoc.com.ar>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-20 16:26+0000\n"
-"PO-Revision-Date: 2018-09-20 16:26+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-12-12 16:00+0000\n"
+"PO-Revision-Date: 2018-06-17 19:30+0000\n"
+"Last-Translator: Mariana Luz Torres <mt@adhoc.com.ar>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +23,7 @@ msgstr ""
 #. module: account_invoice_move_currency
 #: model:ir.model,name:account_invoice_move_currency.model_account_change_currency
 msgid "Change Currency"
-msgstr ""
+msgstr "Cambiar moneda"
 
 #. module: account_invoice_move_currency
 #: model:ir.model,name:account_invoice_move_currency.model_account_invoice
