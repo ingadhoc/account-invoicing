@@ -18,23 +18,18 @@
 #
 ##############################################################################
 {
-    'name': 'Account Invoice Move Currency',
-    'version': '11.0.1.1.0',
+    'name': 'Account Invoice Prices Update',
+    'version': '11.0.1.0.0',
     'author': 'ADHOC SA',
+    'license': 'AGPL-3',
     'category': 'Accounting & Finance',
+    'website': 'www.adhoc.com.ar',
     'depends': [
-        'account_ux'
+        'account'
     ],
     'data': [
+        'wizards/update_prices_wizard_views.xml',
         'views/account_invoice_views.xml',
-        'wizards/account_change_currency_views.xml',
     ],
-    'demo': [
-        'demo/account_invoice_demo.yml',
-    ],
-    'website': 'www.adhoc.com.ar',
-    'license': 'AGPL-3',
     'installable': True,
-    'auto_install': False,
-    'application': False
 }
