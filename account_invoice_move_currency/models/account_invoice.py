@@ -70,6 +70,7 @@ class AccountInvoice(models.Model):
             self.move_inverse_currency_rate = False
         else:
             currency = self.move_currency_id.with_context(
+                company_id=self.company_id.id,
                 date=self.date_invoice or fields.Date.context_today(self))
             self.move_inverse_currency_rate = currency.compute(
                 1.0, self.company_id.currency_id)
