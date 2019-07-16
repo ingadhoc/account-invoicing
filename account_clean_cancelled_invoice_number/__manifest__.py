@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Clean Cancelled Invoice Number',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
     'summary': 'Invoicing, Number, Cancelled',
@@ -38,7 +38,7 @@
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
