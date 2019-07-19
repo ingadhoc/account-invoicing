@@ -31,5 +31,5 @@
         'views/account_invoice_views.xml',
     ],
     'website': 'www.adhoc.com.ar',
-    'installable': False,
+    'installable': True,
 }
