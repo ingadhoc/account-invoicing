@@ -124,10 +124,10 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                 cur_factor = currency_id._get_conversion_rate(
                     product_currency, currency_id)
 
-        product_uom = self.env.context.get('uom') or product.uom_id.id
-        if uom and uom.id != product_uom:
+        uom_uom = self.env.context.get('uom') or uom.uom_id.id
+        if uom and uom.id != uom_uom:
             # the unit price is in a different uom
-            uom_factor = uom._compute_price(1.0, product.uom_id)
+            uom_factor = uom._compute_price(1.0, uom.uom_id)
         else:
             uom_factor = 1.0
 
