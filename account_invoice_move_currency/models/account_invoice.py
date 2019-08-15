@@ -67,7 +67,7 @@ class AccountInvoice(models.Model):
                 company_id=self.company_id.id,
                 date=self.date_invoice or fields.Date.context_today(self))
             self.move_inverse_currency_rate = currency._convert(
-                1.0, rec.company_id.currency_id)
+                1.0, self.company_id.currency_id)
 
     @api.multi
     @api.constrains('move_currency_id', 'currency_id')
