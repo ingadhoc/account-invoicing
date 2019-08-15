@@ -27,6 +27,7 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]},
     )
 
+    @api.one
     @api.depends(
         # 'state', 'currency_id', 'invoice_line_ids.price_subtotal',
         # 'move_id.line_ids.amount_residual',
@@ -40,29 +41,28 @@ class AccountInvoice(models.Model):
         Modificamos para que no lo convierta y muestre deuda en pesos si hay
         secondary currency
         """
-        for rec in self:
-            if not rec.move_currency_id:
-                super(AccountInvoice, self)._compute_residual()
-                continue
+        if not self.move_currency_id:
+            return super(AccountInvoice, self)._compute_residual()
 
-            # si tenemos secondary currency no lo convertimos, mostramos
-            # la deuda en moneda de cia
-            residual = 0.0
-            residual_company_signed = 0.0
-            sign = rec.type in ['in_refund', 'out_refund'] and -1 or 1
-            for line in rec.sudo().move_id.line_ids.filtered(
-                    lambda x: x.account_id.internal_type
-                    in ('receivable', 'payable')):
-                residual_company_signed += line.amount_residual
-                residual += line.amount_residual
-            rec.update(
-                {'residual_company_signed': abs(
-                    residual_company_signed) * sign,
-                 'residual_signed': abs(residual) * sign,
-                 'residual': abs(residual),
-                 'reconciled': True if float_is_zero(
-                    abs(residual),
-                    precision_rounding=rec.currency_id.rounding) else False})
+        # si tenemos secondary currency no lo convertimos, mostramos
+        # la deuda en moneda de cia
+        residual = 0.0
+        residual_company_signed = 0.0
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
+        for line in self.sudo().move_id.line_ids.filtered(
+                lambda x: x.account_id.internal_type
+                in ('receivable', 'payable')):
+            residual_company_signed += line.amount_residual
+            residual += line.amount_residual
+        self.residual_company_signed = abs(residual_company_signed) * sign
+        self.residual_signed = abs(residual) * sign
+        self.residual = abs(residual)
+        digits_rounding_precision = self.currency_id.rounding
+        if float_is_zero(
+                self.residual, precision_rounding=digits_rounding_precision):
+            self.reconciled = True
+        else:
+            self.reconciled = False
 
     @api.onchange('move_currency_id')
     def change_move_currency(self):
@@ -70,6 +70,7 @@ class AccountInvoice(models.Model):
             self.move_inverse_currency_rate = False
         else:
             currency = self.move_currency_id.with_context(
+                company_id=self.company_id.id,
                 date=self.date_invoice or fields.Date.context_today(self))
             self.move_inverse_currency_rate = currency.compute(
                 1.0, self.company_id.currency_id)

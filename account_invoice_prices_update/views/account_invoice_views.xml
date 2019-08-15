@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_sale_order_form">
+        <field name="name">account.invoice_price.view</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <button name="action_invoice_draft" position="after">
+                <button name="%(account_invoice_prices_update.action_update_prices_list)d" states="draft" string="Update Pricelist and Prices" type="action" groups="base.group_user" context="{'default_type': 'sale'}"/>
+            </button>
+        </field>
+    </record>
+
+</odoo>
