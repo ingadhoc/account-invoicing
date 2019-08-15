@@ -10,7 +10,6 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-
 ==============================
 Clean Cancelled Invoice Number
 ==============================
@@ -71,3 +70,4 @@ Maintainer
 This module is maintained by the |company|.
 
 To contribute to this module, please visit https://www.adhoc.com.ar.
+
