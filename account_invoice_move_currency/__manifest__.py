@@ -34,7 +34,7 @@
     ],
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False
 }

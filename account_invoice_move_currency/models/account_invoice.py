@@ -18,8 +18,7 @@ class AccountInvoice(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-    # TODO implement this
-    # move_currency_rate = fields.Float(
+
     move_inverse_currency_rate = fields.Float(
         digits=(16, 4),
         string='Account Move Secondary Currency Rate',
@@ -27,13 +26,7 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]},
     )
 
-    @api.one
-    @api.depends(
-        # 'state', 'currency_id', 'invoice_line_ids.price_subtotal',
-        # 'move_id.line_ids.amount_residual',
-        # 'move_id.line_ids.currency_id'
-        'move_currency_id'
-    )
+    @api.depends('move_currency_id')
     def _compute_residual(self):
         """
         Arreglamos que odoo nos convierte la deuda del asiento, expresada
@@ -41,8 +34,9 @@ class AccountInvoice(models.Model):
         Modificamos para que no lo convierta y muestre deuda en pesos si hay
         secondary currency
         """
+        self.ensure_one()
         if not self.move_currency_id:
-            return super(AccountInvoice, self)._compute_residual()
+            return super()._compute_residual()
 
         # si tenemos secondary currency no lo convertimos, mostramos
         # la deuda en moneda de cia
@@ -72,8 +66,8 @@ class AccountInvoice(models.Model):
             currency = self.move_currency_id.with_context(
                 company_id=self.company_id.id,
                 date=self.date_invoice or fields.Date.context_today(self))
-            self.move_inverse_currency_rate = currency.compute(
-                1.0, self.company_id.currency_id)
+            self.move_inverse_currency_rate = currency._convert(
+                1.0, rec.company_id.currency_id)
 
     @api.multi
     @api.constrains('move_currency_id', 'currency_id')
@@ -101,8 +95,7 @@ class AccountInvoice(models.Model):
                 invoice
         """
         self.ensure_one()
-        move_lines = super(
-            AccountInvoice, self).finalize_invoice_move_lines(move_lines)
+        move_lines = super().finalize_invoice_move_lines(move_lines)
         if self.move_currency_id:
             if not self.move_inverse_currency_rate:
                 raise UserError(_(

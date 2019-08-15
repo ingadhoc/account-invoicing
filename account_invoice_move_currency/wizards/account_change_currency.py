@@ -14,7 +14,6 @@ class AccountChangeCurrency(models.TransientModel):
 
     currency_company_id = fields.Many2one(
         'res.currency',
-        readonly=True,
         related='invoice_id.company_id.currency_id'
     )
 
@@ -31,7 +30,7 @@ class AccountChangeCurrency(models.TransientModel):
             self.invoice_id.move_currency_id = False
             self.invoice_id.move_inverse_currency_rate = False
         currency_from_id = self.currency_from_id
-        res = super(AccountChangeCurrency, self).change_currency()
+        res = super().change_currency()
         if self.save_secondary_currency and self.same_currency and \
                 self.change_type == 'value':
             self.invoice_id.move_currency_id = currency_from_id.id
