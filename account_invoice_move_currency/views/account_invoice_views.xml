@@ -6,7 +6,7 @@
         <field name="model">account.invoice</field>
         <field name="arch" type="xml">
             <div groups="base.group_multi_currency" position="after">
-                <label for="move_currency_id" groups="base.group_multi_currency"/>
+                <label for="move_currency_id" name="Move Currency" groups="base.group_multi_currency"/>
                 <div groups="base.group_multi_currency">
                     <field name="move_currency_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
                     <field name="move_inverse_currency_rate" class="oe_inline" placeholder="Rate..." attrs="{'required': [('move_currency_id', '!=', False)], 'invisible': [('move_currency_id', '=', False)]}"/>
@@ -21,7 +21,7 @@
         <field name="model">account.invoice</field>
         <field name="arch" type="xml">
             <field name="company_currency_id" position="before">
-                <label for="move_currency_id" groups="base.group_multi_currency"/>
+                <label for="move_currency_id" name="Move Currency" groups="base.group_multi_currency"/>
                 <div groups="base.group_multi_currency">
                     <field name="move_currency_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
                     <field name="move_inverse_currency_rate" class="oe_inline" placeholder="Rate..." attrs="{'required': [('move_currency_id', '!=', False)], 'invisible': [('move_currency_id', '=', False)]}"/>
