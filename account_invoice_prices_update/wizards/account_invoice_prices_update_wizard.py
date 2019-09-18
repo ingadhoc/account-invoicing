@@ -53,6 +53,14 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         active_id = self._context.get('active_id', False)
         invoice = self.env['account.invoice'].browse(active_id)
         invoice.write({'currency_id': self.pricelist_id.currency_id.id})
+        # if new pricelist show discounts we update that column,
+        # if not, we kept original discounts that proably where
+        # entered manually. As we don't know which was the previous
+        #  there could be an error if he user comes from a pricelist that shows
+        #  discounts and change to a pricelist that include discounts
+        # (no es muy probable que pase)
+        update_discount = self.pricelist_id\
+            .discount_policy == 'without_discount'
         for line in invoice.invoice_line_ids.filtered('product_id'):
             product = line.product_id.with_context(
                 lang=invoice.partner_id.lang,
@@ -66,10 +74,10 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             price, discount = self._get_display_price_and_discount(
                 product, line)
 
-            line.write({
-                'price_unit': price,
-                'discount': discount,
-            })
+            vals = {'price_unit': price}
+            if update_discount:
+                vals['discount'] = discount
+            line.write(vals)
         invoice.compute_taxes()
         return True
 
