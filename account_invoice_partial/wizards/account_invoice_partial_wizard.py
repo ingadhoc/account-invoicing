@@ -9,6 +9,7 @@ from odoo.tools import float_round
 class AccountInvoicePartialWizard(models.TransientModel):
 
     _name = "account.invoice.partial.wizard"
+    _description = "Account Invoice Partial Wizard"
 
     invoice_id = fields.Many2one(
         'account.invoice',
