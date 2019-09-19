@@ -29,9 +29,6 @@
         'views/account_invoice_views.xml',
         'wizards/account_change_currency_views.xml',
     ],
-    'demo': [
-        'demo/account_invoice_demo.yml',
-    ],
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'installable': True,
