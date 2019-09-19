@@ -10,6 +10,7 @@ class AccountCommissionRule(models.Model):
 
     _name = 'account.commission.rule'
     _order = 'sequence'
+    _description = 'Account Commission Rule'
 
     sequence = fields.Integer(
         'Sequence',
