@@ -26,6 +26,7 @@ class AccountInvoice(models.Model):
         states={'draft': [('readonly', False)]},
     )
 
+    @api.one
     @api.depends('move_currency_id')
     def _compute_residual(self):
         """

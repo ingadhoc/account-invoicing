@@ -7,6 +7,7 @@ from odoo import models, fields, api
 
 class AccountInvoicePricesUpdateWizard(models.TransientModel):
     _name = 'account.invoice.prices_update.wizard'
+    _description = 'account.invoice.prices_update.wizard'
 
     pricelist_id = fields.Many2one(
         'product.pricelist',
