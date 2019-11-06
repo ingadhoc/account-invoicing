@@ -64,11 +64,9 @@ class AccountInvoice(models.Model):
         if not self.move_currency_id:
             self.move_inverse_currency_rate = False
         else:
-            currency = self.move_currency_id.with_context(
-                company_id=self.company_id.id,
-                date=self.date_invoice or fields.Date.context_today(self))
-            self.move_inverse_currency_rate = currency._convert(
-                1.0, self.company_id.currency_id)
+            self.move_inverse_currency_rate = self.move_currency_id._convert(
+                1.0, self.company_id.currency_id, self.company_id,
+                self.date_invoice or fields.Date.context_today(self))
 
     @api.multi
     @api.constrains('move_currency_id', 'currency_id')
