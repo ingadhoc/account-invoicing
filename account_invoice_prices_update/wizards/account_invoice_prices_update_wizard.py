@@ -54,7 +54,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         active_id = self._context.get('active_id', False)
         invoice = self.env['account.invoice'].browse(active_id)
         invoice.write({'currency_id': self.pricelist_id.currency_id.id})
-        for line in invoice.invoice_line_ids.filtered('product_id'):
+        for line in invoice.invoice_line_ids.filtered(lambda l: l.product_id and l.product_id.lst_price):
             product = line.product_id.with_context(
                 lang=invoice.partner_id.lang,
                 partner=invoice.partner_id.id,
