@@ -22,7 +22,6 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             invoice = self.env['account.invoice'].browse(invoice_id)
             return invoice.partner_id.property_product_pricelist
 
-    @api.multi
     def _get_display_price_and_discount(self, product, line):
         discount = 0.0
         if self.pricelist_id.discount_policy == 'with_discount':
@@ -48,7 +47,6 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             discount = (base_price - final_price) / base_price * 100
         return max(base_price, final_price), discount
 
-    @api.multi
     def update_prices(self):
         self.ensure_one()
         active_id = self._context.get('active_id', False)
