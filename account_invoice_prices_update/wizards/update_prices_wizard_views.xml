@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form string="Update Prices Wizard">
                 <group>
-                    <field name="pricelist_id"/>
+                    <field name="pricelist_id" options="{'no_create': True,'no_open': True}"/>
                 </group>
                 <footer>
                     <button string="Update Prices" name="update_prices" type="object" class="oe_highlight"/>
@@ -22,7 +22,6 @@
         <field name="name">Update Prices</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.invoice.prices_update.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
