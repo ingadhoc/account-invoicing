@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form string="Update Prices Wizard">
                 <group>
-                    <field name="pricelist_id"/>
+                    <field name="pricelist_id" options="{'no_create': True,'no_open': True}"/>
                 </group>
                 <footer>
                     <button string="Update Prices" name="update_prices" type="object" class="oe_highlight"/>
