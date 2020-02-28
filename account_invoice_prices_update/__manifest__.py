@@ -29,7 +29,7 @@
     ],
     'data': [
         'wizards/update_prices_wizard_views.xml',
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
     ],
     'installable': True,
 }
