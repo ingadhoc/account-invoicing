@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Prices Update',
-    'version': '12.0.1.0.0',
+    'version': "13.0.1.0.0",
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
@@ -29,7 +29,7 @@
     ],
     'data': [
         'wizards/update_prices_wizard_views.xml',
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
