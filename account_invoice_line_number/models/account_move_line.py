@@ -8,7 +8,7 @@ from odoo import models, fields
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    number = fields.Integer(compute='_compute_number')
+    number = fields.Integer(string="Line Nº", compute='_compute_number')
 
     def _compute_number(self):
         """No es lo mas elegante pero funciona. Algunos comentarios:
