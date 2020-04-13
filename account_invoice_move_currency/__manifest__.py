@@ -19,19 +19,19 @@
 ##############################################################################
 {
     'name': 'Account Invoice Move Currency',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'author': 'ADHOC SA',
     'category': 'Accounting & Finance',
     'depends': [
         'account_ux'
     ],
     'data': [
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
         'wizards/account_change_currency_views.xml',
     ],
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False
 }
