@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.tools import float_round
 
 
@@ -12,7 +12,7 @@ class AccountInvoicePartialWizard(models.TransientModel):
     _description = "Account Invoice Partial Wizard"
 
     invoice_id = fields.Many2one(
-        'account.invoice',
+        'account.move',
         default=lambda x: x._context.get('active_id', False),
     )
     percentage_to_invoice = fields.Float(
@@ -34,12 +34,13 @@ class AccountInvoicePartialWizard(models.TransientModel):
         help='The tie-breaking rule used for float rounding operations',
     )
 
-    @api.multi
     def compute_new_quantity(self):
         self.ensure_one()
-        for line in self.invoice_id.invoice_line_ids:
+        for line in self.invoice_id.invoice_line_ids.with_context(check_move_validity=False):
             quantity = line.quantity * (self.percentage_to_invoice/100)
             line.quantity = float_round(
                 quantity, precision_rounding=self.rounding,
                 rounding_method=self.rounding_method)
-        self.invoice_id.compute_taxes()
+            line._onchange_balance()
+            line.move_id._onchange_invoice_line_ids()
+            line._onchange_mark_recompute_taxes()
