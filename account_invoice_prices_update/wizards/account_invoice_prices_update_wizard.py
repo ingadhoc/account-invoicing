@@ -89,7 +89,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         PricelistItem = self.env['product.pricelist.item']
         field_name = 'lst_price'
         currency_id = None
-        product_currency = None
+        product_currency = product.currency_id
         active_id = self._context.get('active_id', False)
         invoice = self.env['account.move'].browse(active_id)
         if rule_id:
@@ -108,7 +108,8 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
 
             if pricelist_item.base == 'standard_price':
                 field_name = 'standard_price'
-            if pricelist_item.base == 'pricelist' and\
+                product_currency = product.cost_currency_id
+            elif pricelist_item.base == 'pricelist' and\
                     pricelist_item.base_pricelist_id:
                 field_name = 'price'
                 product = product.with_context(
@@ -116,9 +117,6 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                 product_currency = pricelist_item.base_pricelist_id.currency_id
             currency_id = pricelist_item.pricelist_id.currency_id
 
-        product_currency = product_currency or(
-            product.company_id and product.company_id.currency_id
-        ) or self.env.company.currency_id
         if not currency_id:
             currency_id = product_currency
             cur_factor = 1.0
