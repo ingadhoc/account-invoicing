@@ -8,16 +8,16 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class AccountInvoice(models.Model):
+class AccountMove(models.Model):
 
-    _inherit = "account.invoice"
+    _inherit = "account.move"
 
     commission_amount = fields.Monetary(
         compute='_compute_commission_amount',
         currency_field='company_currency_id',
     )
     commission_invoice_ids = fields.Many2many(
-        'account.invoice',
+        'account.move',
         'account_invoice_commission_inv_rel',
         'commissioned_id',
         'commission_id',
@@ -28,7 +28,7 @@ class AccountInvoice(models.Model):
         copy=False,
     )
     commissioned_invoice_ids = fields.Many2many(
-        'account.invoice',
+        'account.move',
         'account_invoice_commission_inv_rel',
         'commission_id',
         'commissioned_id',
@@ -58,13 +58,14 @@ class AccountInvoice(models.Model):
             users = rec.partner_id.user_ids
             rec.partner_user_id = users and users[0] or False
 
-    @api.depends('payment_move_line_ids.date')
+    @api.depends('line_ids.date')
     def _compute_date_last_payment(self):
         for rec in self:
-            rec.date_last_payment = rec.payment_move_line_ids and \
-                rec.payment_move_line_ids[0].date
+            rec.date_last_payment = rec.line_ids and \
+                rec.line_ids[0].date
 
     @api.depends('invoice_line_ids.commission_amount')
+    @api.depends_context('commissioned_partner_id')
     def _compute_commission_amount(self):
         commissioned_partner_id = self._context.get('commissioned_partner_id')
         if commissioned_partner_id:
@@ -72,3 +73,5 @@ class AccountInvoice(models.Model):
             for rec in self:
                 rec.commission_amount = sum(
                     rec.mapped('invoice_line_ids.commission_amount'))
+        else:
+            self.commission_amount = 0.0

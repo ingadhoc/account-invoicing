@@ -12,7 +12,7 @@
                 <field name="customer_id"/>
                 <field name="product_tmpl_id"/>
                 <field name="categ_id"/>
-                <field name="account_analytic_id" groups="analytic.group_analytic_accounting"/>
+                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                 <field name="min_amount"/>
                 <field name="percent_commission"/>
             </tree>
@@ -22,7 +22,6 @@
     <record id="action_commission_rule_form" model="ir.actions.act_window">
         <field name="name">Commission Rules</field>
         <field name="res_model">account.commission.rule</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
