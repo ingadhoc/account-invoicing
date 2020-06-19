@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api, _
+from odoo import models, fields, _
 from odoo.exceptions import ValidationError
 
 
@@ -37,8 +37,7 @@ class AccountCommissionRule(models.Model):
         'res.partner',
         auto_join=True,
         ondelete='cascade',
-        domain=[('customer', '=', True)],
-        context={'default_customer': True},
+        context={'res_partner_search_mode': 'customer'},
     )
     # con prod template ya esta bien, no hace falta product
     product_tmpl_id = fields.Many2one(
@@ -66,12 +65,11 @@ class AccountCommissionRule(models.Model):
     percent_commission = fields.Float(
         'Percentage Commission'
     )
-    account_analytic_id = fields.Many2one(
+    analytic_account_id = fields.Many2one(
         'account.analytic.account',
         'Analytic Account',
     )
 
-    @api.model
     def _get_rule_domain(self, date, product, partner_id, customer, amount,
                          analytic_acc):
         domain = [
@@ -79,8 +77,8 @@ class AccountCommissionRule(models.Model):
             ('date_start', '=', False),
             ('date_start', '<=', date),
             '|',
-            ('account_analytic_id', '=', False),
-            ('account_analytic_id', '=', analytic_acc.id),
+            ('analytic_account_id', '=', False),
+            ('analytic_account_id', '=', analytic_acc.id),
             '|',
             ('date_end', '=', False),
             ('date_end', '>=', date),
@@ -103,7 +101,6 @@ class AccountCommissionRule(models.Model):
             ]
         return domain
 
-    @api.model
     def _get_rule(self, date, product, partner_id, customer, amount,
                   analytic_acc):
         domain = self._get_rule_domain(

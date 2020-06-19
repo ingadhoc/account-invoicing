@@ -25,7 +25,7 @@ msgid "Account Commission Rule"
 msgstr ""
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__account_analytic_id
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__analytic_account_id
 msgid "Analytic Account"
 msgstr ""
 

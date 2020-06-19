@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="partner_user_id" attrs="{'invisible': [('type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
+                <field name="date_last_payment" states="open,paid"/>
+            </field>
+            <notebook>
+                <page string="Commissions" attrs="{'invisible': [('type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]}">
+                    <field name="commission_invoice_ids"/>
+                </page>
+                <page string="Commission" attrs="{'invisible': [('type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}">
+                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.view_invoice_tree', 'form_view_ref':'account.move_form', 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_invoice_user_id': partner_user_id}"/>
+                </page>
+            </notebook>
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
+                <field name="commission_amount" invisible="not context.get('commissioned_partner_id', False)" sum="Total"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_invoice_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tree</field>
+        <field name="model">account.move</field>
+        <field name="mode">primary</field>
+        <field name="priority">90</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_residual_signed" position="after">
+                <field name="commission_amount" sum="Total"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter" model="ir.ui.view">
+        <field name="name">account.invoice.select</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="date_last_payment"/>
+            </field>
+            <field name="invoice_user_id" position="after">
+                <!-- en este no anda el invisible por contexto -->
+                <filter name="not_commissioned" string="Not Commissioned" domain="[('commission_invoice_ids', '=', False)]"/>
+
+                <field name="commission_invoice_ids" widget="many2one" invisible="context.get('journal_type', False) != 'sale'"/>
+                <field name="commissioned_invoice_ids" widget="many2one"  invisible="context.get('journal_type', False) != 'purchase'"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
