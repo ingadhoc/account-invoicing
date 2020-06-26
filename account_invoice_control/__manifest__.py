@@ -28,7 +28,7 @@
     ],
     'data': [
         'security/account_invoice_control_security.xml',
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
     ],
     'website': 'www.adhoc.com.ar',
     'installable': True,
