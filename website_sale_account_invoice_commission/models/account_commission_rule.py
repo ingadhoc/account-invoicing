@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class AccountCommissionRule(models.Model):
@@ -15,7 +15,6 @@ class AccountCommissionRule(models.Model):
         auto_join=True,
     )
 
-    @api.model
     def _get_rule_domain(
             self, date, product, partner_id, customer, amount, analytic_acc):
         domain = super()._get_rule_domain(
