@@ -6,8 +6,8 @@
         <field name="model">account.move</field>
         <field name="arch" type="xml">
             <div name="currency" position="after">
-                <label for="move_currency_id" name="Move Currency" groups="base.group_multi_currency"/>
-                <div groups="base.group_multi_currency">
+                <label for="move_currency_id" name="Move Currency" groups="base.group_multi_currency" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"/>
+                <div groups="base.group_multi_currency" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}">
                     <field name="move_currency_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
                     <field name="move_inverse_currency_rate" class="oe_inline" placeholder="Rate..." attrs="{'required': [('move_currency_id', '!=', False)], 'invisible': [('move_currency_id', '=', False)]}"/>
                 </div>
