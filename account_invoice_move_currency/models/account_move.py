@@ -34,7 +34,6 @@ class AccountMove(models.Model):
         secondary currency
         TODO ver si podemos eliminar esto, es horrible
         """
-        self.ensure_one()
         res = super()._compute_amount()
         for move in self.filtered('move_currency_id'):
             # si tenemos secondary currency no lo convertimos, mostramos
