@@ -107,12 +107,22 @@ class AccountCommissionRule(models.Model):
             date, product, partner_id, customer, amount, analytic_acc)
         res = self.search(domain, limit=1)
         if not res:
-            raise ValidationError(_(
-                'No commission rule found for product id "%s", partner id "%s"'
-                ' date "%s" and customer "%s"') % (
-                    ' - '.join([str(product.id), product.name]),
-                    partner_id,
-                    date,
-                    ' - '.join([str(customer.id), customer.name])
-                ))
+            if product:
+                msj = (_(
+                    'No commission rule found for product id "%s", partner id "%s"'
+                    ' date "%s" and customer "%s"') % (
+                        ' - '.join([str(product.id), product.name]),
+                        partner_id,
+                        date,
+                        ' - '.join([str(customer.id), customer.name])
+                    ))
+            else:
+                msj = (_(
+                    'No commission rule found partner id "%s"'
+                    ' date "%s" and customer "%s"') % (
+                        partner_id,
+                        date,
+                        ' - '.join([str(customer.id), customer.name])
+                    ))
+            raise ValidationError(msj)
         return res
