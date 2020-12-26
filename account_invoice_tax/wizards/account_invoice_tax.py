@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, api, _
+from odoo import fields, models, api
 
 
 class AccountInvoiceTax(models.TransientModel):
@@ -15,14 +15,16 @@ class AccountInvoiceTax(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
-        move_ids = self.env['account.move'].browse(self.env.context['active_ids']) if self.env.context.get('active_model') == 'account.move' else self.env['account.move']
+        move_ids = self.env['account.move'].browse(self.env.context['active_ids']) if self.env.context.get(
+            'active_model') == 'account.move' else self.env['account.move']
         res['move_id'] = move_ids[0].id if move_ids else False
         res['type_operation'] = self.env.context.get('type_operation', 'add')
         return res
 
     @api.onchange('move_id')
     def onchange_move_id(self):
-        taxes = self.env['account.tax'].search([]) if self.type_operation == 'add' else self.move_id.mapped('invoice_line_ids.tax_ids')
+        taxes = self.env['account.tax'].search([]) if self.type_operation == 'add' else self.move_id.mapped(
+            'invoice_line_ids.tax_ids')
         return {'domain': {'tax_id': [('id', '=', taxes.ids)]}}
 
     def _get_amount_updated_values(self):
@@ -43,8 +45,10 @@ class AccountInvoiceTax(models.TransientModel):
         company_currency = self.move_id.company_currency_id
         if move_currency and move_currency != company_currency:
             return {'amount_currency': self.amount if debit else -self.amount,
-                    'debit': move_currency._convert(debit, company_currency, self.move_id.company_id, self.move_id.invoice_date),
-                    'credit': move_currency._convert(credit, company_currency, self.move_id.company_id, self.move_id.invoice_date)}
+                    'debit': move_currency._convert(
+                        debit, company_currency, self.move_id.company_id, self.move_id.invoice_date),
+                    'credit': move_currency._convert(
+                        credit, company_currency, self.move_id.company_id, self.move_id.invoice_date)}
 
         return {'debit': debit, 'credit': credit, 'balance': self.amount}
 
