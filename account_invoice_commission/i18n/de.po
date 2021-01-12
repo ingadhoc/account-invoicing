@@ -1,17 +1,17 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_invoice_commission
+# 	* account_invoice_commission
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 15:14+0000\n"
-"PO-Revision-Date: 2019-08-02 19:52+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2019\n"
+"POT-Creation-Date: 2021-01-07 17:47+0000\n"
+"PO-Revision-Date: 2020-07-15 16:43+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020\n"
 "Language-Team: German (https://www.transifex.com/adhoc/teams/46451/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,23 +30,23 @@ msgid "Analytic Account"
 msgstr ""
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,help:account_invoice_commission.field_account_invoice__commission_invoice_ids
+#: model:ir.model.fields,help:account_invoice_commission.field_account_move__commission_invoice_ids
 msgid "Commision invoices where this invoice is commissioned"
 msgstr "Rechnungen, die in dieser Provisionsabrechnungen berücksichtigt sind"
 
 #. module: account_invoice_commission
-#: model_terms:ir.ui.view,arch_db:account_invoice_commission.invoice_supplier_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_move_form
 msgid "Commission"
 msgstr "Provision"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice__commission_amount
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice_line__commission_amount
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__commission_amount
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move_line__commission_amount
 msgid "Commission Amount"
 msgstr "Provisionsbetrag"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice__commission_invoice_ids
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__commission_invoice_ids
 msgid "Commission Invoices"
 msgstr "Provisionsabrechnungen"
 
@@ -58,12 +58,12 @@ msgid "Commission Rules"
 msgstr "Provisionierungsregeln"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice__commissioned_invoice_ids
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__commissioned_invoice_ids
 msgid "Commissioned invoices"
 msgstr "Provisionierte Rechnungen"
 
 #. module: account_invoice_commission
-#: model_terms:ir.ui.view,arch_db:account_invoice_commission.invoice_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_move_form
 msgid "Commissions"
 msgstr "Provisionen"
 
@@ -114,14 +114,14 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_invoice_commission
-#: model:ir.model,name:account_invoice_commission.model_account_invoice
-msgid "Invoice"
-msgstr "Rechnung"
+#: model:ir.model,name:account_invoice_commission.model_account_move
+msgid "Journal Entries"
+msgstr ""
 
 #. module: account_invoice_commission
-#: model:ir.model,name:account_invoice_commission.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Rechnungsposition"
+#: model:ir.model,name:account_invoice_commission.model_account_move_line
+msgid "Journal Item"
+msgstr ""
 
 #. module: account_invoice_commission
 #: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule____last_update
@@ -129,7 +129,7 @@ msgid "Last Modified on"
 msgstr "Zuletzt verändert am"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice__date_last_payment
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__date_last_payment
 msgid "Last Payment Date"
 msgstr "Letztes Zahldatum"
 
@@ -154,7 +154,7 @@ msgid "Minimun Amount on company currency of the invoice to be evaluated"
 msgstr "Mindestbetrag der ausgewerteten Rechnung in Hauswährung"
 
 #. module: account_invoice_commission
-#: code:addons/account_invoice_commission/models/account_commission_rule.py:113
+#: code:addons/account_invoice_commission/models/account_commission_rule.py:0
 #, python-format
 msgid ""
 "No commission rule found for product id \"%s\", partner id \"%s\" date "
@@ -164,14 +164,15 @@ msgstr ""
 " und Kunde \"%s\""
 
 #. module: account_invoice_commission
-#: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_account_invoice_filter
-msgid "Not Commissioned"
-msgstr "Nicht provisioniert"
+#: code:addons/account_invoice_commission/models/account_commission_rule.py:0
+#, python-format
+msgid "No commission rule found partner id \"%s\" date \"%s\" and customer \"%s\""
+msgstr ""
 
 #. module: account_invoice_commission
 #: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_account_invoice_filter
-msgid "Paid"
-msgstr "Bezahlt"
+msgid "Not Commissioned"
+msgstr "Nicht provisioniert"
 
 #. module: account_invoice_commission
 #: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__partner_id
@@ -179,7 +180,7 @@ msgid "Partner"
 msgstr "Partner"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_invoice__partner_user_id
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__partner_user_id
 msgid "Partner User"
 msgstr "Partner-Nutzer"
 
@@ -232,12 +233,12 @@ msgid "Starting date for this rule"
 msgstr "Anfangsdatum für die Gültigkeit dieser Regel"
 
 #. module: account_invoice_commission
-#: model:ir.model.fields,help:account_invoice_commission.field_account_invoice__commissioned_invoice_ids
+#: model:ir.model.fields,help:account_invoice_commission.field_account_move__commissioned_invoice_ids
 msgid "The invoices that this commission invoice is commissioning"
 msgstr "Die Rechnungen, die diese Provisionsabrechnung abrechnet"
 
 #. module: account_invoice_commission
-#: model_terms:ir.ui.view,arch_db:account_invoice_commission.invoice_form
-#: model_terms:ir.ui.view,arch_db:account_invoice_commission.invoice_tree
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_invoice_tree
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.view_move_form
 msgid "Total"
 msgstr "Gesamt"

@@ -12,59 +12,59 @@ msgstr ""
 "POT-Creation-Date: 2021-01-07 17:47+0000\n"
 "PO-Revision-Date: 2020-12-26 18:51+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"Language-Team: German (https://www.transifex.com/adhoc/teams/46451/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax
 msgid "Account Invoice Tax"
-msgstr "Impuesto en Factura"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add"
-msgstr "Agregar"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields.selection,name:account_invoice_tax.selection__account_invoice_tax__type_operation__add
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add Tax"
-msgstr "Agregar impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__amount
 msgid "Amount"
-msgstr "Importe"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr "Angelegt durch"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Angelegt am"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__display_name
 msgid "Display Name"
-msgstr "Nombre para mostrar"
+msgstr "Anzeigebezeichnung"
 
 #. module: account_invoice_tax
 #: model:ir.actions.act_window,name:account_invoice_tax.action_view_account_invoice_tax
 msgid "Edit tax lines"
-msgstr "Editar lineas de impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__id
@@ -74,41 +74,41 @@ msgstr "ID"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax____last_update
 msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "Zuletzt verändert am"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__write_uid
 msgid "Last Updated by"
-msgstr "Última modificación por"
+msgstr "Zuletzt aktualisiert durch"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__write_date
 msgid "Last Updated on"
-msgstr "Última modificación por"
+msgstr "Zuletzt aktualisiert am"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__move_id
 msgid "Move"
-msgstr "Movimiento"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Remove"
-msgstr "Remover"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields.selection,name:account_invoice_tax.selection__account_invoice_tax__type_operation__remove
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Remove Tax"
-msgstr "Remover Impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__tax_id
 msgid "Tax"
-msgstr "Impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__type_operation
 msgid "Type Operation"
-msgstr "Tipo de Operación"
+msgstr ""
