@@ -10,7 +10,7 @@ def migrate(env, version):
          ('currency_id', '=', False)]):
         amount = line.debit if line.debit else line.credit
         sign = 1.0 if line.debit else -1.0
-        line.write({
+        line._write({
             'currency_id': line.move_id.move_currency_id.id,
             'amount_currency': sign * line.move_id.move_currency_id.round(
                 amount / line.move_id.move_inverse_currency_rate)})
