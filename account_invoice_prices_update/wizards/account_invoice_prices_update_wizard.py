@@ -74,6 +74,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             line._onchange_balance()
             line._onchange_mark_recompute_taxes()
             line.move_id._onchange_invoice_line_ids()
+        invoice.message_post(body='The pricelist is now: %s' % self.pricelist_id.display_name)
         return True
 
     def _get_real_price_currency(
