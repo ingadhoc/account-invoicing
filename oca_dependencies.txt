@@ -1,3 +1,0 @@
-# web
-ingadhoc-account-financial-tools https://github.com/ingadhoc/account-financial-tools.git
-ingadhoc-sale https://github.com/ingadhoc/sale.git
