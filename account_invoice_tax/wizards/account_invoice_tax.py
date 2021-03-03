@@ -56,7 +56,7 @@ class AccountInvoiceTax(models.TransientModel):
         """ Add the given taxes to all the invoice line of the current invoice """
         move_id = self.move_id.with_context(check_move_validity=False)
         move_id.invoice_line_ids.write({'tax_ids': [(4, self.tax_id.id)]})
-        move_id._recompute_dynamic_lines(recompute_all_taxes=True)
+        move_id._recompute_dynamic_lines(recompute_tax_base_amount=True)
 
         # set amount in the new created tax line
         line_with_tax = move_id.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
