@@ -1,0 +1,91 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_invoice_prices_update
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-02 21:46+0000\n"
+"PO-Revision-Date: 2020-02-28 20:12+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2020\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_invoice_prices_update
+#: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__create_uid
+msgid "Created by"
+msgstr "Creado Por"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__id
+msgid "ID"
+msgstr "ID"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: account_invoice_prices_update
+#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__pricelist_id
+msgid "Pricelist"
+msgstr "Tarifa"
+
+#. module: account_invoice_prices_update
+#: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_move_form
+msgid "Update Pricelist and Prices"
+msgstr "Actualizar lista de precios"
+
+#. module: account_invoice_prices_update
+#: model:ir.actions.act_window,name:account_invoice_prices_update.action_update_prices_list
+#: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
+msgid "Update Prices"
+msgstr "Actualizar Precios"
+
+#. module: account_invoice_prices_update
+#: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
+msgid "Update Prices Wizard"
+msgstr "Asistente de actualizador de Precios"
+
+#. module: account_invoice_prices_update
+#: model:ir.model,name:account_invoice_prices_update.model_account_invoice_prices_update_wizard
+msgid "account.invoice.prices_update.wizard"
+msgstr "Asistente de Actualización de Precios de Factura"
+
+#. module: account_invoice_prices_update
+#: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
+msgid "or"
+msgstr "o"
