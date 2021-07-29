@@ -25,7 +25,7 @@ class AccountInvoiceTax(models.TransientModel):
     def onchange_move_id(self):
         taxes = self.env['account.tax'].search([]) if self.type_operation == 'add' else self.move_id.mapped(
             'invoice_line_ids.tax_ids')
-        return {'domain': {'tax_id': [('id', '=', taxes.ids)]}}
+        return {'domain': {'tax_id': [('id', '=', taxes.ids), ('company_id', '=', self.move_id.company_id.id)]}}
 
     def _get_amount_updated_values(self):
         debit = credit = 0
