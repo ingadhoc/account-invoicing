@@ -4,45 +4,45 @@
     <record id="invoice_restrict_edit_form" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="sale_ux.account_invoice_form"/>
-        <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]"/>
+        <field name="inherit_id" ref="sale_ux.account_invoice_form" />
+        <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]" />
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <field name="invoice_line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <xpath expr="//group[@id='header_right_group']//field[@name='company_id']" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </xpath>
             <field name="team_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </xpath>
             <field name="invoice_date" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="partner_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_user_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="fiscal_position_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_date_due" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_payment_term_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_partner_bank_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('sale_order_ids','!=',[])]}</attribute>
+                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
         </field>
     </record>
