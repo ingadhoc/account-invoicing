@@ -31,5 +31,5 @@
         'wizards/update_prices_wizard_views.xml',
         'views/account_move_views.xml',
     ],
-    'installable': True,
+    'installable': False,
 }
