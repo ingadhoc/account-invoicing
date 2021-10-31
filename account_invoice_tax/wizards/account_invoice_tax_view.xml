@@ -16,6 +16,7 @@
                 </group>
                 <footer>
                     <button string='Add' name="add_tax" type="object" class="btn-primary" attrs="{'invisible': [('type_operation', '=', 'remove')]}"/>
+                    <button string='Add and New' name="add_tax_and_new" type="object" class="btn-primary" attrs="{'invisible': [('type_operation', '=', 'remove')]}"/>
                     <button string='Remove' name="remove_tax" type="object" class="btn-primary"  attrs="{'invisible': [('type_operation', '=', 'add')]}"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
