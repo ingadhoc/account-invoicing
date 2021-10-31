@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 class AccountInvoiceTax(models.TransientModel):
@@ -51,6 +51,16 @@ class AccountInvoiceTax(models.TransientModel):
                         credit, company_currency, self.move_id.company_id, self.move_id.invoice_date)}
 
         return {'debit': debit, 'credit': credit, 'balance': self.amount}
+
+    def add_tax_and_new(self):
+        self.add_tax()
+        return {'type': 'ir.actions.act_window',
+                'name': _('Edit tax lines'),
+                'res_model': self._name,
+                'target': 'new',
+                'view_mode': 'form',
+                'context': self._context,
+        }
 
     def add_tax(self):
         """ Add the given taxes to all the invoice line of the current invoice """
