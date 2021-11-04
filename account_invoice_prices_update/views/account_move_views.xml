@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <button name="button_draft" position="after">
-                <button name="%(account_invoice_prices_update.action_update_prices_list)d" states="draft" string="Update Pricelist and Prices" type="action" groups="base.group_user" context="{'default_type': 'sale'}"/>
+                <button name="%(account_invoice_prices_update.action_update_prices_list)d" string="Update Pricelist and Prices" type="action" groups="account.group_account_invoice" attrs="{'invisible':['|', ('state', '!=', 'draft'), ('move_type', 'not in', ('out_invoice', 'out_refund'))]}" context="{'default_type': 'sale'}"/>
             </button>
         </field>
     </record>
