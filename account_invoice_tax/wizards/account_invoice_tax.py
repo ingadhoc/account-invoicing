@@ -25,7 +25,7 @@ class AccountInvoiceTax(models.TransientModel):
     def onchange_move_id(self):
         taxes = self.env['account.tax'].search([]) if self.type_operation == 'add' else self.move_id.mapped(
             'invoice_line_ids.tax_ids')
-        return {'domain': {'tax_id': [('id', '=', taxes.ids), ('company_id', '=', self.move_id.company_id.id)]}}
+        return {'domain': {'tax_id': [('id', 'in', taxes.ids), ('company_id', '=', self.move_id.company_id.id)]}}
 
     def _get_amount_updated_values(self):
         debit = credit = 0
@@ -60,13 +60,16 @@ class AccountInvoiceTax(models.TransientModel):
                 'target': 'new',
                 'view_mode': 'form',
                 'context': self._context,
-        }
+            }
 
     def add_tax(self):
         """ Add the given taxes to all the invoice line of the current invoice """
         move_id = self.move_id.with_context(check_move_validity=False)
         move_id.invoice_line_ids.write({'tax_ids': [(4, self.tax_id.id)]})
-        move_id._recompute_dynamic_lines(recompute_tax_base_amount=True)
+        # pasar "recompute_all_taxes=True" seria lo mismo que marcar una linea con recompute_tax_line
+        # IMPORTANTE para que esto funcione sin que se recompute todo es necesaria la modificacion que hicimos
+        # en account_ux en _recompute_tax_lines
+        move_id._recompute_dynamic_lines(recompute_all_taxes=True)
 
         # set amount in the new created tax line
         line_with_tax = move_id.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
