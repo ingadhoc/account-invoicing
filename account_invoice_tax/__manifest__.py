@@ -5,6 +5,7 @@
     'category': 'Localization',
     'depends': [
         'account',
+        'account_ux',  # for _recompute_tax_lines patch
     ],
     'data': [
         'wizards/account_invoice_tax_view.xml',
