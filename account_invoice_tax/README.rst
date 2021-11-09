@@ -14,8 +14,7 @@
 Account Invoice Tax
 ===================
 
-Add new buttons in the Vendor Bills that let us to add/remove taxes to all the lines
-of a vendor bill.
+Add new buttons in the Vendor Bills that let us to add/remove taxes to all the lines of a vendor bill.
 
 
 Installation
