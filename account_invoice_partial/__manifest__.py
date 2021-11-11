@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Partial',
-    'version': '13.0.1.0.0',
+    'version': "15.0.1.0.0",
     'category': 'Accounting',
     'sequence': 14,
     'summary': '',
@@ -34,10 +34,11 @@
     'data': [
         'wizards/account_invoice_partial_wizard_views.xml',
         'views/account_move_views.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
