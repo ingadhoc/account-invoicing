@@ -85,3 +85,10 @@ class AccountMove(models.Model):
                 line.currency_id = self.move_currency_id.id
                 line.amount_currency = sign * self.move_currency_id.round(amount / self.move_inverse_currency_rate)
         return res
+
+    def button_draft(self):
+        self.line_ids.write({
+        'currency_id': False,
+        'amount_currency': 0.0,
+        })
+        return super().button_draft()
