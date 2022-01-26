@@ -38,7 +38,7 @@ class AccountMove(models.Model):
         for move in self.filtered('move_currency_id'):
             # si tenemos secondary currency no lo convertimos, mostramos
             # la deuda en moneda de cia
-            if move.type == 'entry' or move.is_outbound():
+            if move.move_type == 'entry' or move.is_outbound():
                 sign = 1
             else:
                 sign = -1
@@ -69,11 +69,11 @@ class AccountMove(models.Model):
                     'Can not use Secondary currency if invoice is in a '
                     'Currency different from Company Currency'))
 
-    def post(self):
+    def _post(self, soft=True):
         """ para no tener que mandar el move currency en el context o hacer tmb onchanges nos la simpificamos y solo
         lo computamos en el post. Algo similar pasa tambien en odoo nativo, si bien a priroi se setea la currency_id
         (cuando la factura es en otra moneda) se puede forzar que no pase y luego se setea en el post"""
-        res = super().post()
+        res = super()._post(soft=soft)
         for rec in self.filtered('move_currency_id'):
             if not rec.move_inverse_currency_rate:
                 raise UserError(_('If Secondary currency select you must set rate. Check invoice id: %s') % rec.id)
