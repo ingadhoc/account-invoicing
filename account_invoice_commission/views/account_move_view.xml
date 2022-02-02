@@ -15,7 +15,7 @@
                     <field name="commission_invoice_ids"/>
                 </page>
                 <page string="Commission" attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}">
-                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.view_invoice_tree', 'form_view_ref':'account.move_form', 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_invoice_user_id': partner_user_id}"/>
+                    <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'tree_view_ref':'account_invoice_commission.view_invoice_tree', 'form_view_ref':'account.move_form', 'search_default_not_commissioned': True, 'search_default_paid': 1, 'search_default_invoice_user_id': partner_user_id, 'default_move_type': 'out_invoice'}"/>
                 </page>
             </notebook>
             <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
