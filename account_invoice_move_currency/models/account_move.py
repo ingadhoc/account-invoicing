@@ -87,8 +87,12 @@ class AccountMove(models.Model):
         return res
 
     def button_draft(self):
-        self.line_ids.write({
-        'currency_id': False,
-        'amount_currency': 0.0,
-        })
+        """ In order to be able to return a secondary currency invoice to draft and avoid Odoo to recompute the move
+        totals amounts using the wrong currency (the secondary currency, we use the next two fields only as a hack so
+        we need to clean them to avoid Odoo compute the invoice amounts wrongly) """
+        if self.is_invoice():
+            self.line_ids.write({
+                'currency_id': False,
+                'amount_currency': 0.0,
+            })
         return super().button_draft()
