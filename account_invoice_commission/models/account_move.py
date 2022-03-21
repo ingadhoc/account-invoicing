@@ -58,11 +58,11 @@ class AccountMove(models.Model):
             users = rec.partner_id.user_ids
             rec.partner_user_id = users and users[0] or False
 
-    @api.depends('line_ids.date')
+    @api.depends('payment_group_ids.payment_date')
     def _compute_date_last_payment(self):
         for rec in self:
-            rec.date_last_payment = rec.line_ids and \
-                rec.line_ids[0].date
+            rec.date_last_payment = rec.payment_group_ids and \
+                rec.payment_group_ids[0].payment_date
 
     @api.depends('invoice_line_ids.commission_amount')
     @api.depends_context('commissioned_partner_id')
