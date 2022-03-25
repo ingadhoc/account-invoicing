@@ -58,11 +58,13 @@ class AccountMove(models.Model):
             users = rec.partner_id.user_ids
             rec.partner_user_id = users and users[0] or False
 
-    @api.depends('line_ids.date')
+    # dependemos de amount_residual que depende de line_ids.amount_residual porque no hay ningun campo almacenado que
+    # vaya derecho contra las lineas de pago, toda esa logica ya la tiene implementada el campo
+    @api.depends('amount_residual')
     def _compute_date_last_payment(self):
-        for rec in self:
-            rec.date_last_payment = rec.line_ids and \
-                rec.line_ids[0].date
+        for rec in self.filtered(lambda x: x.move_type != 'entry' and x.state == 'posted'):
+            payments = rec._get_reconciled_payments()
+            rec.date_last_payment = payments and payments[-1].date
 
     @api.depends('invoice_line_ids.commission_amount')
     @api.depends_context('commissioned_partner_id')
