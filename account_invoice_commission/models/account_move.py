@@ -62,7 +62,7 @@ class AccountMove(models.Model):
     # vaya derecho contra las lineas de pago, toda esa logica ya la tiene implementada el campo
     @api.depends('amount_residual')
     def _compute_date_last_payment(self):
-        for rec in self:
+        for rec in self.filtered(lambda x: x.type != 'entry' and x.state == 'posted'):
             payments = rec._get_reconciled_payments()
             rec.date_last_payment = payments and payments[-1].payment_date
 
