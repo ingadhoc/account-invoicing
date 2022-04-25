@@ -9,40 +9,40 @@
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <field name="invoice_line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <xpath expr="//group[@id='header_right_group']//field[@name='company_id']" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
-            </xpath>
+            <field name="journal_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            </field>
             <field name="team_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </xpath>
             <field name="invoice_date" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="partner_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_user_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="fiscal_position_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_date_due" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
             <field name="invoice_payment_term_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="invoice_partner_bank_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="partner_bank_id" position="attributes">
+                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
         </field>
     </record>
