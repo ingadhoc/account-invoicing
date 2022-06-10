@@ -29,7 +29,7 @@ class AccountInvoiceTax(models.TransientModel):
 
     def _get_amount_updated_values(self):
         debit = credit = 0
-        if self.move_id.type == "in_invoice":
+        if self.move_id.move_type == "in_invoice":
             if self.amount > 0:
                 debit = self.amount
             elif self.amount < 0:
