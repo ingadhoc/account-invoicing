@@ -8,6 +8,9 @@
             <field name="sequence" position="after">
                 <field name="number" string="nbr" optional="show"/>
             </field>
+            <form position="inside">
+                <field name="number_lines" invisible="1"/>
+            </form>
         </field>
     </record>
 </odoo>
