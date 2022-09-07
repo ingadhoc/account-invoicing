@@ -19,8 +19,6 @@ class AccountMoveLine(models.Model):
         self.number = False
         if self and not isinstance(self[0].id, int):
             return
-        for move in self.mapped('move_id'):
-            number = 1
-            for line in move.invoice_line_ids.sorted("sequence"):
-                line.number = number
-                number += 1
+        mapping = eval(self[0].move_id.number_lines)
+        for line in self:
+            line.number = mapping.get(line.id)

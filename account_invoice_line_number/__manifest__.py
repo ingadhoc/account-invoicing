@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Line Number',
-    'version': "13.0.1.1.0",
+    'version': "13.0.1.2.0",
     'category': 'Accounting & Finance',
     'sequence': 14,
     'author': 'ADHOC SA',
