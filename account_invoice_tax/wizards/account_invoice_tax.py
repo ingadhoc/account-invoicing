@@ -1,6 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, api, _
-
+from odoo import fields, models, api, _, Command
 
 class AccountInvoiceTax(models.TransientModel):
 
@@ -65,21 +64,36 @@ class AccountInvoiceTax(models.TransientModel):
     def add_tax(self):
         """ Add the given taxes to all the invoice line of the current invoice """
         move_id = self.move_id.with_context(check_move_validity=False)
-        move_id.invoice_line_ids.write({'tax_ids': [(4, self.tax_id.id)]})
-        # pasar "recompute_all_taxes=True" seria lo mismo que marcar una linea con recompute_tax_line
-        # IMPORTANTE para que esto funcione sin que se recompute todo es necesaria la modificacion que hicimos
-        # en account_ux en _recompute_tax_lines
-        move_id._recompute_dynamic_lines(recompute_all_taxes=True)
-
+        fixed_taxes_bu = {
+            line: {
+                'amount_currency': line.amount_currency,
+                'debit': line.debit,
+                'credit': line.credit,
+            } for line in move_id.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
+        container = {'records': move_id, 'self': move_id}
+        with move_id._check_balanced(container):
+            with move_id._sync_dynamic_lines(container):
+                move_id.invoice_line_ids.write({'tax_ids': [Command.link(self.tax_id.id)]})
         # set amount in the new created tax line
         line_with_tax = move_id.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
         line_with_tax.write(self._get_amount_updated_values())
-        move_id._onchange_invoice_line_ids()
+        for tax_line in move_id.line_ids.filtered(
+            lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed' and x in fixed_taxes_bu):
+            tax_line.write(fixed_taxes_bu.get(tax_line))
 
     def remove_tax(self):
         """ Remove the given taxes to all the invoice line of the current invoice """
         move_id = self.move_id.with_context(check_move_validity=False)
-        line_with_tax = move_id.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
-        move_id.line_ids -= line_with_tax
-        move_id.invoice_line_ids.write({'tax_ids': [(3, self.tax_id.id)]})
-        move_id._onchange_invoice_line_ids()
+        fixed_taxes_bu = {
+            line: {
+                'amount_currency': line.amount_currency,
+                'debit': line.debit,
+                'credit': line.credit,
+            } for line in move_id.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
+        container = {'records': move_id, 'self': move_id}
+        with move_id._check_balanced(container):
+            with move_id._sync_dynamic_lines(container):
+                move_id.invoice_line_ids.write({'tax_ids': [Command.unlink(self.tax_id.id)]})
+        for tax_line in move_id.line_ids.filtered(
+            lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed' and x in fixed_taxes_bu):
+            tax_line.write(fixed_taxes_bu.get(tax_line))
