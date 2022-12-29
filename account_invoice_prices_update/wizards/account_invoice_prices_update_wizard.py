@@ -26,7 +26,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         discount = 0.0
         if self.pricelist_id.discount_policy == 'with_discount':
             return product.with_context(
-                pricelist=self.pricelist_id.id).price, discount
+                pricelist=self.pricelist_id.id)._get_contextual_price(), discount
         partner = line.move_id.partner_id
         product_context = dict(
             self.env.context, partner_id=partner.id,
@@ -69,16 +69,11 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                 'price_unit': price,
                 'discount': discount,
             })
-            # we needed run this "onchanges" because it's necessary to complete the correct values after the
-            # write the price and discount in the line.
-            line._onchange_balance()
-            line._onchange_mark_recompute_taxes()
-            line.move_id._onchange_invoice_line_ids()
         invoice.message_post(body='The pricelist is now: %s' % self.pricelist_id.display_name)
         return True
 
     def _get_real_price_currency(
-            self, product, rule_id, qty, uom, pricelist_id, partner):
+            self, product, rule_id, qty, uom, partner):
         """Retrieve the price before applying the pricelist
             :param obj product: object of current product record
             :parem float qty: total quantity of product
@@ -88,7 +83,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             :param integer pricelist_id: pricelist id of invoice
             :param obj partner: partner id of invoice"""
         PricelistItem = self.env['product.pricelist.item']
-        field_name = 'lst_price'
+        product_disc = product['lst_price']
         currency_id = None
         product_currency = product.currency_id
         active_id = self._context.get('active_id', False)
@@ -108,11 +103,11 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                     pricelist_item = PricelistItem.browse(rule_id)
 
             if pricelist_item.base == 'standard_price':
-                field_name = 'standard_price'
+                product_disc = product['standard_price']
                 product_currency = product.cost_currency_id
             elif pricelist_item.base == 'pricelist' and\
                     pricelist_item.base_pricelist_id:
-                field_name = 'price'
+                product_disc = product._get_contextual_price()
                 product = product.with_context(
                     pricelist=pricelist_item.base_pricelist_id.id)
                 product_currency = pricelist_item.base_pricelist_id.currency_id
@@ -137,4 +132,4 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         else:
             uom_factor = 1.0
 
-        return product[field_name] * uom_factor * cur_factor, currency_id.id
+        return product_disc * uom_factor * cur_factor, currency_id.id
