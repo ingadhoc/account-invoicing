@@ -6,9 +6,9 @@
         <field name="model">account.invoice.prices_update.wizard</field>
         <field name="arch" type="xml">
             <form string="Update Prices Wizard">
-                <group>
+                <div>
                     <field name="pricelist_id" options="{'no_create': True,'no_open': True}"/>
-                </group>
+                </div>
                 <footer>
                     <button string="Update Prices" name="update_prices" type="object" class="oe_highlight"/>
                         or
