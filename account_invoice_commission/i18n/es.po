@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-25 14:46+0000\n"
+"POT-Creation-Date: 2022-12-30 21:21+0000\n"
 "PO-Revision-Date: 2022-04-19 13:53+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
@@ -17,12 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_invoice_commission
 #: model:ir.model,name:account_invoice_commission.model_account_commission_rule
 msgid "Account Commission Rule"
 msgstr "Regla de Comisión de Cuenta"
+
+#. module: account_invoice_commission
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__algolia_search
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move__algolia_search
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_move_line__algolia_search
+msgid "Algolia Search"
+msgstr ""
 
 #. module: account_invoice_commission
 #: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__analytic_account_id

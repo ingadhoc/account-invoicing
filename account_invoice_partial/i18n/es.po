@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-25 14:47+0000\n"
+"POT-Creation-Date: 2022-12-30 21:22+0000\n"
 "PO-Revision-Date: 2022-04-19 13:54+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
@@ -17,12 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_invoice_partial
 #: model:ir.model,name:account_invoice_partial.model_account_invoice_partial_wizard
 msgid "Account Invoice Partial Wizard"
 msgstr "Asistente de Facturación Parcial"
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__algolia_search
+msgid "Algolia Search"
+msgstr ""
 
 #. module: account_invoice_partial
 #: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_account_invoice_partial_wizard_form
