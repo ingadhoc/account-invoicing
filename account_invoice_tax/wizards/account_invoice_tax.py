@@ -63,23 +63,39 @@ class AccountInvoiceTax(models.TransientModel):
 
     def add_tax(self):
         """ Add the given taxes to all the invoice line of the current invoice """
-        move_id = self.move_id.with_context(check_move_validity=False)
+
+        move = self.move_id
         fixed_taxes_bu = {
             line: {
                 'amount_currency': line.amount_currency,
                 'debit': line.debit,
                 'credit': line.credit,
-            } for line in move_id.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
-        container = {'records': move_id, 'self': move_id}
-        with move_id._check_balanced(container):
-            with move_id._sync_dynamic_lines(container):
-                move_id.invoice_line_ids.write({'tax_ids': [Command.link(self.tax_id.id)]})
-        # set amount in the new created tax line
-        line_with_tax = move_id.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
-        line_with_tax.write(self._get_amount_updated_values())
-        for tax_line in move_id.line_ids.filtered(
-            lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed' and x in fixed_taxes_bu):
-            tax_line.write(fixed_taxes_bu.get(tax_line))
+            } for line in move.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
+
+        # al crear la linea de impuesto no queda balanceado porque no recalcula las lineas AP/AR
+        # por eso pasamos check_move_validity
+        container = {'records': move.with_context(check_move_validity=False)}
+        with move._check_balanced(container):
+            with move._sync_dynamic_lines(container):
+                move.invoice_line_ids.write({'tax_ids': [Command.link(self.tax_id.id)]})
+
+        # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
+        container = {'records': move}
+        with move._check_balanced(container):
+            with move._sync_dynamic_lines(container):
+                # restauramos todos los valores de impuestos fixed que se habrian recomputado
+                commands = []
+                for tax_line in move.line_ids.filtered(
+                        lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed' and x in fixed_taxes_bu):
+                    # ahora estamos mandando todo el write de una con el commands pero por si falla algo y queremos
+                    # volver a probar, antes usabamos esta linea
+                    # tax_line.write(fixed_taxes_bu.get(tax_line))
+                    commands.append(Command.update(tax_line.id, fixed_taxes_bu.get(tax_line)))
+                move.write({'line_ids': commands})
+
+                # seteamos valor al impuesto segun lo que puso en el wizard
+                line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == self.tax_id)
+                line_with_tax.write(self._get_amount_updated_values())
 
     def remove_tax(self):
         """ Remove the given taxes to all the invoice line of the current invoice """
