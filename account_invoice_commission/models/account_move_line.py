@@ -29,7 +29,6 @@ class AccountMoveLine(models.Model):
                     date, rec.product_id, commissioned_partner_id,
                     rec.move_id.commercial_partner_id,
                     -rec.balance,
-                    rec.analytic_account_id,
                 ).percent_commission * -rec.balance / 100.0
         else:
             self.commission_amount = 0.0

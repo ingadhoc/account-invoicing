@@ -6,10 +6,10 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <field name="date" position="after">
+            <xpath expr="//sheet//field[@name='date']" position="after">
                 <field name="partner_user_id" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
                 <field name="date_last_payment" states="open,paid"/>
-            </field>
+            </xpath>
             <notebook>
                 <page string="Commissions" attrs="{'invisible': [('move_type', 'in', ('in_invoice', 'in_refund', 'in_receipt'))]}">
                     <field name="commission_invoice_ids"/>

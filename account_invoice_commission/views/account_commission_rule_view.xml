@@ -12,7 +12,6 @@
                 <field name="customer_id"/>
                 <field name="product_tmpl_id"/>
                 <field name="categ_id"/>
-                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                 <field name="min_amount"/>
                 <field name="percent_commission"/>
             </tree>
