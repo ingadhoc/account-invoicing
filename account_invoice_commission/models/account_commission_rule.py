@@ -65,20 +65,12 @@ class AccountCommissionRule(models.Model):
     percent_commission = fields.Float(
         'Percentage Commission'
     )
-    analytic_account_id = fields.Many2one(
-        'account.analytic.account',
-        'Analytic Account',
-    )
 
-    def _get_rule_domain(self, date, product, partner_id, customer, amount,
-                         analytic_acc):
+    def _get_rule_domain(self, date, product, partner_id, customer, amount):
         domain = [
             '|',
             ('date_start', '=', False),
             ('date_start', '<=', date),
-            '|',
-            ('analytic_account_id', '=', False),
-            ('analytic_account_id', '=', analytic_acc.id),
             '|',
             ('date_end', '=', False),
             ('date_end', '>=', date),
@@ -101,10 +93,9 @@ class AccountCommissionRule(models.Model):
             ]
         return domain
 
-    def _get_rule(self, date, product, partner_id, customer, amount,
-                  analytic_acc):
+    def _get_rule(self, date, product, partner_id, customer, amount):
         domain = self._get_rule_domain(
-            date, product, partner_id, customer, amount, analytic_acc)
+            date, product, partner_id, customer, amount)
         res = self.search(domain, limit=1)
         if not res:
             if product:
