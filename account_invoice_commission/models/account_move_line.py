@@ -25,10 +25,14 @@ class AccountMoveLine(models.Model):
             _logger.info('Computing commission amount line')
             for rec in self:
                 date = rec.move_id.invoice_date or today
-                rec.commission_amount = rules._get_rule(
+                rule = rules._get_rule(
                     date, rec.product_id, commissioned_partner_id,
                     rec.move_id.commercial_partner_id,
                     -rec.balance,
-                ).percent_commission * -rec.balance / 100.0
+                )
+                if rule:
+                    rec.commission_amount = rule.percent_commission * -rec.balance / 100.0
+                else:
+                    rec.commission_amount = 0.0
         else:
             self.commission_amount = 0.0
