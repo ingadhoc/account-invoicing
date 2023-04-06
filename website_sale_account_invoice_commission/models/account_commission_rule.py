@@ -16,9 +16,9 @@ class AccountCommissionRule(models.Model):
     )
 
     def _get_rule_domain(
-            self, date, product, partner_id, customer, amount, analytic_acc):
+            self, date, product, partner_id, customer, amount):
         domain = super()._get_rule_domain(
-            date, product, partner_id, customer, amount, analytic_acc)
+            date, product, partner_id, customer, amount)
         if not product:
             domain += [('public_category_id', '=', False)]
         else:
