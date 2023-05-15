@@ -32,12 +32,11 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             self.env.context, partner_id=partner.id,
             date=line.move_id.invoice_date, uom=line.product_uom_id.id)
         final_price, rule_id = self.pricelist_id.with_context(
-            product_context).get_product_price_rule(
-            line.product_id, line.quantity or 1.0, partner)
+            product_context)._get_product_price_rule(
+            line.product_id, line.quantity or 1.0, uom=line.product_uom_id)
         base_price, currency_id = self.with_context(
             product_context)._get_real_price_currency(
-            product, rule_id, line.quantity, line.product_uom_id,
-            self.pricelist_id.id, partner)
+            product, rule_id, line.quantity, line.product_uom_id)
         if currency_id != self.pricelist_id.currency_id.id:
             base_price = self.env['res.currency'].browse(
                 currency_id)._convert(base_price, self.pricelist_id.currency_id,
@@ -73,7 +72,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         return True
 
     def _get_real_price_currency(
-            self, product, rule_id, qty, uom, partner):
+            self, product, rule_id, qty, uom):
         """Retrieve the price before applying the pricelist
             :param obj product: object of current product record
             :parem float qty: total quantity of product
@@ -81,7 +80,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
              coming from pricelist computation
             :param obj uom: unit of measure of current invoice line
             :param integer pricelist_id: pricelist id of invoice
-            :param obj partner: partner id of invoice"""
+        """
         PricelistItem = self.env['product.pricelist.item']
         product_disc = product['lst_price']
         currency_id = None
@@ -96,10 +95,8 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                     pricelist_item.base_pricelist_id and \
                     pricelist_item.base_pricelist_id.\
                         discount_policy == 'without_discount':
-                    price, rule_id = pricelist_item.base_pricelist_id.\
-                        with_context(
-                            uom=uom.id).get_product_price_rule(
-                                product, qty, partner)
+                    price, rule_id = pricelist_item.base_pricelist_id._get_product_price_rule(
+                                product, qty, uom=uom.id)
                     pricelist_item = PricelistItem.browse(rule_id)
 
             if pricelist_item.base == 'standard_price':
