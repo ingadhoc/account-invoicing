@@ -96,7 +96,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                     pricelist_item.base_pricelist_id.\
                         discount_policy == 'without_discount':
                     price, rule_id = pricelist_item.base_pricelist_id._get_product_price_rule(
-                                product, qty, uom=uom.id)
+                                product, qty, uom=uom)
                     pricelist_item = PricelistItem.browse(rule_id)
 
             if pricelist_item.base == 'standard_price':
