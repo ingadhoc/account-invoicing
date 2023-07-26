@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Move Currency',
-    'version': "15.0.1.1.0",
+    'version': "16.0.1.0.0",
     'author': 'ADHOC SA',
     'category': 'Accounting & Finance',
     'depends': [
