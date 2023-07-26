@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_change_currency" model="ir.ui.view">
+        <field name="name">Change Currency inherit</field>
+        <field name="model">account.change.currency</field>
+        <field name="inherit_id" ref="account_ux.view_account_change_currency"/>
+        <field name="arch" type="xml">
+            <field name="currency_rate" position="after">
+                <field name="currency_company_id" invisible="1"/>
+                <field name="same_currency" invisible="1"/>
+                <field name="save_secondary_currency" attrs="{'invisible':['|',('change_type', '!=', 'value'),('same_currency', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

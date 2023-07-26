@@ -1,0 +1,30 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * account_invoice_move_currency
+# 
+# Translators:
+# Carlos Palmarante <crpalmarante@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-05 14:50+0000\n"
+"PO-Revision-Date: 2018-06-17 19:30+0000\n"
+"Last-Translator: Carlos Palmarante <crpalmarante@gmail.com>, 2019\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/adhoc/teams/46451/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: account_invoice_move_currency
+#: model:ir.model,name:account_invoice_move_currency.model_account_change_currency
+msgid "Change Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model,name:account_invoice_move_currency.model_account_invoice
+msgid "Invoice"
+msgstr "Fatura"
