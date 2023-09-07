@@ -24,7 +24,16 @@ class AccountInvoiceTax(models.TransientModel):
     def onchange_move_id(self):
         taxes = self.env['account.tax'].search([]) if self.type_operation == 'add' else self.move_id.mapped(
             'invoice_line_ids.tax_ids')
-        return {'domain': {'tax_id': [('id', 'in', taxes.ids), ('company_id', '=', self.move_id.company_id.id)]}}
+        leaf = [('id', 'in', taxes.ids), ('type_tax_use', '=', 'purchase') ,('company_id', '=', self.move_id.company_id.id)]
+        if self.env.context.get('group_id'):
+            leaf += [('tax_group_id', '=', self.env.context.get('group_id'))]
+        return {'domain': {'tax_id': leaf}}
+
+    @api.onchange('tax_id')
+    def onchange_tax_id(self):
+        tax_line = self.move_id.line_ids.filtered(lambda x: x.tax_line_id  and x.tax_line_id.id == self.tax_id.id)
+        if tax_line:
+            self.amount = tax_line.balance
 
     def _get_amount_updated_values(self):
         debit = credit = 0
@@ -71,7 +80,6 @@ class AccountInvoiceTax(models.TransientModel):
                 'debit': line.debit,
                 'credit': line.credit,
             } for line in move.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
-
         # al crear la linea de impuesto no queda balanceado porque no recalcula las lineas AP/AR
         # por eso pasamos check_move_validity
         container = {'records': move}
@@ -109,3 +117,4 @@ class AccountInvoiceTax(models.TransientModel):
         for tax_line in move_id.line_ids.filtered(
             lambda x: x.tax_repartition_line_id.tax_id in fixed_taxes_bu and x.tax_repartition_line_id.tax_id.amount_type == 'fixed'):
             tax_line.write(fixed_taxes_bu.get(tax_line.tax_line_id))
+

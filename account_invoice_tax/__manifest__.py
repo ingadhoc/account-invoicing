@@ -11,6 +11,11 @@
         'views/account_move_view.xml',
         'security/ir.model.access.csv',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'account_invoice_tax/static/src/xml/**/*',
+        ],
+    },    
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,
