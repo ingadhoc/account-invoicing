@@ -1,0 +1,126 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_background_post
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 00:38+0000\n"
+"PO-Revision-Date: 2023-09-28 00:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post
+#: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post
+#: model:ir.model.fields,field_description:account_background_post.field_account_payment__background_post
+msgid "Background Post"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.actions.server,name:account_background_post.ir_cron_background_post_invoices_ir_actions_server
+#: model:ir.cron,cron_name:account_background_post.ir_cron_background_post_invoices
+msgid "Background Post Invoices: cron"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__batch_size
+msgid "Batch Size"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__count_inv
+msgid "Count Inv"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__force_background
+msgid "Force Background"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post
+#: model:ir.model.fields,help:account_background_post.field_account_move__background_post
+#: model:ir.model.fields,help:account_background_post.field_account_payment__background_post
+msgid "If True then this invoice will be validated in the background by cron."
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model,name:account_background_post.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: account_background_post
+#. odoo-python
+#: code:addons/account_background_post/wizards/validate_account_move.py:0
+#, python-format
+msgid "Missing 'active_model' in context."
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__move_ids
+msgid "Move"
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
+msgid "Only use this option to post a small batch of invoices"
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
+msgid "Post in Background"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,help:account_background_post.field_validate_account_move__count_inv
+msgid ""
+"Technical field to know the number of invoices selected from the wizard"
+msgstr ""
+
+#. module: account_background_post
+#. odoo-python
+#: code:addons/account_background_post/wizards/validate_account_move.py:0
+#, python-format
+msgid "There are no journal items in the draft state to post."
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.view_account_invoice_filter
+msgid "To validate in background"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model,name:account_background_post.model_validate_account_move
+msgid "Validate Account Move"
+msgstr ""
+
+#. module: account_background_post
+#. odoo-python
+#: code:addons/account_background_post/models/account_move.py:0
+#, python-format
+msgid "We tried to validate this invoice on the background but got this error"
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
+msgid ""
+"With this, all the invoices selected to be validated will be marked and they"
+" will be validated one by one. If an error is found when validating any "
+"invoice, the automatic validation of the same will be unmarked and it will "
+"be notified via messaging"
+msgstr ""
+
+#. module: account_background_post
+#. odoo-python
+#: code:addons/account_background_post/wizards/validate_account_move.py:0
+#, python-format
+msgid ""
+"You can only validate on batches of size < %s invoices. If you need to "
+"validate more invoices please use the validate on background option"
+msgstr ""
