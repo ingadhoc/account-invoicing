@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record forcecreate="True" id="ir_cron_background_post_invoices" model="ir.cron">
+        <field name="name">Background Post Invoices: cron</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_background_post_invoices()</field>
+        <field eval="True" name="active" />
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>
