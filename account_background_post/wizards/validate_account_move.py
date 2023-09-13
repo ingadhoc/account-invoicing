@@ -42,6 +42,7 @@ class ValidateAccountMove(models.TransientModel):
 
     def action_background_post(self):
         self.move_ids.background_post = True
+        self.env.ref('account_background_post.ir_cron_background_post_invoices')._trigger()
 
     def validate_move(self):
         """ Sobre escribimos este metodo por completo para hacer:
