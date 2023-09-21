@@ -33,7 +33,7 @@ class AccountInvoiceTax(models.TransientModel):
     def onchange_tax_id(self):
         tax_line = self.move_id.line_ids.filtered(lambda x: x.tax_line_id  and x.tax_line_id.id == self.tax_id.id)
         if tax_line:
-            self.amount = tax_line.balance
+            self.amount = abs(tax_line.amount_currency)
 
     def _get_amount_updated_values(self):
         debit = credit = 0
@@ -52,11 +52,7 @@ class AccountInvoiceTax(models.TransientModel):
         move_currency = self.move_id.currency_id
         company_currency = self.move_id.company_currency_id
         if move_currency and move_currency != company_currency:
-            return {'amount_currency': self.amount if debit else -self.amount,
-                    'debit': move_currency._convert(
-                        debit, company_currency, self.move_id.company_id, self.move_id.invoice_date),
-                    'credit': move_currency._convert(
-                        credit, company_currency, self.move_id.company_id, self.move_id.invoice_date)}
+            return {'amount_currency': self.amount if debit else -self.amount}
 
         return {'debit': debit, 'credit': credit, 'balance': self.amount}
 
