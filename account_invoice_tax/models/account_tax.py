@@ -12,22 +12,26 @@ _logger = logging.getLogger(__name__)
 
 class AccountTax(models.Model):
 
-    _inherit = "account.tax" 
-    
-    
+    _inherit = "account.tax"
+
+
     @api.model
     def _prepare_tax_totals(self, base_lines, currency, tax_lines=None):
         totals = super()._prepare_tax_totals(base_lines, currency, tax_lines)
         ##recorrer totals y si comple on la condicion y esta en self.env._context.get('tax_total_origin')
         tax_total_origin = self.env.context.get('tax_total_origin')
         if tax_total_origin:
+            tax_list_origin = self.env.context.get('tax_list_origin')
             for subtotals_order in totals['subtotals_order']:
                 for subtotals_index in range(0,len(totals['groups_by_subtotal'][subtotals_order])):
-                    id_fixed = all([x.amount_type == 'fixed' and x.type_tax_use == 'purchase' for x in  self.env['account.tax'].search([('tax_group_id' ,'=', totals['groups_by_subtotal'][subtotals_order][subtotals_index]['tax_group_id'])])])
-                    exist = [x for x in tax_total_origin['groups_by_subtotal'][subtotals_order] if x['tax_group_id'] == totals['groups_by_subtotal'][subtotals_order][subtotals_index]['tax_group_id']]
+                    id_fixed = tax_list_origin.filtered(lambda x: \
+                        x.amount_type == 'fixed' and x.type_tax_use == 'purchase' \
+                        and x.tax_group_id.id == totals['groups_by_subtotal'][subtotals_order][subtotals_index]['tax_group_id'])
 
-                    if id_fixed and exist:
-                        totals['groups_by_subtotal'][subtotals_order][subtotals_index] =  exist[0]
+                    existent_group = [x for x in tax_total_origin['groups_by_subtotal'][subtotals_order] if x['tax_group_id'] == totals['groups_by_subtotal'][subtotals_order][subtotals_index]['tax_group_id']]
+
+                    if id_fixed and existent_group:
+                        totals['groups_by_subtotal'][subtotals_order][subtotals_index] =  existent_group[0]
 
 
             subtotals = []
