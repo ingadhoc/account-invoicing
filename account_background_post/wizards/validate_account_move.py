@@ -47,10 +47,12 @@ class ValidateAccountMove(models.TransientModel):
     def validate_move(self):
         """ Sobre escribimos este metodo por completo para hacer:
 
-        1. que se valida cada factura una a uno y no todas jutnas. esto para evitar problemas que puedan surgier
+        1. Que en lugar de hacer un _post hacemos un _action_post. esto porque odoo hace cosas como lanzar acciones y correr validaciones solo cuando corremos el action_post. y nosotros queremos que esas se apliquen. eso incluye el envio de email cuando validamos la factura.
+
+        2. que se valida cada factura una a uno y no todas jutnas. esto para evitar problemas que puedan surgier
         por errores, que no se puedan ejecutar los commits que tenemos para guardar el estado de factura electronica y tambien para asegurar que tras cada fatura se envie su email, asi si hay un error posterior las facturas que fueron validadas aseguremos que hayan sido totalmente procesadas.
 
-        2. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
+        3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background. """
 
         if self.count_inv > self.batch_size:
@@ -59,7 +61,7 @@ class ValidateAccountMove(models.TransientModel):
 
         for move in self.move_ids:
             _logger.info('Validating invoice %s', move.id)
-            move._post(not self.force_post)
+            move.action_post()
             move._cr.commit()
 
         return {'type': 'ir.actions.act_window_close'}
