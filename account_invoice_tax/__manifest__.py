@@ -1,6 +1,6 @@
 {
     'name': 'Account Invoice Tax',
-    'version': "16.0.1.0.0",
+    'version': "16.0.1.2.0",
     'author': 'ADHOC SA',
     'category': 'Localization',
     'depends': [
@@ -15,7 +15,7 @@
         'web.assets_backend': [
             'account_invoice_tax/static/src/xml/**/*',
         ],
-    },    
+    },
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,
