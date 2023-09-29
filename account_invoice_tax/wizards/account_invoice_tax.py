@@ -54,7 +54,7 @@ class AccountInvoiceTax(models.TransientModel):
         if move_currency and move_currency != company_currency:
             return {'amount_currency': self.amount if debit else -self.amount}
 
-        return {'debit': debit, 'credit': credit, 'balance': self.amount}
+        return {'debit': debit, 'credit': credit, 'balance': self.amount if debit else -self.amount}
 
     def add_tax_and_new(self):
         self.add_tax()
