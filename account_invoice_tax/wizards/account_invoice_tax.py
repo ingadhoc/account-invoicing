@@ -81,7 +81,7 @@ class AccountInvoiceTax(models.TransientModel):
         container = {'records': move}
         with move.with_context(check_move_validity=False)._check_balanced(container):
             with move._sync_dynamic_lines(container):
-                move.invoice_line_ids.write({'tax_ids': [Command.link(self.tax_id.id)]})
+                move.invoice_line_ids.filtered(lambda x: x.display_type not in ['line_section', 'line_note', 'payment_term']).write({'tax_ids': [Command.link(self.tax_id.id)]})
 
         # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
         container = {'records': move}
