@@ -4,45 +4,47 @@
     <record id="invoice_restrict_edit_form" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="sale_ux.account_invoice_form" />
-        <field name="groups_id" eval="[(6, 0, [ref('group_restrict_edit_invoice')])]" />
+        <field name="inherit_id" ref="account.view_move_form" />
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <field name="invoice_line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <form position='inside'>
+                <field name="has_sales" invisible="True"/>
+            </form>
+            <field name="invoice_line_ids"  groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','=',False)]}</attribute>
             </field>
-            <field name="line_ids" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="line_ids" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="journal_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="journal_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="team_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="team_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </xpath>
-            <field name="invoice_date" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="invoice_date" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="partner_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="partner_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="invoice_user_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="invoice_user_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="fiscal_position_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="fiscal_position_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="invoice_date_due" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="invoice_date_due" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="invoice_payment_term_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="invoice_payment_term_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
-            <field name="partner_bank_id" position="attributes">
-                <attribute name="attrs">{'readonly':[('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
+            <field name="partner_bank_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('state', '!=', 'draft'),('move_type','=','out_invoice'),('has_sales','!=',True)]}</attribute>
             </field>
         </field>
     </record>
