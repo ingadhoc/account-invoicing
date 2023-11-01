@@ -22,48 +22,13 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             invoice = self.env['account.move'].browse(invoice_id)
             return invoice.partner_id.property_product_pricelist
 
-    def _get_display_price_and_discount(self, product, line):
-        discount = 0.0
-        if self.pricelist_id.discount_policy == 'with_discount':
-            return product.with_context(
-                pricelist=self.pricelist_id.id)._get_contextual_price(), discount
-        partner = line.move_id.partner_id
-        product_context = dict(
-            self.env.context, partner_id=partner.id,
-            date=line.move_id.invoice_date, uom=line.product_uom_id.id)
-        final_price, rule_id = self.pricelist_id.with_context(
-            product_context)._get_product_price_rule(
-            line.product_id, line.quantity or 1.0, uom=line.product_uom_id)
-        base_price, currency_id = self.with_context(
-            product_context)._get_real_price_currency(
-            product, rule_id, line.quantity, line.product_uom_id)
-        if currency_id != self.pricelist_id.currency_id.id:
-            base_price = self.env['res.currency'].browse(
-                currency_id)._convert(base_price, self.pricelist_id.currency_id,
-                                      line.move_id.company_id or self.env.company,
-                                      line.move_id.invoice_date or fields.Date.today())
-        if final_price != 0:
-            discount = (base_price - final_price) / base_price * 100
-        return max(base_price, final_price), discount
-
     def update_prices(self):
         self.ensure_one()
         active_id = self._context.get('active_id', False)
         invoice = self.env['account.move'].browse(active_id)
         invoice.write({'currency_id': self.pricelist_id.currency_id.id})
-        # we send through context because, this way avoid an error in balance,
-        # until the all the onchanges are already run.
         for line in invoice.invoice_line_ids.filtered('product_id').with_context(check_move_validity=False):
-            product = line.product_id.with_context(
-                lang=invoice.partner_id.lang,
-                partner=invoice.partner_id.id,
-                quantity=line.quantity,
-                date=invoice.invoice_date,
-                pricelist=self.pricelist_id.id,
-                uom=line.product_uom_id.id,
-                fiscal_position=self.env.context.get('fiscal_position')
-            )
-            price, discount = self._get_display_price_and_discount(product, line)
+            price, discount = self._get_price_discount(self.pricelist_id, line)
             line.write({
                 'price_unit': price,
                 'discount': discount,
@@ -71,62 +36,50 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
         invoice.message_post(body='The pricelist is now: %s' % self.pricelist_id.display_name)
         return True
 
-    def _get_real_price_currency(
-            self, product, rule_id, qty, uom):
-        """Retrieve the price before applying the pricelist
-            :param obj product: object of current product record
-            :parem float qty: total quantity of product
-            :param tuple price_and_rule: tuple(price, suitable_rule)
-             coming from pricelist computation
-            :param obj uom: unit of measure of current invoice line
-            :param integer pricelist_id: pricelist id of invoice
-        """
-        PricelistItem = self.env['product.pricelist.item']
-        product_disc = product['lst_price']
-        currency_id = None
-        product_currency = product.currency_id
-        active_id = self._context.get('active_id', False)
-        invoice = self.env['account.move'].browse(active_id)
-        if rule_id:
-            pricelist_item = PricelistItem.browse(rule_id)
-            if pricelist_item.pricelist_id.\
-                    discount_policy == 'without_discount':
-                while pricelist_item.base == 'pricelist' and\
-                    pricelist_item.base_pricelist_id and \
-                    pricelist_item.base_pricelist_id.\
-                        discount_policy == 'without_discount':
-                    price, rule_id = pricelist_item.base_pricelist_id._get_product_price_rule(
-                                product, qty, uom=uom)
-                    pricelist_item = PricelistItem.browse(rule_id)
+    def _calculate_discount(self, base_price, final_price):
+        discount = (base_price - final_price) / base_price * 100
+        if (discount < 0 and base_price > 0) or (discount > 0 and base_price < 0):
+            discount = 0.0
+        return discount
 
-            if pricelist_item.base == 'standard_price':
-                product_disc = product['standard_price']
-                product_currency = product.cost_currency_id
-            elif pricelist_item.base == 'pricelist' and\
-                    pricelist_item.base_pricelist_id:
-                product_disc = product._get_contextual_price()
-                product = product.with_context(
-                    pricelist=pricelist_item.base_pricelist_id.id)
-                product_currency = pricelist_item.base_pricelist_id.currency_id
-            currency_id = pricelist_item.pricelist_id.currency_id
-
-        if not currency_id:
-            currency_id = product_currency
-            cur_factor = 1.0
+    def _get_price_discount(self, pricelist, invoice_line):
+        price_unit = 0.0
+        move = invoice_line.move_id
+        product = invoice_line.product_id
+        uom = invoice_line.product_uom_id
+        qty = invoice_line.quantity or 1.0
+        date = move.invoice_date or fields.Date.today()
+        (final_price, rule_id,) = pricelist._get_product_price_rule(
+            product,
+            qty,
+            uom=uom,
+            date=date,
+        )
+        if pricelist.discount_policy == "with_discount":
+            price_unit = self.env["account.tax"]._fix_tax_included_price_company(
+                final_price,
+                product.taxes_id,
+                invoice_line.tax_ids,
+                invoice_line.company_id,
+            )
+            # self.with_context(check_move_validity=False).discount = 0.0
+            return price_unit, 0.0
         else:
-            if currency_id.id == product_currency.id:
-                cur_factor = 1.0
-            else:
-                cur_factor = currency_id._get_conversion_rate(
-                    product_currency, currency_id, product.
-                    company_id or self.env.company, invoice.
-                    invoice_date or fields.Date.today())
-
-        uom_uom = self.env.context.get('uom') or uom.uom_id.id
-        if uom and uom.id != uom_uom:
-            # the unit price is in a different uom
-            uom_factor = uom._compute_price(1.0, uom.uom_id)
-        else:
-            uom_factor = 1.0
-
-        return product_disc * uom_factor * cur_factor, currency_id.id
+            rule_id = self.env["product.pricelist.item"].browse(rule_id)
+            while (
+                rule_id.base == "pricelist"
+                and rule_id.base_pricelist_id.discount_policy == "without_discount"
+            ):
+                new_rule_id = rule_id.base_pricelist_id._get_product_rule(
+                    product, qty, uom=uom, date=date
+                )
+                rule_id = self.env["product.pricelist.item"].browse(new_rule_id)
+            base_price = rule_id._compute_base_price(
+                product,
+                qty,
+                uom,
+                date,
+                target_currency=invoice_line.currency_id,
+            )
+            price_unit = max(base_price, final_price)
+        return price_unit, self._calculate_discount(base_price, final_price)
