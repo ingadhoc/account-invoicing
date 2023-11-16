@@ -10,6 +10,7 @@ class AccountInvoiceTax(models.TransientModel):
     type_operation = fields.Selection([('add', 'Add Tax'), ('remove', 'Remove Tax')])
     tax_id = fields.Many2one('account.tax', required=True)
     amount = fields.Float()
+    new_tax = fields.Boolean()
 
     @api.model
     def default_get(self, fields):
@@ -34,6 +35,9 @@ class AccountInvoiceTax(models.TransientModel):
         tax_line = self.move_id.line_ids.filtered(lambda x: x.tax_line_id  and x.tax_line_id.id == self.tax_id.id)
         if tax_line:
             self.amount = abs(tax_line.amount_currency)
+            self.new_tax = False
+        else:
+            self.new_tax = True
 
     def _get_amount_updated_values(self):
         debit = credit = 0
@@ -76,12 +80,13 @@ class AccountInvoiceTax(models.TransientModel):
                 'debit': line.debit,
                 'credit': line.credit,
             } for line in move.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id.amount_type == 'fixed')}
-        # al crear la linea de impuesto no queda balanceado porque no recalcula las lineas AP/AR
-        # por eso pasamos check_move_validity
-        container = {'records': move}
-        with move.with_context(check_move_validity=False)._check_balanced(container):
-            with move._sync_dynamic_lines(container):
-                move.invoice_line_ids.filtered(lambda x: x.display_type == 'product').write({'tax_ids': [Command.link(self.tax_id.id)]})
+        if self.new_tax:
+            # al crear la linea de impuesto no queda balanceado porque no recalcula las lineas AP/AR
+            # por eso pasamos check_move_validity
+            container = {'records': move}
+            with move.with_context(check_move_validity=False)._check_balanced(container):
+                with move._sync_dynamic_lines(container):
+                    move.invoice_line_ids.filtered(lambda x: x.display_type == 'product').write({'tax_ids': [Command.link(self.tax_id.id)]})
 
         # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
         container = {'records': move}
