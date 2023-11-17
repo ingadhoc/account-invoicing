@@ -8,6 +8,6 @@
                                 <t t-out="props.taxGroup.formatted_tax_group_amount"/>
                             </span>
                         </span>
-        </xpath>        
+        </xpath>
     </t>
 </templates>
