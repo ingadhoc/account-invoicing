@@ -12,7 +12,7 @@
                         <tree decoration-info="new_tax == True" editable="bottom">
                             <field name="tax_id" domain="[('type_tax_use', '=', 'purchase'), ('company_id', '=', parent.company_id)]" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="amount"/>
-                            <field name="new_tax" invisible="True"/>
+                            <field name="new_tax" column_invisible="True"/>
                         </tree>
                     </field>
                 </group>

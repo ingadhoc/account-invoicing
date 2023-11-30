@@ -1,6 +1,6 @@
 {
     'name': 'Account Invoice Tax',
-    'version': "16.0.1.3.0",
+    'version': "17.0.1.0.0",
     'author': 'ADHOC SA',
     'category': 'Localization',
     'depends': [
@@ -17,7 +17,7 @@
         ],
     },
     'license': 'AGPL-3',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
