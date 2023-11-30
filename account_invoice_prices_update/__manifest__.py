@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Account Invoice Prices Update',
-    'version': "16.0.1.0.0",
+    'version': "17.0.1.0.0",
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
@@ -32,5 +32,5 @@
         'views/account_move_views.xml',
         'security/ir.model.access.csv',
     ],
-    'installable': False,
+    'installable': True,
 }

@@ -79,7 +79,7 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
                 qty,
                 uom,
                 date,
-                target_currency=invoice_line.currency_id,
+                currency=invoice_line.currency_id,
             )
             price_unit = max(base_price, final_price)
         return price_unit, self._calculate_discount(base_price, final_price)
