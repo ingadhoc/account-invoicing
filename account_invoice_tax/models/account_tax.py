@@ -16,8 +16,8 @@ class AccountTax(models.Model):
 
 
     @api.model
-    def _prepare_tax_totals(self, base_lines, currency, tax_lines=None):
-        totals = super()._prepare_tax_totals(base_lines, currency, tax_lines)
+    def _prepare_tax_totals(self, base_lines, currency, tax_lines=None, is_company_currency_requested=False):
+        totals = super()._prepare_tax_totals(base_lines, currency, tax_lines=tax_lines, is_company_currency_requested=is_company_currency_requested)
         ##recorrer totals y si comple on la condicion y esta en self.env._context.get('tax_total_origin')
         tax_total_origin = self.env.context.get('tax_total_origin')
         if tax_total_origin:

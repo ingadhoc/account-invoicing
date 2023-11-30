@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <field name="tax_totals" position="after">
 
-                <div colspan="2" class="oe_right oe_edit_only" attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}">
+                <div colspan="2" class="oe_right oe_edit_only" invisible="state != 'draft' or move_type not in ('in_invoice', 'in_refund', 'in_receipt')">
                     <strong>TAX: </strong>
                     <button name="%(account_invoice_tax.action_view_account_invoice_tax)d" type="action" string="Add/update" title="Add/update fixed Tax" class="oe_link" context="{'move_type': move_type}"/>
                 </div>
