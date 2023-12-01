@@ -10,11 +10,11 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     move_currency_id = fields.Many2one(
-        'res.currency', 'Secondary Currency', readonly=True, states={'draft': [('readonly', False)]},
+        'res.currency', 'Secondary Currency', readonly=True,
         help='If you set a currency here, then this invoice values will be also stored in the related Account Move Secondary Currency')
 
     move_inverse_currency_rate = fields.Float(
-        digits=(16, 4), string='Account Move Secondary Currency Rate', readonly=True, states={'draft': [('readonly', False)]})
+        digits=(16, 4), string='Account Move Secondary Currency Rate', readonly=True)
 
     @api.onchange('move_currency_id')
     def change_move_currency(self):
