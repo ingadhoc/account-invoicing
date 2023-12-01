@@ -18,7 +18,7 @@ class AccountMoveLine(models.Model):
     )
 
     def _compute_commission_amount(self):
-        commissioned_partner_id = self._context.get('commissioned_partner_id')
+        commissioned_partner_id = self.move_id.invoice_user_id.partner_id.id
         if commissioned_partner_id:
             today = fields.Date.context_today(self)
             rules = self.env['account.commission.rule']
