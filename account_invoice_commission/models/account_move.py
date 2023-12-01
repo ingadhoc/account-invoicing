@@ -36,7 +36,6 @@ class AccountMove(models.Model):
         domain=[('move_type', 'in', ('out_invoice', 'out_refund'))],
         string='Commissioned invoices',
         readonly=True,
-        states={'draft': [('readonly', False)]},
         help='The invoices that this commission invoice is commissioning',
         copy=False,
     )
@@ -69,7 +68,7 @@ class AccountMove(models.Model):
     @api.depends('invoice_line_ids.commission_amount')
     @api.depends_context('commissioned_partner_id')
     def _compute_commission_amount(self):
-        commissioned_partner_id = self._context.get('commissioned_partner_id')
+        commissioned_partner_id = self.invoice_user_id.partner_id.id
         if commissioned_partner_id:
             _logger.info('Computing commission amount')
             for rec in self:
