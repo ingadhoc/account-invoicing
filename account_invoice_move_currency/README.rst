@@ -14,7 +14,7 @@
 Account Invoice Move Currency
 =============================
 
-This module extends the functionality of account invoice to allow save the secondary currency data using the wizard "change"  (introduced in "Account Ux" module)
+This module extends the functionality of account invoice to allow save the secondary currency data using the wizard "change" (introduced in "Account Ux" module). The secondary currency is for INFORMATIONAL PURPOSES ONLY, it does not change the amount in currency of the journal entry.
 
 Installation
 ============
