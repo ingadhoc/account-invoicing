@@ -14,7 +14,9 @@
 Account Invoice Partial
 =======================
 
-Module that add a button an costumer Invoice opening a wizards to invoce by percentage.
+Module that adds a button on the Customer Invoice, 
+which allows you to select a percentage to be invoiced, 
+the decimal precision and the rounding method.
 
 
 Installation
