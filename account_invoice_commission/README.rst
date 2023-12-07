@@ -16,6 +16,12 @@ Commission Invoices
 
 Simple module that links a commission invoice (supplier invoice) to the commissioned invoices (customer invoices)
 
+- Allows to set Rules Commission.
+
+- Creates a tab in Commission Invoices (supplier invoice) that allows users to add Commisioned Invoices (customer invoice) based on settled rules commission.
+
+- Creates a tab in Commissioned Invoices that shows the applied Commision Invoices.
+
 TODO
 ====
 
