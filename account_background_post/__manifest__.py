@@ -1,6 +1,6 @@
 {
     'name': 'Account Background Post',
-    'version': "16.0.1.0.0",
+    'version': "17.0.1.0.0",
     'author': 'ADHOC SA',
     'depends': [
         'account',
@@ -11,7 +11,7 @@
         'data/ir_cron.xml',
     ],
     'license': 'AGPL-3',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
