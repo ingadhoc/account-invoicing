@@ -25,7 +25,7 @@
                     <attribute name="default_focus"/>
                     <attribute name="class"/>
                     <attribute name="confirm">Only use this option to post a small batch of invoices</attribute>
-                    <attribute name="attrs">{'invisible': [('force_background', '=', True)]}</attribute>
+                    <attribute name="invisible">force_background</attribute>
                 </button>
 
             </field>

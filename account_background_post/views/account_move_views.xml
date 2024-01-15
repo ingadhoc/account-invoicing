@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.view_out_invoice_tree" />
             <field name="arch" type="xml">
                 <field name="state" position="before">
-                    <field name="background_post" invisible="1"/>
+                    <field name="background_post" column_invisible="True"/>
                 </field>
             </field>
         </record>
