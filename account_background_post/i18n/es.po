@@ -1,19 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_background_post
-#
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-28 00:46+0000\n"
-"PO-Revision-Date: 2023-09-28 00:46+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2024-01-26 12:42+0000\n"
+"PO-Revision-Date: 2024-01-26 12:42+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
+"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post
@@ -24,7 +28,6 @@ msgstr "Validación en Background"
 
 #. module: account_background_post
 #: model:ir.actions.server,name:account_background_post.ir_cron_background_post_invoices_ir_actions_server
-#: model:ir.cron,cron_name:account_background_post.ir_cron_background_post_invoices
 msgid "Background Post Invoices: cron"
 msgstr "Facturas Validación en Background: cron"
 
@@ -82,7 +85,8 @@ msgstr "Validar en Background"
 msgid ""
 "Technical field to know the number of invoices selected from the wizard"
 msgstr ""
-"Campo técnico para saber el numero de facturas seleccionadas para el asistente"
+"Campo técnico para saber el numero de facturas seleccionadas para el "
+"asistente"
 
 #. module: account_background_post
 #. odoo-python
@@ -106,7 +110,8 @@ msgstr "Validar movimiento contable"
 #: code:addons/account_background_post/models/account_move.py:0
 #, python-format
 msgid "We tried to validate this invoice on the background but got this error"
-msgstr "Intentamos validar esta factura en background pero recibimos este error"
+msgstr ""
+"Intentamos validar esta factura en background pero recibimos este error"
 
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
@@ -116,10 +121,10 @@ msgid ""
 "invoice, the automatic validation of the same will be unmarked and it will "
 "be notified via messaging"
 msgstr ""
-"Con esto, todas las facturas seleccionadas para ser valdiades seran marcadas y ellas"
-" será validades una por una. Si ocurre algun error cuando validemos alguna factura "
-", la validación en background sera deactivada para dicha factura y notificaremos "
-"via mensajería del problema"
+"Con esto, todas las facturas seleccionadas para ser valdiades seran marcadas"
+" y ellas será validades una por una. Si ocurre algun error cuando validemos "
+"alguna factura , la validación en background sera deactivada para dicha "
+"factura y notificaremos via mensajería del problema"
 
 #. module: account_background_post
 #. odoo-python
@@ -129,5 +134,5 @@ msgid ""
 "You can only validate on batches of size < %s invoices. If you need to "
 "validate more invoices please use the validate on background option"
 msgstr ""
-"Solo puedes validar en lotes < %s facturas. Si necesita validar mas facturas "
-"por favor usar la opción Validar en background"
+"Solo puedes validar en lotes < %s facturas. Si necesita validar mas facturas"
+" por favor usar la opción Validar en background"
