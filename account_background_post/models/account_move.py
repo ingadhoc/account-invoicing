@@ -31,6 +31,7 @@ class AccountMove(models.Model):
                 move.background_post = False
                 move._cr.commit()
             except Exception as exp:
+                self.env.cr.rollback()
                 move.background_post = False
                 move.message_post(
                     body=_('We tried to validate this invoice on the background but got this error') + ': \n\n' + plaintext2html(str(exp), 'em'),
