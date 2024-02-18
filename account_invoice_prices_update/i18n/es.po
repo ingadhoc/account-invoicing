@@ -3,21 +3,21 @@
 # 	* account_invoice_prices_update
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-25 14:43+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"POT-Creation-Date: 2023-11-13 13:02+0000\n"
+"PO-Revision-Date: 2023-06-07 09:57+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_invoice_prices_update
 #: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
@@ -42,7 +42,7 @@ msgstr "Nombre Mostrado"
 #. module: account_invoice_prices_update
 #: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr "ID (identificación)"
 
 #. module: account_invoice_prices_update
 #: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard____last_update
