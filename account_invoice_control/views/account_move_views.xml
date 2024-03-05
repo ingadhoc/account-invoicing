@@ -9,42 +9,43 @@
         <field name="arch" type="xml">
             <form position='inside'>
                 <field name="has_sales" invisible="1"/>
+                <field name="restrict_edit_invoice" invisible="1"/>
             </form>
-            <field name="invoice_line_ids"  groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="invoice_line_ids" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="line_ids" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="line_ids" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="journal_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="journal_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="team_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="team_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <xpath expr="//page[@name='other_info']//field[contains(@name, 'origin')]" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </xpath>
-            <field name="invoice_date" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="invoice_date" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="partner_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="partner_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="invoice_user_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="invoice_user_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="fiscal_position_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="fiscal_position_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="invoice_date_due" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="invoice_date_due" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="invoice_payment_term_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="invoice_payment_term_id"  position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
-            <field name="partner_bank_id" groups="account_invoice_control.group_restrict_edit_invoice" position="attributes">
-                <attribute name="attrs">{'readonly':['|',('state', '!=', 'draft'),('has_sales','=',True)]}</attribute>
+            <field name="partner_bank_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('has_sales','=',True), ('restrict_edit_invoice','=',True)]}</attribute>
             </field>
         </field>
     </record>
