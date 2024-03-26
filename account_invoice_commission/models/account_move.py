@@ -36,7 +36,6 @@ class AccountMove(models.Model):
         domain=[('move_type', 'in', ('out_invoice', 'out_refund'))],
         string='Commissioned invoices',
         readonly=True,
-        states={'draft': [('readonly', False)]},
         help='The invoices that this commission invoice is commissioning',
         copy=False,
     )
@@ -77,3 +76,15 @@ class AccountMove(models.Model):
                     rec.mapped('invoice_line_ids.commission_amount'))
         else:
             self.commission_amount = 0.0
+
+    def web_read(self, specification):
+        """ Esto lo agregamos para propagar el contexto del commissioned_partner_id
+            La idea es que si esta presente el campo commissioned_invoice_ids agregamos en el contexto
+            el commissioned_partner_id y llamamos a super de web_read pisando estos valores. """
+        res = super().web_read(specification)
+        for vals, rec in zip(res, self):
+            partner_id = vals.get('partner_id')
+            if partner_id and partner_id.get('id') and 'commissioned_invoice_ids' in specification:
+                vals['commissioned_invoice_ids']  = super(AccountMove, rec).with_context(commissioned_partner_id=vals['partner_id']['id']).web_read(
+                    {'commissioned_invoice_ids': specification['commissioned_invoice_ids']})[0]['commissioned_invoice_ids']
+        return res
