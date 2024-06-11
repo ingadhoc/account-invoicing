@@ -6,7 +6,7 @@ class AccountMove(models.Model):
 
     _inherit = 'account.move'
 
-    background_post = fields.Boolean(help="If True then this invoice will be validated in the background by cron.")
+    background_post = fields.Boolean(help="If True then this invoice will be validated in the background by cron.", copy=False, tracking=True)
 
     def get_internal_partners(self):
         res = self.env['res.partner']
@@ -28,7 +28,6 @@ class AccountMove(models.Model):
         for move in moves[:batch_size]:
             try:
                 move.action_post()
-                move.background_post = False
                 move._cr.commit()
             except Exception as exp:
                 self.env.cr.rollback()
@@ -39,3 +38,8 @@ class AccountMove(models.Model):
                     body_is_html=True)
         if len(moves) > batch_size:
             self.env.ref('account_background_post.ir_cron_background_post_invoices')._trigger()
+
+    def _post(self, soft=True):
+        posted = super()._post(soft=soft)
+        posted.filtered('background_post').background_post = False
+        return posted
