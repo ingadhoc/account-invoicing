@@ -3,15 +3,15 @@
 # 	* account_invoice_commission
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 10:02+0000\n"
-"PO-Revision-Date: 2023-04-11 10:01+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"POT-Creation-Date: 2024-05-29 14:22+0000\n"
+"PO-Revision-Date: 2024-05-29 14:21+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,11 +125,6 @@ msgstr "Asiento contable"
 #: model:ir.model,name:account_invoice_commission.model_account_move_line
 msgid "Journal Item"
 msgstr "Apunte contable"
-
-#. module: account_invoice_commission
-#: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule____last_update
-msgid "Last Modified on"
-msgstr "Última Modificación el"
 
 #. module: account_invoice_commission
 #: model:ir.model.fields,field_description:account_invoice_commission.field_account_bank_statement_line__date_last_payment
