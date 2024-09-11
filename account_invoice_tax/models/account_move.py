@@ -22,3 +22,12 @@ class AccountMove(models.Model):
                 tax_list_origin=move._origin.mapped('invoice_line_ids.tax_ids'),
                 tax_total_origin=move._origin.tax_totals)
             )._compute_tax_totals()
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        res = super().copy(default)
+
+        if res.move_type in ['in_refund', 'in_invoice']:
+            res.tax_totals = self.tax_totals
+
+        return res
