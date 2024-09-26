@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# Gonzalo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-16 13:26+0000\n"
+"POT-Creation-Date: 2024-08-05 13:37+0000\n"
 "PO-Revision-Date: 2023-12-15 15:47+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Last-Translator: Gonzalo, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "<strong>TAX: </strong>"
-msgstr ""
+msgstr "<strong>Impuesto: </strong>"
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax
@@ -32,22 +33,22 @@ msgstr "Impuesto en Factura"
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax_line
 msgid "Account Invoice Tax line"
-msgstr ""
+msgstr "Línea de impuesto de factura"
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add/update"
-msgstr ""
+msgstr "Agregar / Actualizar"
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add/update fixed Tax"
-msgstr ""
+msgstr "Agregar / Actualizar impuesto fijo"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__amount
 msgid "Amount"
-msgstr ""
+msgstr "Importe"
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
@@ -57,7 +58,7 @@ msgstr "Cancelar"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__company_id
 msgid "Company"
-msgstr ""
+msgstr "Empresa"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__create_uid
@@ -94,7 +95,7 @@ msgstr "ID (identificación)"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__invoice_tax_id
 msgid "Invoice Tax"
-msgstr ""
+msgstr "Impuesto de la factura"
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_move
@@ -121,7 +122,7 @@ msgstr "Movimiento"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__new_tax
 msgid "New Tax"
-msgstr ""
+msgstr "Nuevo Impuesto"
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_tax
@@ -132,9 +133,9 @@ msgstr "Impuesto"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__tax_line_ids
 msgid "Tax Line"
-msgstr ""
+msgstr "Línea de Impuesto"
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 msgid "Update"
-msgstr ""
+msgstr "Actualizar"

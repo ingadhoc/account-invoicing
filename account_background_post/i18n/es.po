@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
+# Gonzalo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-14 14:23+0000\n"
+"POT-Creation-Date: 2024-08-05 13:40+0000\n"
 "PO-Revision-Date: 2024-01-26 12:42+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
+"Last-Translator: Gonzalo, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -121,10 +122,10 @@ msgid ""
 "invoice, the automatic validation of the same will be unmarked and it will "
 "be notified via messaging"
 msgstr ""
-"Con esto, todas las facturas seleccionadas para ser valdiades seran marcadas"
-" y ellas será validades una por una. Si ocurre algun error cuando validemos "
-"alguna factura , la validación en background sera deactivada para dicha "
-"factura y notificaremos via mensajería del problema"
+"Con esto, todas las facturas seleccionadas para ser validadas serán marcadas"
+" y ellas será validades una por una. Si ocurre algún error, la validación "
+"automática será desactivada para dicha factura y notificaremos vía "
+"mensajería del problema"
 
 #. module: account_background_post
 #. odoo-python
@@ -134,5 +135,5 @@ msgid ""
 "You can only validate on batches of size < %s invoices. If you need to "
 "validate more invoices please use the validate on background option"
 msgstr ""
-"Solo puedes validar en lotes < %s facturas. Si necesita validar mas facturas"
-" por favor usar la opción Validar en background"
+"Solo puedes validar en lotes de < %s facturas. Si necesita validar mas "
+"facturas por favor usar la opción \"Validar en Background\"."
