@@ -31,5 +31,5 @@
         'views/account_move_views.xml',
     ],
     'website': 'www.adhoc.com.ar',
-    'installable': True,
+    'installable': False,
 }
