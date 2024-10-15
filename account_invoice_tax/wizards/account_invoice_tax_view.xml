@@ -9,11 +9,11 @@
                     <field name="company_id" invisible="1"/>
                     <field name="move_id" invisible="1"/>
                     <field colspan="2" nolabel="1" name="tax_line_ids">
-                        <tree decoration-info="new_tax == True" editable="bottom">
+                        <list decoration-info="new_tax == True" editable="bottom">
                             <field name="tax_id" domain="[('type_tax_use', '=', 'purchase'), ('company_id', '=', parent.company_id)]" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="amount"/>
                             <field name="new_tax" column_invisible="True"/>
-                        </tree>
+                        </list>
                     </field>
                 </group>
                 <footer>
