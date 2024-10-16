@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Commission Invoices',
-    'version': "17.0.1.0.0",
+    'version': "18.0.1.0.0",
     'category': 'Accounting',
     'sequence': 14,
     'summary': '',
@@ -40,7 +40,7 @@
     ],
     'test': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
