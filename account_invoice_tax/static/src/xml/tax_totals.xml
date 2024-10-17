@@ -4,8 +4,8 @@
     <t t-name="account.TaxGroupComponent" t-inherit="account.TaxGroupComponent" t-inherit-mode="extension" owl="1">
         <xpath expr="//span[hasclass('o_tax_group_edit')]" position="replace">
                         <span class="o_tax_group_edit">
-                            <span class="o_tax_group_amount_value">
-                                <t t-out="props.taxGroup.formatted_tax_group_amount"/>
+                            <span class="o_tax_group_amount_value o_list_monetary">
+                                 <t t-out="formatMonetary(props.taxGroup.tax_amount_currency)"/>
                             </span>
                         </span>
         </xpath>
