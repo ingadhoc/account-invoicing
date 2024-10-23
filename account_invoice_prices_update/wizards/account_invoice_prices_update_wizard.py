@@ -55,25 +55,16 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             uom=uom,
             date=date,
         )
-        if pricelist.discount_policy == "with_discount":
+        rule_id = self.env["product.pricelist.item"].browse(rule_id)
+        if rule_id.compute_price != "percentage":
             price_unit = self.env["account.tax"]._fix_tax_included_price_company(
                 final_price,
                 product.taxes_id,
                 invoice_line.tax_ids,
                 invoice_line.company_id,
             )
-            # self.with_context(check_move_validity=False).discount = 0.0
             return price_unit, 0.0
         else:
-            rule_id = self.env["product.pricelist.item"].browse(rule_id)
-            while (
-                rule_id.base == "pricelist"
-                and rule_id.base_pricelist_id.discount_policy == "without_discount"
-            ):
-                new_rule_id = rule_id.base_pricelist_id._get_product_rule(
-                    product, qty, uom=uom, date=date
-                )
-                rule_id = self.env["product.pricelist.item"].browse(new_rule_id)
             base_price = rule_id._compute_base_price(
                 product,
                 qty,
