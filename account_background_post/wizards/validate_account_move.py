@@ -1,6 +1,6 @@
 import logging
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -21,23 +21,10 @@ class ValidateAccountMove(models.TransientModel):
         for rec in self:
             rec.force_background = rec.count_inv > rec.batch_size
 
-    @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
-
-        if self._context.get("active_model") == "account.move":
-            domain = [("id", "in", self._context.get("active_ids", [])), ("state", "=", "draft")]
-        elif self._context.get("active_model") == "account.journal":
-            domain = [("journal_id", "=", self._context.get("active_id")), ("state", "=", "draft")]
-        else:
-            raise UserError(_("Missing 'active_model' in context."))
-
-        moves = self.env["account.move"].search(domain).filtered("line_ids")
-        if not moves:
-            raise UserError(_("There are no journal items in the draft state to post."))
-
-        res["move_ids"] = moves.ids
-        res["count_inv"] = len(moves)
+        if res:
+            res["count_inv"] = len(res["move_ids"])
         return res
 
     def action_background_post(self):
@@ -45,7 +32,7 @@ class ValidateAccountMove(models.TransientModel):
         self.env.ref("account_background_post.ir_cron_background_post_invoices")._trigger()
 
     def validate_move(self):
-        """Sobre escribimos este metodo por completo para hacer:
+        """Sobre escribimos este método para el caso de varias invoices para hacer:
 
         1. Que en lugar de hacer un _post hacemos un _action_post. esto porque odoo hace cosas como lanzar acciones y correr validaciones solo cuando corremos el action_post. y nosotros queremos que esas se apliquen. eso incluye el envio de email cuando validamos la factura.
 
@@ -54,6 +41,9 @@ class ValidateAccountMove(models.TransientModel):
 
         3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background."""
+
+        if len(self) == 1:
+            return super().validate_move()
 
         if self.count_inv > self.batch_size:
             raise UserError(
