@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-05 20:56+0000\n"
+"POT-Creation-Date: 2025-03-12 20:37+0000\n"
 "PO-Revision-Date: 2024-11-14 20:12+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -57,12 +57,6 @@ msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: account_background_post
-#. odoo-python
-#: code:addons/account_background_post/wizards/validate_account_move.py:0
-msgid "Missing 'active_model' in context."
-msgstr "Falta 'active_model' en el contexto"
-
-#. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__move_ids
 msgid "Move"
 msgstr "Movimiento "
@@ -84,12 +78,6 @@ msgid ""
 msgstr ""
 "Campo técnico para saber el numero de facturas seleccionadas para el "
 "asistente"
-
-#. module: account_background_post
-#. odoo-python
-#: code:addons/account_background_post/wizards/validate_account_move.py:0
-msgid "There are no journal items in the draft state to post."
-msgstr "No hay asientos en estado borrador por validar"
 
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.view_account_invoice_filter
