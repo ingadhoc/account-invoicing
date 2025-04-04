@@ -130,12 +130,16 @@ class AccountInvoiceTaxLine(models.TransientModel):
         company_currency = self.invoice_tax_id.move_id.company_currency_id
         not_company_currency = move_currency and move_currency != company_currency
 
-        return {
-            "amount_currency": self.amount if not_company_currency else None,
+        values = {
             "debit": debit_cc if not_company_currency else debit,
             "credit": credit_cc if not_company_currency else credit,
             "balance": (self.amount_company_currency if not_company_currency else self.amount) * (1 if debit else -1),
         }
+
+        if not_company_currency and self.amount:
+            values["amount_currency"] = self.amount
+
+        return values
 
     def _compute_amount_company_currency(self):
         for line in self:
