@@ -19,7 +19,7 @@
                 </page>
             </notebook>
             <xpath expr="//field[@name='invoice_line_ids']/list" position="inside">
-                <field name="commission_amount" invisible="not context.get('commissioned_partner_id', False)" sum="Total" optional="hide"/>
+                <field name="commission_amount" column_invisible="not context.get('commissioned_partner_id', False)" sum="Total" optional="hide"/>
             </xpath>
         </field>
     </record>
