@@ -1,6 +1,12 @@
 {
     "name": "Account Invoice Tax",
+<<<<<<< 24dad28271a7be0f910c94eae5e492a680c86b6a
     "version": "19.0.1.0.0",
+||||||| fa5caa84911bca5b06138eb1bc5dc3d52a23458c
+    "version": "18.0.1.0.0",
+=======
+    "version": "18.0.1.2.0",
+>>>>>>> 9d1cd66e35c3227decb6be584534c1605bd1c831
     "author": "ADHOC SA",
     "category": "Localization",
     "depends": [

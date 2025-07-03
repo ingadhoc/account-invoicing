@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import Command, _, api, fields, models
+from odoo import Command, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -34,16 +34,6 @@ class AccountInvoiceTax(models.TransientModel):
 
     def action_update_tax(self):
         move = self.move_id
-        fixed_taxes_bu = {
-            line.tax_line_id: {
-                "amount_currency": line.amount_currency,
-                "debit": line.debit,
-                "credit": line.credit,
-            }
-            for line in self.move_id.line_ids.filtered(
-                lambda x: x.tax_repartition_line_id.tax_id.amount_type == "fixed"
-            )
-        }
 
         active_tax = self.tax_line_ids.mapped("tax_id")
         origin_tax = self.move_id.line_ids.filtered(lambda x: x.tax_line_id).mapped("tax_repartition_line_id.tax_id")
@@ -51,7 +41,7 @@ class AccountInvoiceTax(models.TransientModel):
         to_add_tax = active_tax - origin_tax
         container = {"records": move, "self": move}
 
-        # change tax list
+        # --- 1. Update tax list on invoice lines ---
         with move.with_context(check_move_validity=False)._check_balanced(container):
             with move._sync_dynamic_lines(container):
                 if to_remove_tax:
@@ -63,27 +53,16 @@ class AccountInvoiceTax(models.TransientModel):
                         {"tax_ids": [Command.link(tax_id.id) for tax_id in to_add_tax]}
                     )
 
-        # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
-        container = {"records": move}
+        # --- 2. Persist overrides in the JSON field so they survive recomputations ---
+        self._save_overrides()
 
-        if move.move_type == "in_invoice":
-            sign = 1
-        else:  # For refund
-            sign = -1
+        # --- 3. Apply overrides to the current tax lines ---
+        container = {"records": move}
         with move._check_balanced(container):
             with move._sync_dynamic_lines(container):
-                # restauramos todos los valores de impuestos fixed que se habrian recomputado
-                # restaured = []
-                for tax_line in move.line_ids.filtered(
-                    lambda x: x.tax_repartition_line_id.tax_id in fixed_taxes_bu
-                    and x.tax_repartition_line_id.tax_id.amount_type == "fixed"
-                ):
-                    tax_line.write(fixed_taxes_bu.get(tax_line.tax_line_id))
-                for tax_line_id in self.tax_line_ids:
-                    # seteamos valor al impuesto segun lo que puso en el wizard
-                    line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
-                    line_with_tax.write({"amount_currency": tax_line_id.amount * sign})
+                move._apply_tax_overrides()
 
+<<<<<<< 24dad28271a7be0f910c94eae5e492a680c86b6a
     def add_tax_and_new(self):
         self.add_tax()
         return {
@@ -94,6 +73,37 @@ class AccountInvoiceTax(models.TransientModel):
             "view_mode": "form",
             "context": self.env.context,
         }
+||||||| fa5caa84911bca5b06138eb1bc5dc3d52a23458c
+    def add_tax_and_new(self):
+        self.add_tax()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Edit tax lines"),
+            "res_model": self._name,
+            "target": "new",
+            "view_mode": "form",
+            "context": self._context,
+        }
+=======
+    def _save_overrides(self):
+        """Write wizard line amounts into ``tax_override_data`` on the move.
+
+        Only fixed-amount taxes are persisted as overrides.  Percentage-based
+        taxes are always recomputed automatically, so any stale entry for them
+        is removed.
+        """
+        new_overrides = {}
+        move = self.move_id
+        for wizard_line in self.tax_line_ids.filtered(lambda l: l.tax_id.amount_type == "fixed"):
+            new_overrides[str(wizard_line.tax_id.id)] = {
+                "amount": wizard_line.amount,
+                "rate": self.move_id.invoice_currency_rate or 1.0,
+            }
+
+        # Previous overrides are fully replaced – entries not present in
+        # new_overrides (removed taxes or percentage-based taxes) are dropped.
+        move.tax_override_data = new_overrides or False
+>>>>>>> 9d1cd66e35c3227decb6be584534c1605bd1c831
 
     @api.constrains("tax_line_ids")
     @api.onchange("tax_line_ids")
