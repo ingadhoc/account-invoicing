@@ -97,3 +97,11 @@ class AccountMove(models.Model):
                     ]
                 )
         return res
+
+    def _fetch_duplicate_reference(self, matching_states=("draft", "posted")):
+        # Delete this when https://github.com/odoo/odoo/pull/210164 is merged
+        # Bypass the duplicate payment check for main payments
+        bypass_moves_with_commission = self.filtered(lambda x: x.commissioned_invoice_ids or x.commission_invoice_ids)
+        if bypass_moves_with_commission:
+            return {}
+        return super()._fetch_duplicate_reference(matching_states=matching_states)
