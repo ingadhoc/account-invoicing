@@ -72,10 +72,24 @@ class AccountInvoiceTax(models.TransientModel):
                     and x.tax_repartition_line_id.tax_id.amount_type == "fixed"
                 ):
                     tax_line.write(fixed_taxes_bu.get(tax_line.tax_line_id))
+
                 for tax_line_id in self.tax_line_ids:
                     # seteamos valor al impuesto segun lo que puso en el wizard
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
-                    line_with_tax.write(tax_line_id._get_amount_updated_values())
+                    updated_values = tax_line_id._get_amount_updated_values()
+                    line_with_tax.write(updated_values)
+
+                    # Update price total
+                    product_lines = line_with_tax.move_id.line_ids.filtered(
+                        lambda l: line_with_tax.tax_line_id in l.tax_ids
+                    )
+                    for product_line in product_lines:
+                        product_line.write(
+                            {
+                                "price_total": product_line.price_subtotal
+                                + updated_values["balance"] / len(product_lines)
+                            }
+                        )
 
     def add_tax_and_new(self):
         self.add_tax()
