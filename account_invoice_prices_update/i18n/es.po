@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-14 20:13+0000\n"
+"POT-Creation-Date: 2025-07-22 12:05+0000\n"
 "PO-Revision-Date: 2024-11-14 20:13+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -18,11 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
-
-#. module: account_invoice_prices_update
-#: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__algolia_search
-msgid "Algolia Search"
-msgstr ""
 
 #. module: account_invoice_prices_update
 #: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
