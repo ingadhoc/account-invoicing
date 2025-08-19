@@ -162,5 +162,3 @@ jobs:
                 console.error(`Error deleting branch '${baseBranchName}' from fork repo: ${error.message}`);
               }
             }
-              }
-            }
