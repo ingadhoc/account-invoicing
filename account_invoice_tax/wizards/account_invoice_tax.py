@@ -23,8 +23,15 @@ class AccountInvoiceTax(models.TransientModel):
         res["move_id"] = move_ids[0].id if move_ids else False
         lines = []
         for line in move_ids[0].line_ids.filtered(lambda x: x.tax_line_id):
+            is_in_company_currency = move_ids[0].currency_id == move_ids[0].company_currency_id
+            vals = {
+                "tax_id": line.tax_line_id.id,
+                "amount": line.amount_currency,
+                "new_tax": False,
+                'amount_company_currency': line.amount_currency if is_in_company_currency else line.debit or line.credit,
+            }
             lines.append(
-                Command.create({"tax_id": line.tax_line_id.id, "amount": line.amount_currency, "new_tax": False})
+                Command.create(vals)
             )
         res["tax_line_ids"] = lines
 
@@ -72,10 +79,15 @@ class AccountInvoiceTax(models.TransientModel):
                     and x.tax_repartition_line_id.tax_id.amount_type == "fixed"
                 ):
                     tax_line.write(fixed_taxes_bu.get(tax_line.tax_line_id))
+
                 for tax_line_id in self.tax_line_ids:
                     # seteamos valor al impuesto segun lo que puso en el wizard
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
                     line_with_tax.write(tax_line_id._get_amount_updated_values())
+                    if line_with_tax.tax_repartition_line_id.tax_id.amount_type == "fixed":
+
+                        line_with_tax.tax_fixed_amount = tax_line_id.amount_company_currency if self.is_in_company_currency else tax_line_id.amount
+                        line_with_tax.tax_fixed_amount_in_currency = tax_line_id.amount
 
     def add_tax_and_new(self):
         self.add_tax()
@@ -101,9 +113,9 @@ class AccountInvoiceTaxLine(models.TransientModel):
     tax_id = fields.Many2one("account.tax", required=True)
     amount = fields.Float()
     amount_company_currency = fields.Float(
-        compute="_compute_amount_company_currency",
-        readonly=False,
-        store=True,
+        # compute="_compute_amount_company_currency",
+        # readonly=False,
+        # store=True,
     )
 
     new_tax = fields.Boolean(default=True)
