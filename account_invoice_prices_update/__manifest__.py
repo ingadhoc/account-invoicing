@@ -30,5 +30,5 @@
         "views/account_move_views.xml",
         "security/ir.model.access.csv",
     ],
-    'installable': False,
+    "installable": False,
 }

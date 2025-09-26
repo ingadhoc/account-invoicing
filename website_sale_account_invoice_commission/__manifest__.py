@@ -35,7 +35,7 @@
         "views/account_commission_rule_views.xml",
     ],
     "demo": [],
-    'installable': False,
+    "installable": False,
     "auto_install": True,
     "application": False,
 }

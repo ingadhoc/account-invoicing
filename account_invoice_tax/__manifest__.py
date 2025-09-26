@@ -17,7 +17,7 @@
         ],
     },
     "license": "AGPL-3",
-    'installable': False,
+    "installable": False,
     "auto_install": False,
     "application": False,
 }
