@@ -29,7 +29,7 @@ class AccountMove(models.Model):
         for move in moves[:batch_size]:
             try:
                 move.action_post()
-                move._cr.commit()
+                move.env.cr.commit()
             except Exception as exp:
                 self.env.cr.rollback()
                 move.background_post = False
@@ -47,3 +47,9 @@ class AccountMove(models.Model):
         posted = super()._post(soft=soft)
         posted.filtered("background_post").background_post = False
         return posted
+
+    def _get_moves_requiring_confirmation(self):
+        """Override method to always open the confirmation wizard
+        when trying to set a background_post invoice.
+        """
+        return self

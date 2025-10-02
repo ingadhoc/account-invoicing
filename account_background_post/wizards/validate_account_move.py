@@ -10,7 +10,6 @@ class ValidateAccountMove(models.TransientModel):
     _inherit = "validate.account.move"
 
     move_ids = fields.Many2many("account.move")
-    count_inv = fields.Integer(help="Technical field to know the number of invoices selected from the wizard")
     batch_size = fields.Integer(compute="_compute_batch_size")
     force_background = fields.Integer(compute="_compute_force_background")
 
@@ -20,12 +19,6 @@ class ValidateAccountMove(models.TransientModel):
     def _compute_force_background(self):
         for rec in self:
             rec.force_background = rec.count_inv > rec.batch_size
-
-    def default_get(self, fields):
-        res = super().default_get(fields)
-        if res:
-            res["count_inv"] = len(res["move_ids"])
-        return res
 
     def action_background_post(self):
         self.move_ids.background_post = True
@@ -42,10 +35,12 @@ class ValidateAccountMove(models.TransientModel):
         3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background."""
 
-        if len(self) == 1:
+        count_move_ids = len(self.move_ids)
+
+        if count_move_ids == 1:
             return super().validate_move()
 
-        if self.count_inv > self.batch_size:
+        if count_move_ids > self.batch_size:
             raise UserError(
                 _(
                     "You can only validate on batches of size < %s invoices. If you need to validate"
@@ -57,6 +52,6 @@ class ValidateAccountMove(models.TransientModel):
         for move in self.move_ids:
             _logger.info("Validating invoice %s", move.id)
             move.action_post()
-            move._cr.commit()
+            move.env.cr.commit()
 
         return {"type": "ir.actions.act_window_close"}
