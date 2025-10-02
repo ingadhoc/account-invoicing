@@ -85,7 +85,7 @@ class AccountInvoiceTax(models.TransientModel):
             "res_model": self._name,
             "target": "new",
             "view_mode": "form",
-            "context": self._context,
+            "context": self.env.context,
         }
 
     @api.depends("move_id")
