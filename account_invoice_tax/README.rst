@@ -14,29 +14,32 @@
 Account Invoice Tax
 ===================
 
-Add new buttons in the Vendor Bills that let us to add/remove taxes to all the lines of a vendor bill.
+This module adds new buttons to Vendor Bills in Odoo, allowing users to add or remove taxes on all invoice lines at once. It provides a wizard to select taxes to apply or remove, streamlining tax management for vendor bills.
 
+Key Features
+============
+
+* Add or remove taxes to all lines of a vendor bill with a single action.
+* Wizard interface for selecting taxes to apply or remove.
+* Updates tax totals and invoice lines accordingly.
 
 Installation
 ============
 
-To install this module, you need to:
-
-#. Only need to install the module
+To install this module, simply add it to your Odoo addons path and install it from the Apps menu.
 
 Configuration
 =============
 
-To configure this module, you need to:
-
-#. Nothing to configure
+No additional configuration is required.
 
 Usage
 =====
 
-To use this module, you need to:
-
-#. Go to an "draft" invoice and click the button "Update Pricelist and Prices", then a popup it's open, select the pricelist to update the price in the lines using this listprice.
+1. Open a vendor bill in draft state.
+2. Use the new "Add/Update Taxes" button to launch the wizard.
+3. Select the taxes you want to add or remove from all invoice lines.
+4. Confirm to update the invoice lines and tax totals.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
