@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class AccountInvoiceTax(models.TransientModel):
@@ -7,10 +8,7 @@ class AccountInvoiceTax(models.TransientModel):
     _description = "Account Invoice Tax"
 
     move_id = fields.Many2one("account.move", required=True)
-    company_id = fields.Many2one(related="move_id.company_id")
     tax_line_ids = fields.One2many("account.invoice.tax_line", "invoice_tax_id")
-
-    is_in_company_currency = fields.Boolean(compute="_compute_is_in_company_currency")
 
     @api.model
     def default_get(self, fields):
@@ -21,10 +19,14 @@ class AccountInvoiceTax(models.TransientModel):
             else self.env["account.move"]
         )
         res["move_id"] = move_ids[0].id if move_ids else False
+        if move_ids[0].move_type == "in_invoice":
+            sign = 1
+        else:  # For refund
+            sign = -1
         lines = []
         for line in move_ids[0].line_ids.filtered(lambda x: x.tax_line_id):
             lines.append(
-                Command.create({"tax_id": line.tax_line_id.id, "amount": line.amount_currency, "new_tax": False})
+                Command.create({"tax_id": line.tax_line_id.id, "amount": line.amount_currency * sign, "new_tax": False})
             )
         res["tax_line_ids"] = lines
 
@@ -63,6 +65,11 @@ class AccountInvoiceTax(models.TransientModel):
 
         # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
         container = {"records": move}
+
+        if move.move_type == "in_invoice":
+            sign = 1
+        else:  # For refund
+            sign = -1
         with move._check_balanced(container):
             with move._sync_dynamic_lines(container):
                 # restauramos todos los valores de impuestos fixed que se habrian recomputado
@@ -75,7 +82,7 @@ class AccountInvoiceTax(models.TransientModel):
                 for tax_line_id in self.tax_line_ids:
                     # seteamos valor al impuesto segun lo que puso en el wizard
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
-                    line_with_tax.write(tax_line_id._get_amount_updated_values())
+                    line_with_tax.write({"amount_currency": tax_line_id.amount * sign})
 
     def add_tax_and_new(self):
         self.add_tax()
@@ -88,65 +95,39 @@ class AccountInvoiceTax(models.TransientModel):
             "context": self.env.context,
         }
 
-    @api.depends("move_id")
-    def _compute_is_in_company_currency(self):
-        self.is_in_company_currency = self.move_id.currency_id == self.move_id.company_currency_id
+    @api.constrains("tax_line_ids")
+    @api.onchange("tax_line_ids")
+    def check_analytic(self):
+        taxes = self.tax_line_ids.filtered("tax_id.analytic").mapped("tax_id")
+        if taxes:
+            raise UserError(
+                'No puede usar este asistente ya que algún impuesto tiene establecido "Incluir en el costo analítico?".\nImpuestos: %s'
+                % (", ".join(taxes.mapped(lambda x: "%s (%s)" % (x.name, x.id))))
+            )
 
 
 class AccountInvoiceTaxLine(models.TransientModel):
     _name = "account.invoice.tax_line"
     _description = "Account Invoice Tax line"
+    _check_company_auto = True
+    _check_company_domain = models.check_companies_domain_parent_of
 
     invoice_tax_id = fields.Many2one("account.invoice.tax")
-    tax_id = fields.Many2one("account.tax", required=True)
-    amount = fields.Float()
-    amount_company_currency = fields.Float(
-        compute="_compute_amount_company_currency",
-        readonly=False,
-        store=True,
+    tax_id = fields.Many2one(
+        "account.tax",
+        required=True,
+        check_company=True,
+        domain="[('type_tax_use', '=', 'purchase'), ('id', 'not in', existing_tax_ids)]",
     )
-
+    company_id = fields.Many2one(related="invoice_tax_id.move_id.company_id")
+    currency_id = fields.Many2one(related="invoice_tax_id.move_id.currency_id")
+    existing_tax_ids = fields.Many2many("account.tax", compute="_compute_existing_taxes")
+    amount = fields.Monetary(
+        currency_field="currency_id",
+    )
     new_tax = fields.Boolean(default=True)
 
-    def _get_amount_updated_values(self):
-        debit = credit = debit_cc = credit_cc = 0
-        if self.amount and not self.amount_company_currency:
-            self._compute_amount_company_currency()
-        if self.invoice_tax_id.move_id.move_type == "in_invoice":
-            if self.amount > 0:
-                debit = self.amount
-                debit_cc = self.amount_company_currency
-            elif self.amount < 0:
-                credit = -self.amount
-                credit_cc = -self.amount_company_currency
-        else:  # For refund
-            if self.amount > 0:
-                credit = self.amount
-                credit_cc = self.amount_company_currency
-            elif self.amount < 0:
-                debit = -self.amount
-                debit_cc = -self.amount_company_currency
-
-        # If multi currency enable
-        move_currency = self.invoice_tax_id.move_id.currency_id
-        company_currency = self.invoice_tax_id.move_id.company_currency_id
-        not_company_currency = move_currency and move_currency != company_currency
-
-        values = {
-            "debit": debit_cc if not_company_currency else debit,
-            "credit": credit_cc if not_company_currency else credit,
-            "balance": (self.amount_company_currency if not_company_currency else self.amount) * (1 if debit else -1),
-        }
-
-        if not_company_currency and self.amount:
-            values["amount_currency"] = self.amount
-
-        return values
-
-    def _compute_amount_company_currency(self):
-        for line in self:
-            taxes = line.invoice_tax_id.move_id.tax_totals["subtotals"][0]["tax_groups"]
-            for tax_group in taxes:
-                if line.tax_id.id == tax_group["involved_tax_ids"][0]:
-                    line.amount_company_currency = tax_group["tax_amount"]
-                    break
+    @api.depends("invoice_tax_id.tax_line_ids.tax_id")
+    def _compute_existing_taxes(self):
+        for record in self:
+            record.existing_tax_ids = record.invoice_tax_id.tax_line_ids.mapped("tax_id")
