@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class AccountInvoiceTax(models.TransientModel):
@@ -19,10 +20,14 @@ class AccountInvoiceTax(models.TransientModel):
             else self.env["account.move"]
         )
         res["move_id"] = move_ids[0].id if move_ids else False
+        if move_ids[0].move_type == "in_invoice":
+            sign = 1
+        else:  # For refund
+            sign = -1
         lines = []
         for line in move_ids[0].line_ids.filtered(lambda x: x.tax_line_id):
             lines.append(
-                Command.create({"tax_id": line.tax_line_id.id, "amount": line.amount_currency, "new_tax": False})
+                Command.create({"tax_id": line.tax_line_id.id, "amount": line.amount_currency * sign, "new_tax": False})
             )
         res["tax_line_ids"] = lines
 
@@ -91,6 +96,16 @@ class AccountInvoiceTax(models.TransientModel):
             "context": self._context,
         }
 
+    @api.constrains("tax_line_ids")
+    @api.onchange("tax_line_ids")
+    def check_analytic(self):
+        taxes = self.tax_line_ids.filtered("tax_id.analytic").mapped("tax_id")
+        if taxes:
+            raise UserError(
+                'No puede usar este asistente ya que algún impuesto tiene establecido "Incluir en el costo analítico?".\nImpuestos: %s'
+                % (", ".join(taxes.mapped(lambda x: "%s (%s)" % (x.name, x.id))))
+            )
+
 
 class AccountInvoiceTaxLine(models.TransientModel):
     _name = "account.invoice.tax_line"
@@ -98,5 +113,8 @@ class AccountInvoiceTaxLine(models.TransientModel):
 
     invoice_tax_id = fields.Many2one("account.invoice.tax")
     tax_id = fields.Many2one("account.tax", required=True)
-    amount = fields.Float()
+    currency_id = fields.Many2one(related="invoice_tax_id.move_id.currency_id")
+    amount = fields.Monetary(
+        currency_field="currency_id",
+    )
     new_tax = fields.Boolean(default=True)
