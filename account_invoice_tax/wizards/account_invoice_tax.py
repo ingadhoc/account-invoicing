@@ -61,6 +61,11 @@ class AccountInvoiceTax(models.TransientModel):
 
         # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
         container = {"records": move}
+
+        if move.move_type == "in_invoice":
+            sign = 1
+        else:  # For refund
+            sign = -1
         with move._check_balanced(container):
             with move._sync_dynamic_lines(container):
                 # restauramos todos los valores de impuestos fixed que se habrian recomputado
@@ -73,7 +78,7 @@ class AccountInvoiceTax(models.TransientModel):
                 for tax_line_id in self.tax_line_ids:
                     # seteamos valor al impuesto segun lo que puso en el wizard
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
-                    line_with_tax.write(tax_line_id._get_amount_updated_values())
+                    line_with_tax.write({"amount_currency": tax_line_id.amount * sign})
 
     def add_tax_and_new(self):
         self.add_tax()
@@ -95,24 +100,3 @@ class AccountInvoiceTaxLine(models.TransientModel):
     tax_id = fields.Many2one("account.tax", required=True)
     amount = fields.Float()
     new_tax = fields.Boolean(default=True)
-
-    def _get_amount_updated_values(self):
-        debit = credit = 0
-        if self.invoice_tax_id.move_id.move_type == "in_invoice":
-            if self.amount > 0:
-                debit = self.amount
-            elif self.amount < 0:
-                credit = -self.amount
-        else:  # For refund
-            if self.amount > 0:
-                credit = self.amount
-            elif self.amount < 0:
-                debit = -self.amount
-
-        # If multi currency enable
-        move_currency = self.invoice_tax_id.move_id.currency_id
-        company_currency = self.invoice_tax_id.move_id.company_currency_id
-        if move_currency and move_currency != company_currency:
-            return {"amount_currency": self.amount if debit else -self.amount}
-
-        return {"debit": debit, "credit": credit, "balance": self.amount if debit else -self.amount}
