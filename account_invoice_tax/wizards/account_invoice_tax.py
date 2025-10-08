@@ -110,8 +110,6 @@ class AccountInvoiceTaxLine(models.TransientModel):
 
     def _get_amount_updated_values(self):
         debit = credit = debit_cc = credit_cc = 0
-        if self.amount and not self.amount_company_currency:
-            self._compute_amount_company_currency()
         if self.invoice_tax_id.move_id.move_type == "in_invoice":
             if self.amount > 0:
                 debit = self.amount
