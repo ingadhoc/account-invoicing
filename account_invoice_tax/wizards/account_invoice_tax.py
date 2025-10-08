@@ -8,7 +8,6 @@ class AccountInvoiceTax(models.TransientModel):
     _description = "Account Invoice Tax"
 
     move_id = fields.Many2one("account.move", required=True)
-    company_id = fields.Many2one(related="move_id.company_id")
     tax_line_ids = fields.One2many("account.invoice.tax_line", "invoice_tax_id")
 
     @api.model
@@ -110,11 +109,25 @@ class AccountInvoiceTax(models.TransientModel):
 class AccountInvoiceTaxLine(models.TransientModel):
     _name = "account.invoice.tax_line"
     _description = "Account Invoice Tax line"
+    _check_company_auto = True
+    _check_company_domain = models.check_companies_domain_parent_of
 
     invoice_tax_id = fields.Many2one("account.invoice.tax")
-    tax_id = fields.Many2one("account.tax", required=True)
+    tax_id = fields.Many2one(
+        "account.tax",
+        required=True,
+        check_company=True,
+        domain="[('type_tax_use', '=', 'purchase'), ('id', 'not in', existing_tax_ids)]",
+    )
+    company_id = fields.Many2one(related="invoice_tax_id.move_id.company_id")
     currency_id = fields.Many2one(related="invoice_tax_id.move_id.currency_id")
+    existing_tax_ids = fields.Many2many("account.tax", compute="_compute_existing_taxes")
     amount = fields.Monetary(
         currency_field="currency_id",
     )
     new_tax = fields.Boolean(default=True)
+
+    @api.depends("invoice_tax_id.tax_line_ids.tax_id")
+    def _compute_existing_taxes(self):
+        for record in self:
+            record.existing_tax_ids = record.invoice_tax_id.tax_line_ids.mapped("tax_id")
