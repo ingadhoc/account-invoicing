@@ -1,5 +1,9 @@
+import logging
+
 from odoo import _, api, fields, models
 from odoo.tools import plaintext2html
+
+_logger = logging.getLogger(__name__)
 
 
 class AccountMove(models.Model):
@@ -17,19 +21,19 @@ class AccountMove(models.Model):
         return res
 
     @api.model
-    def _cron_background_post_invoices(self, batch_size=20):
-        """Busca las facturas que estan marcadas por ser validadas en background y las valida.
+    def _cron_background_post_invoices(self, ids=None):
+        """Busca las facturas que estan marcadas por ser validadas en background y las valida."""
+        if ids is not None:
+            moves = self.browse(ids)
+        else:
+            moves = self.search([("background_post", "=", True), ("state", "=", "draft")])
 
-        Ponemos un batch size para mejorar la performance ya que odoo econimiza muchas queries al tener
-        un prefetch_ids de 20 en vez de 1. pero ademas, iteramos y no mandamos el atcion_post a todos los
-        records juntos para no tener problemas frente a facturas con error y envio de emails o cosas similares
-        """
-        moves = self.search([("background_post", "=", True), ("state", "=", "draft")])
-
-        for move in moves[:batch_size]:
+        total_len = len(moves)
+        self.env["ir.cron"]._commit_progress(remaining=total_len)
+        for move in moves:
             try:
                 move.action_post()
-                move.env.cr.commit()
+                self.env["ir.cron"]._commit_progress(processed=1)
             except Exception as exp:
                 self.env.cr.rollback()
                 move.background_post = False
@@ -40,8 +44,9 @@ class AccountMove(models.Model):
                     partner_ids=move.get_internal_partners().ids,
                     body_is_html=True,
                 )
-        if len(moves) > batch_size:
-            self.env.ref("account_background_post.ir_cron_background_post_invoices")._trigger()
+                _logger.error("Error while trying to post invoice %s in background: %s", move.name, exp)
+                # Commit after each failure to set false background_post and post the message
+                self.env.cr.commit()  # pylint: disable=invalid-commit
 
     def _post(self, soft=True):
         posted = super()._post(soft=soft)
