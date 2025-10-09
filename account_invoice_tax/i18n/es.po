@@ -3,18 +3,15 @@
 # 	* account_invoice_tax
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2024
-# Rocio Vega, 2025
-# Camila Vives, 2025
-# Gonzalo, 2025
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0+e\n"
+"Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 12:05+0000\n"
-"PO-Revision-Date: 2024-12-23 18:31+0000\n"
-"Last-Translator: Gonzalo, 2025\n"
+"POT-Creation-Date: 2025-10-08 18:56+0000\n"
+"PO-Revision-Date: 2025-10-08 18:56+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +22,7 @@ msgstr ""
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "<strong>TAX: </strong>"
-msgstr "<strong>IMPUESTO: </strong>"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax
@@ -35,27 +32,27 @@ msgstr "Impuesto en Factura"
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax_line
 msgid "Account Invoice Tax line"
-msgstr "Línea de Impuesto en Factura"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add/update"
-msgstr "Agregar/Actualizar"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "Add/update fixed Tax"
-msgstr "Agregar/Actualizar Impuesto Fijo"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__amount
 msgid "Amount"
-msgstr "Importe"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__amount_company_currency
 msgid "Amount Company Currency"
-msgstr "Importe moneda de la compañía"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
@@ -65,7 +62,7 @@ msgstr "Cancelar"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__company_id
 msgid "Company"
-msgstr "Empresa"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__create_uid
@@ -101,12 +98,12 @@ msgstr "ID (identificación)"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__invoice_tax_id
 msgid "Invoice Tax"
-msgstr "Impuesto de Factura"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__is_in_company_currency
 msgid "Is In Company Currency"
-msgstr "Es en moneda de la compañía"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__write_uid
@@ -128,19 +125,19 @@ msgstr "Movimiento"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__new_tax
 msgid "New Tax"
-msgstr "Nuevo Impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__tax_id
 msgid "Tax"
-msgstr "Impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__tax_line_ids
 msgid "Tax Line"
-msgstr "Línea de Impuesto"
+msgstr ""
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 msgid "Update"
-msgstr "Actualizar"
+msgstr ""
