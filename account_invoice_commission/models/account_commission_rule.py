@@ -3,6 +3,7 @@
 # directory
 ##############################################################################
 from odoo import fields, models
+from odoo.fields import Domain
 
 
 class AccountCommissionRule(models.Model):
@@ -39,7 +40,7 @@ class AccountCommissionRule(models.Model):
         "Product Template",
         bypass_search_access=True,
         ondelete="cascade",
-        help="Specify a template if this rule only applies to one product " "template. Keep empty otherwise.",
+        help="Specify a template if this rule only applies to one product template. Keep empty otherwise.",
     )
     categ_id = fields.Many2one(
         "product.category",
@@ -51,36 +52,53 @@ class AccountCommissionRule(models.Model):
         "Keep empty otherwise.",
     )
     min_amount = fields.Float(
-        help="Minimun Amount on company currency of the invoice to be " "evaluated",
+        help="Minimun Amount on company currency of the invoice to be evaluated",
         default=0.0,
     )
     percent_commission = fields.Float("Percentage Commission")
 
     def _get_rule_domain(self, date, product, partner_id, customer, amount):
-        domain = [
-            "|",
-            ("date_start", "=", False),
-            ("date_start", "<=", date),
-            "|",
-            ("date_end", "=", False),
-            ("date_end", ">=", date),
-            "|",
-            ("min_amount", "=", 0.0),
-            ("min_amount", "<=", amount),
-            ("partner_id", "in", [False, partner_id]),
-            ("customer_id", "in", [False, customer.id]),
-        ]
-        # para lineas sin producto buscamos solamente las de false
-        if not product:
-            domain += [("product_tmpl_id", "=", False), ("categ_id", "=", False)]
-        else:
-            domain += [
-                ("product_tmpl_id", "in", [False, product.product_tmpl_id.id]),
-                "|",
-                ("categ_id", "=", False),
-                ("categ_id", "parent_of", product.categ_id.id),
+        # Fecha
+        date_start_domain = Domain([("date_start", "<=", date)]) | Domain([("date_start", "=", False)])
+        date_end_domain = Domain([("date_end", ">=", date)]) | Domain([("date_end", "=", False)])
+        date_domain = date_start_domain & date_end_domain
+
+        # Monto
+        amount_domain = Domain([("min_amount", "<=", amount)]) | Domain([("min_amount", "=", 0.0)])
+
+        # Partner / customer
+        partner_customer_domain = Domain(
+            [
+                ("partner_id", "in", [False, partner_id]),
+                ("customer_id", "in", [False, customer.id]),
             ]
-        return domain
+        )
+
+        # Producto / Categoría
+        if not product:
+            # Para lineas sin producto buscamos solamente las de false
+            product_domain = Domain(
+                [
+                    ("product_tmpl_id", "=", False),
+                    ("categ_id", "=", False),
+                ]
+            )
+        else:
+            # Reglas específicas de producto o categoría
+            product_tmpl_domain = Domain(
+                [
+                    ("product_tmpl_id", "in", [False, product.product_tmpl_id.id]),
+                ]
+            )
+            categ_domain = Domain([("categ_id", "=", False)]) | Domain(
+                [
+                    ("categ_id", "parent_of", product.categ_id.id),
+                ]
+            )
+            product_domain = product_tmpl_domain & categ_domain
+
+        # Dominio final
+        return date_domain & amount_domain & partner_customer_domain & product_domain
 
     def _get_rule(self, date, product, partner_id, customer, amount):
         domain = self._get_rule_domain(date, product, partner_id, customer, amount)
