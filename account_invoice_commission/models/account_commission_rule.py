@@ -25,11 +25,11 @@ class AccountCommissionRule(models.Model):
     partner_id = fields.Many2one(
         "res.partner",
         ondelete="cascade",
-        auto_join=True,
+        bypass_search_access=True,
     )
     customer_id = fields.Many2one(
         "res.partner",
-        auto_join=True,
+        bypass_search_access=True,
         ondelete="cascade",
         context={"res_partner_search_mode": "customer"},
     )
@@ -37,14 +37,14 @@ class AccountCommissionRule(models.Model):
     product_tmpl_id = fields.Many2one(
         "product.template",
         "Product Template",
-        auto_join=True,
+        bypass_search_access=True,
         ondelete="cascade",
         help="Specify a template if this rule only applies to one product " "template. Keep empty otherwise.",
     )
     categ_id = fields.Many2one(
         "product.category",
         "Product Category",
-        auto_join=True,
+        bypass_search_access=True,
         ondelete="cascade",
         help="Specify a product category if this rule only applies to "
         "products belonging to this category or its children categories. "

@@ -25,6 +25,6 @@
     </record>
 
     <menuitem action="action_commission_rule_form"
-        id="menu_action_commission_rule_form" parent="account.account_management_menu" sequence="15"/>
+        id="menu_action_commission_rule_form" parent="account.account_invoicing_menu" sequence="15"/>
 
 </odoo>
