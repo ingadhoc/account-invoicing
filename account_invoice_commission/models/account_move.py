@@ -68,7 +68,7 @@ class AccountMove(models.Model):
     @api.depends("invoice_line_ids.commission_amount")
     @api.depends_context("commissioned_partner_id")
     def _compute_commission_amount(self):
-        commissioned_partner_id = self._context.get("commissioned_partner_id")
+        commissioned_partner_id = self.env.context.get("commissioned_partner_id")
         if commissioned_partner_id:
             _logger.info("Computing commission amount")
             for rec in self:
