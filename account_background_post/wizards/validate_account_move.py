@@ -24,7 +24,7 @@ class ValidateAccountMove(models.TransientModel):
     def default_get(self, fields):
         res = super().default_get(fields)
         if res:
-            res["count_inv"] = len(res["move_ids"])
+            res["count_inv"] = len(res["move_ids"][0][2])
         return res
 
     def action_background_post(self):
@@ -42,7 +42,7 @@ class ValidateAccountMove(models.TransientModel):
         3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background."""
 
-        if len(self) == 1:
+        if self.count_inv == 1:
             return super().validate_move()
 
         if self.count_inv > self.batch_size:
