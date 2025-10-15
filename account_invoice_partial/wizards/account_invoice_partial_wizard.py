@@ -12,7 +12,7 @@ class AccountInvoicePartialWizard(models.TransientModel):
 
     invoice_id = fields.Many2one(
         "account.move",
-        default=lambda x: x._context.get("active_id", False),
+        default=lambda x: x.env.context.get("active_id", False),
     )
     percentage_to_invoice = fields.Float(
         required=True,
