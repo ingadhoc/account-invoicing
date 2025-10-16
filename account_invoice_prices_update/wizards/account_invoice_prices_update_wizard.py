@@ -17,14 +17,14 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
 
     @api.model
     def _get_pricelist(self):
-        invoice_id = self._context.get("active_id", False)
+        invoice_id = self.env.context.get("active_id", False)
         if invoice_id:
             invoice = self.env["account.move"].browse(invoice_id)
             return invoice.partner_id.property_product_pricelist
 
     def update_prices(self):
         self.ensure_one()
-        active_id = self._context.get("active_id", False)
+        active_id = self.env.context.get("active_id", False)
         invoice = self.env["account.move"].browse(active_id)
         invoice.write({"currency_id": self.pricelist_id.currency_id.id})
         for line in invoice.invoice_line_ids.filtered("product_id").with_context(check_move_validity=False):
