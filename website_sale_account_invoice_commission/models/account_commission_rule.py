@@ -11,7 +11,7 @@ class AccountCommissionRule(models.Model):
     public_category_id = fields.Many2one(
         "product.public.category",
         "Website Category",
-        auto_join=True,
+        bypass_search_access=True,
     )
 
     def _get_rule_domain(self, date, product, partner_id, customer, amount):
