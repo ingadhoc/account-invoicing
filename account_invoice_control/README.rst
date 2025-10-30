@@ -10,32 +10,43 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-==========================
-Invoice origin and control
-==========================
+=======================
+Account Invoice Control
+=======================
 
-* It also creates a new users group "Restrict Edit Invoice", users in that group can not edit lines of invoices generated from Sale Orders
+Module that adds invoice controls and validations:
+
+- Additional invoice states management
+- Security rules to control invoice validation process
+- Controls over customer account moves
+- Validation steps for invoice workflow
+
 
 Installation
 ============
 
 To install this module, you need to:
 
-#. Only need to install the module
+#. Just install this module.
+
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-#. Set "Restrict Edit Invoice" to the users you want to restrict
+#. Go to Settings -> Users & Companies -> Groups
+#. Assign users to the appropriate invoice control groups
+
 
 Usage
 =====
 
 To use this module, you need to:
 
-#. Go to ...
+#. Go to Invoicing -> Customers -> Invoices
+#. Create a new invoice or edit an existing one
+#. The additional controls and validations will be applied based on configuration
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
