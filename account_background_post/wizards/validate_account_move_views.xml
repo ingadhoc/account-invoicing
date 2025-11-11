@@ -17,14 +17,16 @@
                 </field>
 
                 <button name="validate_move" position="before">
-                    <button string="Post in Background" name="action_background_post" type="object" default_focus="1" class="btn-primary" data-hotkey="a" help="With this, all the invoices selected to be validated will be marked and they will be validated one by one. If an error is found when validating any invoice, the automatic validation of the same will be unmarked and it will be notified via messaging"/>
+                    <button string="Post in Background" name="action_background_post" type="object" default_focus="1" class="btn-primary" data-hotkey="a" help="With this, all the invoices selected to be validated will be marked and they will be validated one by one. If an error is found when validating any invoice, the automatic validation of the same will be unmarked and it will be notified via messaging"
+                    invisible="abnormal_amount_partner_ids"/>
+                    <button string="Confirm" name="validate_move" type="object"
+                    default_focus="1" class="btn-primary" data-hotkey="q" context="{'validate_analytic': True}"
+                    confirm="Only use this option to post a small batch of invoices" invisible="force_background"
+                    />
                 </button>
 
                 <button name="validate_move" position="attributes">
-                    <attribute name="default_focus"/>
-                    <attribute name="class"/>
-                    <attribute name="confirm">Only use this option to post a small batch of invoices</attribute>
-                    <attribute name="invisible">force_background</attribute>
+                    <attribute name="invisible">not force_background</attribute>
                 </button>
 
             </field>
