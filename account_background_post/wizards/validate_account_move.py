@@ -41,8 +41,7 @@ class ValidateAccountMove(models.TransientModel):
 
         3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background."""
-
-        if self.count_inv == 1:
+        if self.count_inv <= 1:  # or 0 or 1
             return super().validate_move()
 
         if self.count_inv > self.batch_size:
