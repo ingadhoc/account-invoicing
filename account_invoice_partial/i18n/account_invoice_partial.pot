@@ -1,0 +1,122 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_invoice_partial
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-22 00:36+0000\n"
+"PO-Revision-Date: 2025-11-22 00:36+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_invoice_partial
+#: model:ir.model,name:account_invoice_partial.model_account_invoice_partial_wizard
+msgid "Account Invoice Partial Wizard"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_account_invoice_partial_wizard_form
+msgid "Confirm"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields.selection,name:account_invoice_partial.selection__account_invoice_partial_wizard__rounding_method__down
+msgid "DOWN"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields.selection,name:account_invoice_partial.selection__account_invoice_partial_wizard__rounding_method__half-up
+msgid "HALF-UP"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__invoice_id
+msgid "Invoice"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.actions.act_window,name:account_invoice_partial.action_account_invoice_partial_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_account_invoice_partial_wizard_form
+msgid "Invoice Partial"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_move_form
+msgid "Invoice Percentage"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__percentage_to_invoice
+msgid "Percentage To Invoice"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,help:account_invoice_partial.field_account_invoice_partial_wizard__rounding
+msgid "Represent the non-zero value smallest coinage (for example, 0.05)."
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__rounding_method
+msgid "Rounding Method"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,field_description:account_invoice_partial.field_account_invoice_partial_wizard__rounding
+msgid "Rounding Precision"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields,help:account_invoice_partial.field_account_invoice_partial_wizard__rounding_method
+msgid "The tie-breaking rule used for float rounding operations"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model:ir.model.fields.selection,name:account_invoice_partial.selection__account_invoice_partial_wizard__rounding_method__up
+msgid "UP"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_account_invoice_partial_wizard_form
+msgid "_Cancel"
+msgstr ""
+
+#. module: account_invoice_partial
+#: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_account_invoice_partial_wizard_form
+msgid "or"
+msgstr ""
