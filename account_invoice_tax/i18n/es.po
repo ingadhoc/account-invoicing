@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-08 18:56+0000\n"
+"POT-Creation-Date: 2025-11-17 17:29+0000\n"
 "PO-Revision-Date: 2025-10-08 18:56+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
@@ -50,17 +50,12 @@ msgid "Amount"
 msgstr ""
 
 #. module: account_invoice_tax
-#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__amount_company_currency
-msgid "Amount Company Currency"
-msgstr ""
-
-#. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: account_invoice_tax
-#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__company_id
+#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__company_id
 msgid "Company"
 msgstr ""
 
@@ -77,6 +72,11 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: account_invoice_tax
+#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__display_name
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__display_name
 msgid "Display Name"
@@ -90,6 +90,11 @@ msgid "Edit tax lines"
 msgstr "Editar lineas de impuesto"
 
 #. module: account_invoice_tax
+#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__existing_tax_ids
+msgid "Existing Tax"
+msgstr ""
+
+#. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__id
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__id
 msgid "ID"
@@ -98,11 +103,6 @@ msgstr "ID (identificación)"
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax_line__invoice_tax_id
 msgid "Invoice Tax"
-msgstr ""
-
-#. module: account_invoice_tax
-#: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__is_in_company_currency
-msgid "Is In Company Currency"
 msgstr ""
 
 #. module: account_invoice_tax
