@@ -10,7 +10,7 @@
             <field name="invoice_line_ids" position="attributes">
                 <attribute name="readonly">state != 'draft' or (has_sales and restrict_edit_invoice)</attribute>
            </field>
-            <field name="journal_line_ids" position="attributes">
+            <field name="line_ids" position="attributes">
                 <attribute name="readonly">state != 'draft' or (has_sales and restrict_edit_invoice)</attribute>
             </field>
             <field name="journal_id" position="attributes">
