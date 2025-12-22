@@ -10,14 +10,18 @@ msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-13 12:25+0000\n"
-"PO-Revision-Date: 2025-11-13 12:24+0000\n"
-"Last-Translator: ADHOC - Bot <transbot@adhoc.com.ar>, 2025\n"
-"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
+"PO-Revision-Date: 2025-12-22 16:10+0000\n"
+"Last-Translator: carla spiaggi <sca@adhoc.inc>\n"
+"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
+"account-invoicing-19-0/account-invoicing-19-0-account_invoice_prices_update/"
+"es/>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: account_invoice_prices_update
 #: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
@@ -42,7 +46,7 @@ msgstr "Nombre a Mostrar"
 #. module: account_invoice_prices_update
 #: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: account_invoice_prices_update
 #: model:ir.model.fields,field_description:account_invoice_prices_update.field_account_invoice_prices_update_wizard__write_uid
@@ -78,7 +82,7 @@ msgstr "Asistente de Actualización de Precios"
 #. module: account_invoice_prices_update
 #: model:ir.model,name:account_invoice_prices_update.model_account_invoice_prices_update_wizard
 msgid "account.invoice.prices_update.wizard"
-msgstr ""
+msgstr "account.invoice.prices_update.wizard"
 
 #. module: account_invoice_prices_update
 #: model_terms:ir.ui.view,arch_db:account_invoice_prices_update.view_account_invoice_form
