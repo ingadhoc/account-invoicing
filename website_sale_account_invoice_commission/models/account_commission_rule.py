@@ -14,8 +14,8 @@ class AccountCommissionRule(models.Model):
         auto_join=True,
     )
 
-    def _get_rule_domain(self, date, product, partner_id, customer, amount):
-        domain = super()._get_rule_domain(date, product, partner_id, customer, amount)
+    def _get_rule_domain(self, date, product, partner_id, customer, amount, account_id=False):
+        domain = super()._get_rule_domain(date, product, partner_id, customer, amount, account_id=account_id)
         if not product:
             domain += [("public_category_id", "=", False)]
         else:
