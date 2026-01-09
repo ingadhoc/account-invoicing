@@ -33,7 +33,13 @@ class AccountMove(models.Model):
         for move in moves:
             try:
                 move.action_post()
+<<<<<<< f3651c09029428d403b4fe8ddeaa389c70bae56d
                 self.env["ir.cron"]._commit_progress(processed=1)
+||||||| 84445f34fe527b66734ebbd682ba244ecac9637f
+                move._cr.commit()
+=======
+                self.env.cr.commit()  # pragma pylint: disable=invalid-commit
+>>>>>>> 18f8c201da3b4223741ab0ac3333c4401b8a7076
             except Exception as exp:
                 self.env.cr.rollback()
                 move.background_post = False
