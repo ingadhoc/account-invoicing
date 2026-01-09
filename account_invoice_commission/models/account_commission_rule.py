@@ -55,8 +55,20 @@ class AccountCommissionRule(models.Model):
         default=0.0,
     )
     percent_commission = fields.Float("Percentage Commission")
+    account_id = fields.Many2one(
+        "account.account",
+        "Commission Account",
+        domain="[('company_ids', '=', company_id)]",
+        help="Account to be used for commission entries. "
+        "If not set, the default commission account will be used.",
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        "Company",
+        default=lambda self: self.env.company,
+    )
 
-    def _get_rule_domain(self, date, product, partner_id, customer, amount):
+    def _get_rule_domain(self, date, product, partner_id, customer, amount, account_id=False):
         domain = [
             "|",
             ("date_start", "=", False),
@@ -70,6 +82,8 @@ class AccountCommissionRule(models.Model):
             ("partner_id", "in", [False, partner_id]),
             ("customer_id", "in", [False, customer.id]),
         ]
+        if account_id:
+            domain += [("account_id", "in", [False, account_id])]
         # para lineas sin producto buscamos solamente las de false
         if not product:
             domain += [("product_tmpl_id", "=", False), ("categ_id", "=", False)]
@@ -82,6 +96,6 @@ class AccountCommissionRule(models.Model):
             ]
         return domain
 
-    def _get_rule(self, date, product, partner_id, customer, amount):
-        domain = self._get_rule_domain(date, product, partner_id, customer, amount)
+    def _get_rule(self, date, product, partner_id, customer, amount, account_id=False):
+        domain = self._get_rule_domain(date, product, partner_id, customer, amount, account_id)
         return self.search(domain, limit=1)
