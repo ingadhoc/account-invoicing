@@ -31,6 +31,7 @@ class AccountMoveLine(models.Model):
                     commissioned_partner_id,
                     rec.move_id.commercial_partner_id,
                     -rec.balance,
+                    rec.account_id.id,
                 )
                 if rule:
                     rec.commission_amount = rule.percent_commission * -rec.balance / 100.0
