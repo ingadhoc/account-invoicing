@@ -14,6 +14,7 @@
                 <field name="categ_id"/>
                 <field name="min_amount"/>
                 <field name="percent_commission"/>
+                <field name="account_id" optional="show"/>
             </list>
         </field>
     </record>
