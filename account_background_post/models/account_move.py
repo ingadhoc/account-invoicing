@@ -28,7 +28,7 @@ class AccountMove(models.Model):
         for move in moves[:batch_size]:
             try:
                 move.action_post()
-                move._cr.commit()
+                self.env.cr.commit()
             except Exception as exp:
                 self.env.cr.rollback()
                 move.background_post = False
