@@ -22,7 +22,6 @@ class ValidateAccountMove(models.TransientModel):
             rec.force_background = rec.count_inv > rec.batch_size
 
     def default_get(self, fields):
-        fields += ["move_ids"]
         res = super().default_get(fields)
         if res:
             res["count_inv"] = len(res["move_ids"][0][2])
