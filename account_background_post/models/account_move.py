@@ -16,15 +16,19 @@ class AccountMove(models.Model):
         return res
 
     @api.model
-    def _cron_background_post_invoices(self, batch_size=20):
+    def _cron_background_post_invoices(self, batch_size=20, **kwargs):
         """ Busca las facturas que estan marcadas por ser validadas en background y las valida.
 
         Ponemos un batch size para mejorar la performance ya que odoo econimiza muchas queries al tener
-        un prefetch_ids de 20 en vez de 1. pero ademas, iteramos y no mandamos el atcion_post a todos los
+        un prefetch_ids de 20 en vez de 1. pero ademas, iteramos y no mandamos el action_post a todos los
         records juntos para no tener problemas frente a facturas con error y envio de emails o cosas similares
         """
-        moves = self.search([('background_post', '=', True), ('state', '=', 'draft')])
+        if kwargs.get('journal_ids'):
+            move_domain = [('background_post', '=', True), ('state', '=', 'draft'), ('journal_id', 'in', kwargs['journal_ids'])]
+        else:
+            move_domain = [('background_post', '=', True), ('state', '=', 'draft')]
 
+        moves = self.search(move_domain)
         for move in moves[:batch_size]:
             try:
                 move.action_post()
@@ -37,6 +41,10 @@ class AccountMove(models.Model):
                     partner_ids=move.get_internal_partners().ids,
                     body_is_html=True)
         if len(moves) > batch_size:
+            cron_id = self.env.context.get('cron_id')
+            if cron_id:
+                self.env['ir.cron'].browse(self.env.context['cron_id'])._trigger()
+                return
             self.env.ref('account_background_post.ir_cron_background_post_invoices')._trigger()
 
     def _post(self, soft=True):

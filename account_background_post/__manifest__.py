@@ -1,6 +1,6 @@
 {
     'name': 'Account Background Post',
-    'version': "17.0.1.0.0",
+    'version': "17.0.1.1.0",
     'author': 'ADHOC SA',
     'depends': [
         'account',
