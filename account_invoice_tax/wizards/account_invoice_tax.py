@@ -84,6 +84,14 @@ class AccountInvoiceTax(models.TransientModel):
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
                     line_with_tax.write({"amount_currency": tax_line_id.amount * sign})
 
+        # Update price_total for invoice lines based on manual tax amounts
+        for invoice_line in move.invoice_line_ids.filtered(lambda x: x.display_type == "product"):
+            # Sum all tax amounts for this line's taxes
+            tax_total = sum(
+                move.line_ids.filtered(lambda x: x.tax_line_id in invoice_line.tax_ids).mapped('amount_currency')
+            )
+            invoice_line.price_total = invoice_line.price_subtotal + tax_total
+
     def add_tax_and_new(self):
         self.add_tax()
         return {
