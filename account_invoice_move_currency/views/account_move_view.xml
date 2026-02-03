@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_move_form_inherit_user_exchange_rate" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.user.exchange.rate</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <div name="journal_div" position="after">
+                <div class="d-flex align-items-center" invisible="currency_id != company_currency_id or move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')">
+                    <label for="user_secondary_currency_id" string="Rate Currency" class="oe_inline"/>
+                    <span class="mx-2"></span>
+                    <field name="user_secondary_currency_id" options="{'no_create': True, 'no_open': True}" class="oe_inline" widget="selection" readonly="state != 'draft'" domain="[('id', '!=', company_currency_id)]"/>
+                    <span class="mx-2" invisible="not user_secondary_currency_id">=</span>
+                    <field name="user_exchange_rate" class="oe_inline" widget="float" invisible="not user_secondary_currency_id" readonly="state != 'draft'" required="user_secondary_currency_id"/>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
