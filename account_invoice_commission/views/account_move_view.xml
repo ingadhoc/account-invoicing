@@ -11,10 +11,10 @@
                 <field name="date_last_payment" invisible="state not in ('open', 'paid')"/>
             </xpath>
             <notebook>
-                <page string="Commissions" invisible="move_type in ('in_invoice', 'in_refund', 'in_receipt')">
-                    <field name="commission_invoice_ids"/>
+                <page string="Commissions" invisible="move_type in ('in_invoice', 'in_refund', 'in_receipt','entry')">
+                    <field name="commission_invoice_ids" context="{'list_view_ref':'account_invoice_commission.view_invoice_tree', 'form_view_ref':'account.move_form'}" readonly="state != 'draft'"/>
                 </page>
-                <page string="Commission" invisible="move_type in ('out_invoice', 'out_refund', 'out_receipt')">
+                <page string="Commission" invisible="move_type in ('out_invoice', 'out_refund', 'out_receipt','entry')">
                     <field name="commissioned_invoice_ids" context="{'commissioned_partner_id': partner_id, 'list_view_ref':'account_invoice_commission.view_invoice_tree', 'form_view_ref':'account.move_form', 'search_default_not_commissioned': True, 'search_default_closed': 1, 'search_default_invoice_user_id': partner_user_id, 'default_move_type': 'out_invoice'}" readonly="state != 'draft'"/>
                 </page>
             </notebook>
