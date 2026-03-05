@@ -1,6 +1,6 @@
 {
     "name": "Account Invoice Move Currency",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.1.0",
     "author": "ADHOC SA",
     "category": "Accounting & Finance",
     "depends": ["account_ux"],
