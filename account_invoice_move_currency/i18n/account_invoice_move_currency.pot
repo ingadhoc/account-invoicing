@@ -1,0 +1,102 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_invoice_move_currency
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-06 12:32+0000\n"
+"PO-Revision-Date: 2026-03-06 12:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_bank_statement_line__move_inverse_currency_rate
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_move__move_inverse_currency_rate
+msgid "Account Move Secondary Currency Rate"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#. odoo-python
+#: code:addons/account_invoice_move_currency/models/account_move.py:0
+msgid ""
+"Can not use Secondary currency if invoice is in a Currency different from "
+"Company Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model,name:account_invoice_move_currency.model_account_change_currency
+msgid "Change Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_change_currency__currency_company_id
+msgid "Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_change_currency__display_name
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_move__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model_terms:ir.ui.view,arch_db:account_invoice_move_currency.report_invoice_document
+msgid "El total de este comprobante equivale a un total de"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_change_currency__id
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_move__id
+msgid "ID"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,help:account_invoice_move_currency.field_account_bank_statement_line__move_currency_id
+#: model:ir.model.fields,help:account_invoice_move_currency.field_account_move__move_currency_id
+msgid ""
+"If you set a currency here, then this invoice values will be also stored in "
+"the related Account Move Secondary Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model,name:account_invoice_move_currency.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model_terms:ir.ui.view,arch_db:account_invoice_move_currency.view_move_form
+msgid "Rate..."
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_change_currency__same_currency
+msgid "Same Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_change_currency__save_secondary_currency
+msgid "Save in secondary currency?"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_bank_statement_line__move_currency_id
+#: model:ir.model.fields,field_description:account_invoice_move_currency.field_account_move__move_currency_id
+msgid "Secondary Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#. odoo-python
+#: code:addons/account_invoice_move_currency/models/account_move.py:0
+msgid "Secondary currency can not be the same as Invoice Currency"
+msgstr ""
+
+#. module: account_invoice_move_currency
+#: model_terms:ir.ui.view,arch_db:account_invoice_move_currency.report_invoice_document
+msgid "a un tipo de cambio consignado de"
+msgstr ""
