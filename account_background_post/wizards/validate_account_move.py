@@ -59,3 +59,9 @@ class ValidateAccountMove(models.TransientModel):
             return {"type": "ir.actions.act_window_close"}
         else:
             return super().validate_move()
+
+    def validate_move_confirm(self):
+        """Bridge method called from the view's Confirm button renamed to
+        avoid name collision. It delegates to `validate_move` to keep the
+        same behaviour."""
+        return self.validate_move()
