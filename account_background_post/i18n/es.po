@@ -1,25 +1,25 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_background_post
-# 
+#
 # Translators:
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2025
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-20 17:16+0000\n"
+"POT-Creation-Date: 2026-03-25 13:29+0000\n"
 "PO-Revision-Date: 2025-12-22 16:10+0000\n"
 "Last-Translator: carla spiaggi <sca@adhoc.inc>\n"
-"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/"
-"account-invoicing-19-0/account-invoicing-19-0-account_background_post/es/>\n"
+"Language-Team: Spanish <https://translation.dev-adhoc.com/projects/account-"
+"invoicing-19-0/account-invoicing-19-0-account_background_post/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.10.4\n"
 
 #. module: account_background_post
@@ -37,6 +37,11 @@ msgstr "Facturas Validación en Background: cron"
 #: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__batch_size
 msgid "Batch Size"
 msgstr "Tamaño del Lote"
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
+msgid "Confirm Now"
+msgstr ""
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__count_inv
@@ -88,8 +93,7 @@ msgstr "Validar en Background"
 
 #. module: account_background_post
 #: model:ir.model.fields,help:account_background_post.field_validate_account_move__count_inv
-msgid ""
-"Technical field to know the number of invoices selected from the wizard"
+msgid "Technical field to know the number of invoices selected from the wizard"
 msgstr ""
 "Campo técnico para saber el numero de facturas seleccionadas para el "
 "asistente"
@@ -114,13 +118,13 @@ msgstr ""
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
 msgid ""
-"With this, all the invoices selected to be validated will be marked and they"
-" will be validated one by one. If an error is found when validating any "
+"With this, all the invoices selected to be validated will be marked and they "
+"will be validated one by one. If an error is found when validating any "
 "invoice, the automatic validation of the same will be unmarked and it will "
 "be notified via messaging"
 msgstr ""
-"Con esto, todas las facturas seleccionadas para ser validadas serán marcadas"
-" y ellas será validades una por una. Si ocurre algún error, la validación "
+"Con esto, todas las facturas seleccionadas para ser validadas serán marcadas "
+"y ellas será validades una por una. Si ocurre algún error, la validación "
 "automática será desactivada para dicha factura y notificaremos vía "
 "mensajería del problema"
 
