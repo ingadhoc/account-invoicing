@@ -36,6 +36,7 @@ class AccountMove(models.Model):
                     body=_('We tried to validate this invoice on the background but got this error') + ': \n\n' + plaintext2html(str(exp), 'em'),
                     partner_ids=move.get_internal_partners().ids,
                     body_is_html=True)
+                self.env.cr.commit()
         if len(moves) > batch_size:
             self.env.ref('account_background_post.ir_cron_background_post_invoices')._trigger()
 
