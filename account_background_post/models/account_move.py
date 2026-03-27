@@ -47,6 +47,7 @@ class AccountMove(models.Model):
                     partner_ids=move.get_internal_partners().ids,
                     body_is_html=True,
                 )
+                self.env.cr.commit()  # pragma pylint: disable=invalid-commit
         if len(moves) > batch_size:
             cron_id = self.env.context.get("cron_id")
             if cron_id:
