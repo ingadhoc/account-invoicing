@@ -57,10 +57,16 @@ class AccountInvoiceTax(models.TransientModel):
         self._save_overrides()
 
         # --- 3. Apply overrides to the current tax lines ---
+        other_taxes_override = {}
+        for wizard_line in self.tax_line_ids.filtered(lambda l: l.tax_id.amount_type != "fixed"):
+            other_taxes_override[str(wizard_line.tax_id.id)] = {
+                "amount": wizard_line.amount,
+                "rate": self.move_id.invoice_currency_rate or 1.0,
+            }
         container = {"records": move}
         with move._check_balanced(container):
             with move._sync_dynamic_lines(container):
-                move._apply_tax_overrides()
+                move._apply_tax_overrides(other_taxes_override=other_taxes_override)
 
     def _save_overrides(self):
         """Write wizard line amounts into ``tax_override_data`` on the move.
