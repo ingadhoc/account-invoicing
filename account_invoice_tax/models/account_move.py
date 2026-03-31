@@ -105,13 +105,19 @@ class AccountMove(models.Model):
         for move in container.get("records", self):
             move._apply_tax_overrides()
 
-    def _apply_tax_overrides(self):
+    def _apply_tax_overrides(self, other_taxes_override=False):
         """Re-write values from ``tax_override_data`` onto the matching tax lines.
 
         Only overrides for fixed-amount taxes are applied; percentage-based
-        taxes must always reflect their recomputed values.
+        taxes are always recomputed unless they are present in the
+        ``other_taxes_override`` dictionary.
         """
         overrides = self.tax_override_data or {}
+        if other_taxes_override:
+            # Percentage-based tax overrides are not stored in ``tax_override_data``
+            # as they don't need to survive recomputations, but we still want to
+            # apply them on the current tax lines.
+            overrides.update(other_taxes_override)
         if not overrides:
             return
 
