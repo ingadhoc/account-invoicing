@@ -63,7 +63,25 @@ class AccountInvoiceTax(models.TransientModel):
                         {"tax_ids": [Command.link(tax_id.id) for tax_id in to_add_tax]}
                     )
 
+<<<<<<< 24dad28271a7be0f910c94eae5e492a680c86b6a
         # set amount in the new created tax line. En este momento si queda balanceado y se ajusta la linea AP/AR
+||||||| e2e735e96b98dcfb95dc414b45e83a0e358e6ebc
+        # --- 2. Persist overrides in the JSON field so they survive recomputations ---
+        self._save_overrides()
+
+        # --- 3. Apply overrides to the current tax lines ---
+=======
+        # --- 2. Persist overrides in the JSON field so they survive recomputations ---
+        self._save_overrides()
+
+        # --- 3. Apply overrides to the current tax lines ---
+        other_taxes_override = {}
+        for wizard_line in self.tax_line_ids.filtered(lambda l: l.tax_id.amount_type != "fixed"):
+            other_taxes_override[str(wizard_line.tax_id.id)] = {
+                "amount": wizard_line.amount,
+                "rate": self.move_id.invoice_currency_rate or 1.0,
+            }
+>>>>>>> 125a72317c425aa91275818b4f7c2b2f48e6c121
         container = {"records": move}
 
         if move.move_type == "in_invoice":
@@ -72,6 +90,7 @@ class AccountInvoiceTax(models.TransientModel):
             sign = -1
         with move._check_balanced(container):
             with move._sync_dynamic_lines(container):
+<<<<<<< 24dad28271a7be0f910c94eae5e492a680c86b6a
                 # restauramos todos los valores de impuestos fixed que se habrian recomputado
                 # restaured = []
                 for tax_line in move.line_ids.filtered(
@@ -83,6 +102,11 @@ class AccountInvoiceTax(models.TransientModel):
                     # seteamos valor al impuesto segun lo que puso en el wizard
                     line_with_tax = move.line_ids.filtered(lambda x: x.tax_line_id == tax_line_id.tax_id)
                     line_with_tax.write({"amount_currency": tax_line_id.amount * sign})
+||||||| e2e735e96b98dcfb95dc414b45e83a0e358e6ebc
+                move._apply_tax_overrides()
+=======
+                move._apply_tax_overrides(other_taxes_override=other_taxes_override)
+>>>>>>> 125a72317c425aa91275818b4f7c2b2f48e6c121
 
     def add_tax_and_new(self):
         self.add_tax()
