@@ -147,5 +147,5 @@ class AccountMove(models.Model):
                 "balance": ((amount_cc if not_company_currency else amount) * (1 if debit or debit_cc else -1)),
             }
             if not_company_currency and amount:
-                line_vals["amount_currency"] = amount
+                line_vals["amount_currency"] = amount * (1 if debit or debit_cc else -1)
             line.write(line_vals)
