@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 import logging
 
@@ -24,6 +24,8 @@ class ValidateAccountMove(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
+        if tools.config['test_enable']:
+            return res
 
         if self._context.get('active_model') == 'account.move':
             domain = [('id', 'in', self._context.get('active_ids', [])), ('state', '=', 'draft')]
@@ -45,7 +47,7 @@ class ValidateAccountMove(models.TransientModel):
         self.env.ref('account_background_post.ir_cron_background_post_invoices')._trigger()
 
     def validate_move(self):
-        """ Sobre escribimos este metodo por completo para hacer:
+        """ Sobre escribimos este metodo si no se trata de un test por completo para hacer:
 
         1. Que en lugar de hacer un _post hacemos un _action_post. esto porque odoo hace cosas como lanzar acciones y correr validaciones solo cuando corremos el action_post. y nosotros queremos que esas se apliquen. eso incluye el envio de email cuando validamos la factura.
 
@@ -55,6 +57,8 @@ class ValidateAccountMove(models.TransientModel):
         3. Limitamos sui el usuario quiere validar mas facturas que el batch size definido directamente
         le pedimos que las valide en background. """
 
+        if tools.config['test_enable']:
+            return super().validate_move()
         if self.count_inv > self.batch_size:
             raise UserError(_('You can only validate on batches of size < %s invoices. If you need to validate'
                               ' more invoices please use the validate on background option', self.batch_size))
