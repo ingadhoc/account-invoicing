@@ -28,7 +28,12 @@ class ValidateAccountMove(models.TransientModel):
         return res
 
     def action_background_post(self):
-        self.move_ids.background_post = True
+        query = """
+            UPDATE account_move
+            SET background_post = true
+            WHERE id IN %s
+        """
+        self.env.cr.execute(query, (tuple(self.move_ids.ids),))
         self.env.ref("account_background_post.ir_cron_background_post_invoices")._trigger()
 
     def validate_move(self):
