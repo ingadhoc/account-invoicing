@@ -26,7 +26,7 @@
                 </button>
 
                 <button name="validate_move" position="attributes">
-                    <attribute name="invisible">not force_background</attribute>
+                    <attribute name="invisible">1</attribute>
                 </button>
 
             </field>
