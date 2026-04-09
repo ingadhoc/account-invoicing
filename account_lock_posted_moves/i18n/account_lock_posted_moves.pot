@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_lock_posted_moves
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-09 12:00+0000\n"
+"PO-Revision-Date: 2026-04-09 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_lock_posted_moves
+#: model:ir.model.fields,field_description:account_lock_posted_moves.field_account_journal__lock_posted_moves
+msgid "Lock Posted Entries"
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model:ir.model.fields,help:account_lock_posted_moves.field_account_journal__lock_posted_moves
+msgid ""
+"If enabled, posted entries cannot be reset to draft. This provides "
+"protection against accidental modifications while allowing administrators "
+"to temporarily disable the lock when needed.\n"
+"\n"
+"This field replaces the deprecated 'restrict_mode_hash_table' system."
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model:ir.model,name:account_lock_posted_moves.model_account_journal
+msgid "Journal"
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model:ir.model,name:account_lock_posted_moves.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: code:addons/account_lock_posted_moves/models/account_move.py:0
+#, python-format
+msgid ""
+"Cannot reset to draft because the following journals have 'Lock Posted "
+"Entries' enabled: %s\n"
+"\n"
+"To modify these entries, temporarily disable the lock on the journal, make "
+"your changes, then re-enable the lock."
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model_terms:ir.ui.view,arch_db:account_lock_posted_moves.view_account_journal_form
+msgid "Entry Protection"
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model_terms:ir.ui.view,arch_db:account_lock_posted_moves.view_account_journal_form
+msgid ""
+"<strong>Warning:</strong> Posted entries cannot be reset to draft while "
+"this lock is enabled. Disable this setting temporarily if you need to "
+"modify posted entries."
+msgstr ""
+
+#. module: account_lock_posted_moves
+#: model_terms:ir.ui.view,arch_db:account_lock_posted_moves.view_account_journal_form
+msgid ""
+"Enable this option to prevent posted entries from being reset to draft. "
+"This provides protection against accidental modifications."
+msgstr ""
