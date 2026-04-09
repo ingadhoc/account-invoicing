@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_journal_form" model="ir.ui.view">
+        <field name="name">account.journal.form.lock_posted_moves</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Hide the native hash field from Odoo -->
+            <field name="restrict_mode_hash_table" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <!-- Add our new lock_posted_moves field after restrict_mode_hash_table -->
+            <field name="restrict_mode_hash_table" position="after">
+                <field name="lock_posted_moves"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>
