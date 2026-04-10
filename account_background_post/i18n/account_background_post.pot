@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-25 13:29+0000\n"
-"PO-Revision-Date: 2026-03-25 13:29+0000\n"
+"POT-Creation-Date: 2026-04-10 18:55+0000\n"
+"PO-Revision-Date: 2026-04-10 18:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.view_move_form
+msgid "<strong>⚠️ This invoice is pending validation in background</strong>"
+msgstr ""
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post
@@ -88,6 +93,13 @@ msgstr ""
 #: model:ir.model.fields,help:account_background_post.field_validate_account_move__count_inv
 msgid ""
 "Technical field to know the number of invoices selected from the wizard"
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.view_move_form
+msgid ""
+"This invoice will be automatically validated by the background process. If "
+"you validate it manually, the background flag will be automatically removed."
 msgstr ""
 
 #. module: account_background_post
