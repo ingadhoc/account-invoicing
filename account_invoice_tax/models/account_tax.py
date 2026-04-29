@@ -30,9 +30,9 @@ class AccountTax(models.Model):
                             "tax_amount_currency": new_amount,
                         }
                     )
-                    res["tax_amount"] += diff
-                    res["total_amount"] += diff
-                    res["tax_amount_currency"] += currency_diff
-                    res["total_amount_currency"] += currency_diff
+                    res["tax_amount"] += currency_diff
+                    res["total_amount"] += currency_diff
+                    res["tax_amount_currency"] += diff
+                    res["total_amount_currency"] += diff
 
         return res
