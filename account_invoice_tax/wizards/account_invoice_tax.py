@@ -21,8 +21,10 @@ class AccountInvoiceTax(models.TransientModel):
         res["move_id"] = move_ids[0].id if move_ids else False
         if move_ids[0].move_type == "in_invoice":
             sign = 1
-        else:  # For refund
+        elif move_ids[0].move_type == "in_refund":
             sign = -1
+        else:
+            raise UserError("Este asistente solo puede usarse sobre facturas o notas de crédito de compra.")
         lines = []
         for line in move_ids[0].line_ids.filtered(lambda x: x.tax_line_id):
             lines.append(

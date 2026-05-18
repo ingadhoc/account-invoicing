@@ -124,28 +124,25 @@ class AccountMove(models.Model):
         move_currency = self.currency_id
         company_currency = self.company_currency_id
         not_company_currency = move_currency and move_currency != company_currency
+        # Para in_invoice/in_receipt el impuesto positivo va al débito; para
+        # in_refund/out_* va al crédito. El signo se aplica una sola vez sobre
+        # el amount ingresado por el usuario (que puede ser negativo) y de ahí
+        # se derivan debit, credit y balance manteniendo la consistencia
+        # contable (debit - credit == balance).
+        sign = 1 if self.move_type in ("in_invoice", "in_receipt") else -1
         for line in self.line_ids.filtered(lambda l: l.tax_line_id and str(l.tax_line_id.id) in overrides):
             vals = overrides[str(line.tax_line_id.id)]
             rate = line.move_id.invoice_currency_rate or 1.0
             amount = vals.get("amount", 0.0)
             amount_cc = amount / rate
-            debit = credit = debit_cc = credit_cc = 0.0
-            if self.move_type in ("in_invoice", "in_receipt"):
-                if amount > 0:
-                    debit, debit_cc = amount, amount_cc
-                elif amount < 0:
-                    credit, credit_cc = -amount, -amount_cc
-            else:
-                if amount > 0:
-                    credit, credit_cc = amount, amount_cc
-                elif amount < 0:
-                    debit, debit_cc = -amount, -amount_cc
+            signed_amount = amount * sign
+            signed_amount_cc = amount_cc * sign
 
             line_vals = {
-                "debit": debit_cc if not_company_currency else debit,
-                "credit": credit_cc if not_company_currency else credit,
-                "balance": ((amount_cc if not_company_currency else amount) * (1 if debit or debit_cc else -1)),
+                "debit": max(signed_amount_cc, 0.0) if not_company_currency else max(signed_amount, 0.0),
+                "credit": max(-signed_amount_cc, 0.0) if not_company_currency else max(-signed_amount, 0.0),
+                "balance": signed_amount_cc if not_company_currency else signed_amount,
             }
             if not_company_currency and amount:
-                line_vals["amount_currency"] = amount * (1 if debit or debit_cc else -1)
+                line_vals["amount_currency"] = signed_amount
             line.write(line_vals)
