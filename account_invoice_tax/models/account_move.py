@@ -99,10 +99,76 @@ class AccountMove(models.Model):
 
     @contextmanager
     def _sync_tax_lines(self, container):
-        """Restore manually-set tax amounts after the core recomputes tax lines."""
+        """Restore manually-set tax amounts after the core recomputes tax lines.
+
+        Also fixes a core Odoo ordering issue: within ``_sync_dynamic_lines``
+        the ``ExitStack`` unwinds in LIFO order, so ``line._sync_invoice``
+        exits *before* ``_sync_tax_lines``.  When the invoice date changes on
+        a foreign-currency invoice, ``line._sync_invoice`` rewrites the
+        ``balance`` of every line (including tax lines) for the new exchange
+        rate.  ``_sync_tax_lines`` then sees those touched balances and
+        concludes that the tax amounts were manually edited
+        (``round_from_tax_lines = True``), so it preserves the old totals
+        even though a base line was deleted at the same time.
+
+        We detect that scenario here and force a full recompute from base
+        lines so that the amounts correctly reflect only the remaining lines.
+        """
+        # Capture state before the main yield so we can detect the scenario.
+        records = container.get("records", self)
+        _before_state = {
+            move: {
+                "rate": move.invoice_currency_rate,
+                "taxed_base_ids": frozenset(
+                    move.line_ids.filtered(lambda l: l.display_type == "product" and l.tax_ids).ids
+                ),
+            }
+            for move in records
+            if move.id and move.state == "draft"
+        }
+
         with super()._sync_tax_lines(container):
             yield
+
+        AccountTax = self.env["account.tax"]
         for move in container.get("records", self):
+            # Fix: when the invoice currency rate changed at the same time as a
+            # taxed base line was deleted, the core may have preserved the stale
+            # tax totals.  Re-run the computation from base lines in that case.
+            if move.state == "draft" and move.id:
+                before = _before_state.get(move)
+                if before and before["rate"] != move.invoice_currency_rate:
+                    current_taxed_base_ids = frozenset(
+                        move.line_ids.filtered(lambda l: l.display_type == "product" and l.tax_ids).ids
+                    )
+                    if before["taxed_base_ids"] - current_taxed_base_ids:
+                        # Force a fresh recompute from base lines.
+                        base_lines_values, tax_lines_values = move._get_rounded_base_and_tax_lines(
+                            round_from_tax_lines=False
+                        )
+                        AccountTax._add_accounting_data_in_base_lines_tax_details(
+                            base_lines_values,
+                            move.company_id,
+                            include_caba_tags=move.always_tax_exigible,
+                        )
+                        tax_results = AccountTax._prepare_tax_lines(
+                            base_lines_values,
+                            move.company_id,
+                            tax_lines=tax_lines_values,
+                        )
+                        for _tax_line_vals, _grouping_key, to_update in tax_results["tax_lines_to_update"]:
+                            _tax_line_vals["record"].write(dict(to_update))
+                        if tax_results.get("tax_lines_to_delete"):
+                            self.env["account.move.line"].browse(
+                                v["record"].id for v in tax_results["tax_lines_to_delete"]
+                            ).with_context(dynamic_unlink=True).unlink()
+                        if tax_results.get("tax_lines_to_add"):
+                            self.env["account.move.line"].create(
+                                [
+                                    {**vals, "display_type": "tax", "move_id": move.id}
+                                    for vals in tax_results["tax_lines_to_add"]
+                                ]
+                            )
             move._apply_tax_overrides()
 
     def _apply_tax_overrides(self, other_taxes_override=False):
