@@ -118,7 +118,7 @@ class AccountMove(models.Model):
             # as they don't need to survive recomputations, but we still want to
             # apply them on the current tax lines.
             overrides.update(other_taxes_override)
-        if not overrides:
+        if not overrides or self.state == "posted":
             return
 
         move_currency = self.currency_id
