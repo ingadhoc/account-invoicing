@@ -35,6 +35,7 @@ class AccountInvoiceTax(models.TransientModel):
         return res
 
     def action_update_tax(self):
+        self.tax_line_ids.filtered(lambda l: not l.amount).unlink()
         move = self.move_id
 
         active_tax = self.tax_line_ids.mapped("tax_id")
