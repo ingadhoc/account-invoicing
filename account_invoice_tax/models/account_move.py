@@ -207,11 +207,18 @@ class AccountMove(models.Model):
                 elif amount < 0:
                     debit, debit_cc = -amount, -amount_cc
 
+            sign = 1 if debit or debit_cc else -1
+            # When in_invoice/in_receipt and amount < 0, the value is placed in
+            # credit (debit=0), making sign=-1. That double-negates amount_cc and
+            # produces a positive balance (debit side) instead of credit. Force
+            # sign=1 so the negative amount stays on the credit side.
+            if self.move_type in ("in_invoice", "in_receipt") and amount < 0:
+                sign = 1
             line_vals = {
                 "debit": debit_cc if not_company_currency else debit,
                 "credit": credit_cc if not_company_currency else credit,
-                "balance": ((amount_cc if not_company_currency else amount) * (1 if debit or debit_cc else -1)),
+                "balance": (amount_cc if not_company_currency else amount) * sign,
             }
             if not_company_currency and amount:
-                line_vals["amount_currency"] = amount * (1 if debit or debit_cc else -1)
+                line_vals["amount_currency"] = amount * sign
             line.write(line_vals)
