@@ -204,11 +204,34 @@ class AccountMove(models.Model):
             signed_amount = amount * sign
             signed_amount_cc = amount_cc * sign
 
+            sign = 1 if debit or debit_cc else -1
+            # When in_invoice/in_receipt and amount < 0, the value is placed in
+            # credit (debit=0), making sign=-1. That double-negates amount_cc and
+            # produces a positive balance (debit side) instead of credit. Force
+            # sign=1 so the negative amount stays on the credit side.
+            if self.move_type in ("in_invoice", "in_receipt") and amount < 0:
+                sign = 1
             line_vals = {
+<<<<<<< db80423ce9fa390b0a92ace351cffe7f8ed1866e
                 "debit": max(signed_amount_cc, 0.0) if not_company_currency else max(signed_amount, 0.0),
                 "credit": max(-signed_amount_cc, 0.0) if not_company_currency else max(-signed_amount, 0.0),
                 "balance": signed_amount_cc if not_company_currency else signed_amount,
+||||||| a62845639b71194b9aad64b5ee7b222bef1454d4
+                "debit": debit_cc if not_company_currency else debit,
+                "credit": credit_cc if not_company_currency else credit,
+                "balance": ((amount_cc if not_company_currency else amount) * (1 if debit or debit_cc else -1)),
+=======
+                "debit": debit_cc if not_company_currency else debit,
+                "credit": credit_cc if not_company_currency else credit,
+                "balance": (amount_cc if not_company_currency else amount) * sign,
+>>>>>>> 84a050c588fc711ae43d916df1d6066108a95df3
             }
             if not_company_currency and amount:
+<<<<<<< db80423ce9fa390b0a92ace351cffe7f8ed1866e
                 line_vals["amount_currency"] = signed_amount
+||||||| a62845639b71194b9aad64b5ee7b222bef1454d4
+                line_vals["amount_currency"] = amount * (1 if debit or debit_cc else -1)
+=======
+                line_vals["amount_currency"] = amount * sign
+>>>>>>> 84a050c588fc711ae43d916df1d6066108a95df3
             line.write(line_vals)
