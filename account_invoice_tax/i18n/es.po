@@ -25,7 +25,7 @@ msgstr ""
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_move_form
 msgid "<strong>TAX: </strong>"
-msgstr "<strong>TAX: </strong>"
+msgstr "<strong>IMPUESTO: </strong>"
 
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_invoice_tax
@@ -113,7 +113,7 @@ msgstr "Impuesto de la factura"
 #. module: account_invoice_tax
 #: model:ir.model,name:account_invoice_tax.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "Asiento contable"
 
 #. module: account_invoice_tax
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_invoice_tax__write_uid
@@ -152,7 +152,7 @@ msgstr "Línea de impuesto"
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_bank_statement_line__tax_override_data
 #: model:ir.model.fields,field_description:account_invoice_tax.field_account_move__tax_override_data
 msgid "Tax Override Data"
-msgstr ""
+msgstr "Datos de Sobrescritura de Impuestos"
 
 #. module: account_invoice_tax
 #: model_terms:ir.ui.view,arch_db:account_invoice_tax.view_account_invoice_tax
