@@ -4,7 +4,7 @@
         <field name="name">account.commission.rule.list</field>
         <field name="model">account.commission.rule</field>
         <field name="arch" type="xml">
-            <list string="Commission Rules" editable="bottom">
+            <list string="Commission Rules" editable="top" default_order="sequence asc, id desc">
                 <field name="sequence" widget="handle"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
