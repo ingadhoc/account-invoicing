@@ -8,7 +8,7 @@ from odoo.fields import Domain
 
 class AccountCommissionRule(models.Model):
     _name = "account.commission.rule"
-    _order = "sequence"
+    _order = "sequence asc, id desc"
     _description = "Account Commission Rule"
 
     sequence = fields.Integer(
