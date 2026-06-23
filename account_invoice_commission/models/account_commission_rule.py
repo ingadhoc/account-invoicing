@@ -7,7 +7,7 @@ from odoo import fields, models
 
 class AccountCommissionRule(models.Model):
     _name = "account.commission.rule"
-    _order = "sequence"
+    _order = "sequence asc, id desc"
     _description = "Account Commission Rule"
 
     sequence = fields.Integer(
@@ -39,7 +39,7 @@ class AccountCommissionRule(models.Model):
         "Product Template",
         auto_join=True,
         ondelete="cascade",
-        help="Specify a template if this rule only applies to one product " "template. Keep empty otherwise.",
+        help="Specify a template if this rule only applies to one product template. Keep empty otherwise.",
     )
     categ_id = fields.Many2one(
         "product.category",
@@ -51,7 +51,7 @@ class AccountCommissionRule(models.Model):
         "Keep empty otherwise.",
     )
     min_amount = fields.Float(
-        help="Minimun Amount on company currency of the invoice to be " "evaluated",
+        help="Minimun Amount on company currency of the invoice to be evaluated",
         default=0.0,
     )
     percent_commission = fields.Float("Percentage Commission")
