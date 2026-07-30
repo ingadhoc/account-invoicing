@@ -35,6 +35,10 @@ class AccountMove(models.Model):
     def _get_background_post_retry_delay(self):
         return int(self.env["ir.config_parameter"].sudo().get_param("account_background_post.retry_delay_minutes", 30))
 
+    @api.model
+    def _get_background_post_batch_size(self):
+        return int(self.env["ir.config_parameter"].sudo().get_param("account_background_post.batch_size", 20))
+
     def get_internal_partners(self):
         res = self.env["res.partner"]
         for partner in self.message_partner_ids:
@@ -86,15 +90,15 @@ class AccountMove(models.Model):
                     )
                 else:
                     move._unschedule_background_post()
-                    move.message_post(
-                        # plaintext2html devuelve Markup, así que el body ya es html sin pasar
-                        # body_is_html, que en 19 avisa por warning y en runbot tiñe el build
-                        body=_("We tried to validate this invoice on the background but got this error")
-                        + ": \n\n"
-                        + plaintext2html(str(exp), "em"),
-                        partner_ids=move.get_internal_partners().ids,
-                    )
-                    _logger.error("Error while trying to post invoice %s in background: %s", move.name, exp)
+                    try:
+                        # the hook is overridable, don't let it abort the whole cron run
+                        move._notify_background_post_error(exp)
+                    except Exception:
+                        # the notification may have left the cursor aborted, keep at least the state
+                        self.env.cr.rollback()
+                        move._unschedule_background_post()
+                        _logger.exception("Could not notify the background post error of invoice %s", move.id)
+                    _logger.error("Error while trying to post invoice %s in background: %s", move.name or move.id, exp)
                 # Commit after each failure to keep the retry state and the message
                 remaining_time = self.env["ir.cron"]._commit_progress()
 
@@ -117,6 +121,21 @@ class AccountMove(models.Model):
 
     def _unschedule_background_post(self):
         self.write({"background_post": False, "background_post_date": False, "background_post_attempts": 0})
+
+    def _get_background_post_error_body(self, error):
+        return (
+            _("We tried to validate this invoice on the background but got this error")
+            + ": \n\n"
+            + plaintext2html(str(error), "em")
+        )
+
+    def _notify_background_post_error(self, error):
+        """Log the error on the invoice. Other modules may redirect it to the source document."""
+        self.ensure_one()
+        self.message_post(
+            body=self._get_background_post_error_body(error),
+            partner_ids=self.get_internal_partners().ids,
+        )
 
     def _post(self, soft=True):
         """Difiere el posteo de documentos de venta (facturas y notas de crédito) a background,

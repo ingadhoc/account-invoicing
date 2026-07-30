@@ -14,7 +14,7 @@ class ValidateAccountMove(models.TransientModel):
     force_background = fields.Integer(compute="_compute_force_background")
 
     def _compute_batch_size(self):
-        self.batch_size = self.env["ir.config_parameter"].sudo().get_param("account_background_post.batch_size", 20)
+        self.batch_size = self.env["account.move"]._get_background_post_batch_size()
 
     def _compute_force_background(self):
         for rec in self:
