@@ -27,6 +27,12 @@ msgid "Background Post"
 msgstr ""
 
 #. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post_attempts
+#: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post_attempts
+msgid "Background Post Attempts"
+msgstr ""
+
+#. module: account_background_post
 #: model:ir.actions.server,name:account_background_post.ir_cron_background_post_invoices_ir_actions_server
 msgid "Background Post Invoices: cron"
 msgstr ""
@@ -70,8 +76,22 @@ msgid "If True then this invoice will be validated in the background by cron."
 msgstr ""
 
 #. module: account_background_post
+#: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post_date
+#: model:ir.model.fields,help:account_background_post.field_account_move__background_post_date
+msgid ""
+"If set, the background cron waits until this date to post this invoice. If "
+"empty, the invoice is posted on the next cron run."
+msgstr ""
+
+#. module: account_background_post
 #: model:ir.model,name:account_background_post.model_account_move
 msgid "Journal Entry"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post_attempts
+#: model:ir.model.fields,help:account_background_post.field_account_move__background_post_attempts
+msgid "Number of failed attempts to post this invoice in the background."
 msgstr ""
 
 #. module: account_background_post
@@ -82,6 +102,17 @@ msgstr ""
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
 msgid "Post in Background"
+msgstr ""
+
+#. module: account_background_post
+#: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post_date
+#: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post_date
+msgid "Post in Background At"
+msgstr ""
+
+#. module: account_background_post
+#: model_terms:ir.ui.view,arch_db:account_background_post.view_move_form
+msgid "Scheduled for"
 msgstr ""
 
 #. module: account_background_post
