@@ -34,6 +34,7 @@
                     <div class="alert alert-info text-center" role="alert" invisible="not background_post">
                         <strong>⚠️ This invoice is pending validation in background</strong>
                         <p class="mb-0">This invoice will be automatically validated by the background process. If you validate it manually, the background flag will be automatically removed.</p>
+                        <p class="mb-0" invisible="not background_post_date">Scheduled for<field name="background_post_date" readonly="1" class="oe_inline ms-1"/></p>
                     </div>
                 </xpath>
             </field>

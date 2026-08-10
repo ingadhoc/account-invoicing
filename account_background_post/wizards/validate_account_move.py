@@ -27,7 +27,7 @@ class ValidateAccountMove(models.TransientModel):
         return res
 
     def action_background_post(self):
-        self.move_ids.filtered(lambda m: m.state == "draft").background_post = True
+        self.move_ids.filtered(lambda m: m.state == "draft")._schedule_background_post()
         self.env.ref("account_background_post.ir_cron_background_post_invoices")._trigger()
 
     def validate_move(self):
