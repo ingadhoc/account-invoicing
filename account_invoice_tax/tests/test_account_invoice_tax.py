@@ -1,4 +1,4 @@
-from odoo import Command
+from odoo import Command, fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
@@ -162,3 +162,42 @@ class TestAccountInvoiceTax(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(abs(tax_line.balance), 150.0)
         self.assertNotIn(str(self.purchase_tax.id), move.tax_override_data or {})
+
+    def test_override_survives_fixed_tax_netting_to_zero(self):
+        """Percepción de importe fijo sobre una línea positiva y una negativa
+        que la cancelan: el core borra la línea de impuesto en cero y el
+        override quedaba huérfano, así que el asiento se registraba sin la
+        percepción mientras el widget de totales sí la mostraba (ticket 124374).
+        """
+        move = self._build_move("in_invoice", self.fixed_tax)
+        move.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Bonificación 11 %",
+                            "quantity": 1.0,
+                            "price_unit": -110.0,
+                            "account_id": self.company_data["default_account_expense"].id,
+                            "tax_ids": [Command.set(self.fixed_tax.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        self._set_amount_and_apply(move, 155.2, tax=self.fixed_tax)
+
+        tax_line = self._tax_line(move, self.fixed_tax)
+        self.assertTrue(tax_line, "The tax line was dropped, the override is lost")
+        self.assertAlmostEqual(abs(tax_line.balance), 155.2)
+        # El asiento tiene que coincidir con el total mostrado al usuario.
+        self.assertAlmostEqual(move.amount_untaxed, 890.0)
+        self.assertAlmostEqual(move.amount_total, 1045.2)
+        payment_term_line = move.line_ids.filtered(lambda l: l.display_type == "payment_term")
+        self.assertAlmostEqual(abs(payment_term_line.balance), 1045.2)
+
+        # Al confirmar, la deuda con el proveedor tiene que ser el total.
+        move.invoice_date = fields.Date.context_today(move)
+        move.action_post()
+        self.assertAlmostEqual(move.amount_total, 1045.2)
+        self.assertAlmostEqual(move.amount_residual, 1045.2)
