@@ -128,6 +128,47 @@ class TestAccountInvoiceTax(TransactionCase):
         self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 150.0)
         self.assertNotIn(str(self.tax_percent.id), invoice.tax_override_data or {})
 
+    def test_override_survives_fixed_tax_netting_to_zero(self):
+        """Percepción de importe fijo sobre una línea positiva y una negativa
+        que la cancelan: el core borra la línea de impuesto en cero y el
+        override quedaba huérfano, así que el asiento se registraba sin la
+        percepción mientras el widget de totales sí la mostraba (ticket 124374).
+        """
+        invoice = self._make_invoice(self.tax_fixed)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Bonificación 11 %",
+                            "quantity": 1.0,
+                            "price_unit": -110.0,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_fixed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        self._make_wizard(
+            invoice, [{"tax_id": self.tax_fixed.id, "amount": 155.2, "new_tax": False}]
+        ).action_update_tax()
+
+        tax_line = self._tax_line(invoice, self.tax_fixed)
+        self.assertTrue(tax_line, "The tax line was dropped, the override is lost")
+        self.assertAlmostEqual(abs(tax_line.balance), 155.2)
+        # El asiento tiene que coincidir con el total mostrado al usuario.
+        self.assertAlmostEqual(invoice.amount_untaxed, 890.0)
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        payment_term_line = invoice.line_ids.filtered(lambda l: l.display_type == "payment_term")
+        self.assertAlmostEqual(abs(payment_term_line.balance), 1045.2)
+
+        # Al confirmar, la deuda con el proveedor tiene que ser el total.
+        invoice.invoice_date = fields.Date.context_today(invoice)
+        invoice.action_post()
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        self.assertAlmostEqual(invoice.amount_residual, 1045.2)
+
 
 @tagged("post_install", "-at_install")
 class TestAccountInvoiceTaxWizard(TransactionCase):
