@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Account Invoice Partial",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "category": "Accounting",
     "sequence": 14,
     "summary": "",
