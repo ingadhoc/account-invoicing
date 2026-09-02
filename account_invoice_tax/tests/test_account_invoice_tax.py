@@ -19,6 +19,9 @@ class TestAccountInvoiceTax(TransactionCase):
         )
         cls.tax_fixed = cls._make_tax(cls, "Fixed Tax Test", "fixed", 1.0, acct_tax)
         cls.tax_percent = cls._make_tax(cls, "Percent Tax 21%", "percent", 21.0, acct_tax)
+        # Los impuestos "no gravado" / "exento" de la localización argentina son
+        # de importe fijo en cero, no porcentuales (verificado en base de cliente).
+        cls.tax_not_taxed = cls._make_tax(cls, "IVA No Gravado", "fixed", 0.0, acct_tax)
 
     def _make_tax(self, name, amount_type, amount, account):
         tax = self.env["account.tax"].create(
@@ -168,6 +171,56 @@ class TestAccountInvoiceTax(TransactionCase):
         invoice.action_post()
         self.assertAlmostEqual(invoice.amount_total, 1045.2)
         self.assertAlmostEqual(invoice.amount_residual, 1045.2)
+
+    def test_zero_amount_tax_is_kept_on_the_product_line(self):
+        """Factura con una línea al 21 % y otra con "IVA No Gravado" (impuesto
+        de importe fijo en cero): ajustar los centavos del IVA desde el wizard
+        borraba el No Gravado de su línea de producto.  Su línea de impuesto
+        existe aunque valga cero (``__keep_zero_line``), así que llega al wizard
+        con importe 0, se descartaba de ``tax_line_ids`` y quedaba fuera de
+        ``active_tax`` -- con lo cual el bloque de ``to_remove_tax`` lo
+        desvinculaba de todas las líneas de producto (ticket 126379).
+        """
+        invoice = self._make_invoice(self.tax_percent)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Concepto no gravado",
+                            "quantity": 1.0,
+                            "price_unit": 500.0,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_not_taxed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        not_taxed_line = invoice.invoice_line_ids.filtered(lambda l: l.price_unit == 500.0)
+
+        # El wizard se abre con las dos líneas: la de tasa 0 llega en 0, tal
+        # como la arma ``default_get``.
+        self._make_wizard(
+            invoice,
+            [
+                {"tax_id": self.tax_percent.id, "amount": 210.97, "new_tax": False},
+                {"tax_id": self.tax_not_taxed.id, "amount": 0.0, "new_tax": False},
+            ],
+        ).action_update_tax()
+
+        self.assertIn(
+            self.tax_not_taxed,
+            not_taxed_line.tax_ids,
+            "The zero-amount tax was unlinked from its product line",
+        )
+        self.assertTrue(
+            self._tax_line(invoice, self.tax_not_taxed),
+            "The zero-amount tax line was dropped from the entry",
+        )
+        self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 210.97)
+        self.assertAlmostEqual(invoice.amount_untaxed, 1500.0)
+        self.assertAlmostEqual(invoice.amount_total, 1710.97)
 
 
 @tagged("post_install", "-at_install")
