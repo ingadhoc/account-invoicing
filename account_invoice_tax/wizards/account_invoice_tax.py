@@ -35,7 +35,9 @@ class AccountInvoiceTax(models.TransientModel):
         return res
 
     def action_update_tax(self):
-        self.tax_line_ids.filtered(lambda l: not l.amount).unlink()
+        # Only the fixed taxes just added and left at zero: anything coming from
+        # the invoice must stay, or the block below unlinks it from every line.
+        self.tax_line_ids.filtered(lambda l: not l.amount and l.new_tax and l.tax_id.amount_type == "fixed").unlink()
         move = self.move_id
 
         active_tax = self.tax_line_ids.mapped("tax_id")
