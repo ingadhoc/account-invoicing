@@ -9,7 +9,56 @@ class TestAccountInvoiceTax(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+<<<<<<< f61fb73cd792094d6ae12983f3a38120ca97c639
         cls.purchase_tax = cls.env["account.tax"].create(
+||||||| 8a6a5811224f58751dfd9dfb5c1ffef5d9bff6d0
+        cls.partner = cls.env["res.partner"].create({"name": "Supplier Test", "supplier_rank": 1})
+        cls._acct_expense = cls.env["account.account"].create(
+            {"name": "Test Expense", "code": "TST.EXP.INV", "account_type": "expense"}
+        )
+        acct_tax = cls.env["account.account"].create(
+            {"name": "Test Tax", "code": "TST.TAX.INV", "account_type": "liability_current"}
+        )
+        cls.tax_fixed = cls._make_tax(cls, "Fixed Tax Test", "fixed", 1.0, acct_tax)
+        cls.tax_percent = cls._make_tax(cls, "Percent Tax 21%", "percent", 21.0, acct_tax)
+
+    def _make_tax(self, name, amount_type, amount, account):
+        tax = self.env["account.tax"].create(
+            {"name": name, "amount_type": amount_type, "amount": amount, "type_tax_use": "purchase"}
+        )
+        for repartition in tax.invoice_repartition_line_ids + tax.refund_repartition_line_ids:
+            if repartition.repartition_type == "tax":
+                repartition.account_id = account
+        return tax
+
+    def _make_invoice(self, tax):
+        return self.env["account.move"].create(
+=======
+        cls.partner = cls.env["res.partner"].create({"name": "Supplier Test", "supplier_rank": 1})
+        cls._acct_expense = cls.env["account.account"].create(
+            {"name": "Test Expense", "code": "TST.EXP.INV", "account_type": "expense"}
+        )
+        acct_tax = cls.env["account.account"].create(
+            {"name": "Test Tax", "code": "TST.TAX.INV", "account_type": "liability_current"}
+        )
+        cls.tax_fixed = cls._make_tax(cls, "Fixed Tax Test", "fixed", 1.0, acct_tax)
+        cls.tax_percent = cls._make_tax(cls, "Percent Tax 21%", "percent", 21.0, acct_tax)
+        # Los impuestos "no gravado" / "exento" de la localización argentina son
+        # de importe fijo en cero, no porcentuales (verificado en base de cliente).
+        cls.tax_not_taxed = cls._make_tax(cls, "IVA No Gravado", "fixed", 0.0, acct_tax)
+
+    def _make_tax(self, name, amount_type, amount, account):
+        tax = self.env["account.tax"].create(
+            {"name": name, "amount_type": amount_type, "amount": amount, "type_tax_use": "purchase"}
+        )
+        for repartition in tax.invoice_repartition_line_ids + tax.refund_repartition_line_ids:
+            if repartition.repartition_type == "tax":
+                repartition.account_id = account
+        return tax
+
+    def _make_invoice(self, tax):
+        return self.env["account.move"].create(
+>>>>>>> ff013750f202fcd1efb74fd7cda4302821c1df59
             {
                 "name": "VAT Purchase 21",
                 "amount_type": "percent",
@@ -160,5 +209,481 @@ class TestAccountInvoiceTax(AccountTestInvoicingCommon):
         move = self._build_move("in_invoice", self.purchase_tax)
         tax_line = self._set_amount_and_apply(move, 150.0)
 
+<<<<<<< f61fb73cd792094d6ae12983f3a38120ca97c639
         self.assertAlmostEqual(abs(tax_line.balance), 150.0)
         self.assertNotIn(str(self.purchase_tax.id), move.tax_override_data or {})
+||||||| 8a6a5811224f58751dfd9dfb5c1ffef5d9bff6d0
+        self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 150.0)
+        self.assertNotIn(str(self.tax_percent.id), invoice.tax_override_data or {})
+
+    def test_override_survives_fixed_tax_netting_to_zero(self):
+        """Percepción de importe fijo sobre una línea positiva y una negativa
+        que la cancelan: el core borra la línea de impuesto en cero y el
+        override quedaba huérfano, así que el asiento se registraba sin la
+        percepción mientras el widget de totales sí la mostraba (ticket 124374).
+        """
+        invoice = self._make_invoice(self.tax_fixed)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Bonificación 11 %",
+                            "quantity": 1.0,
+                            "price_unit": -110.0,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_fixed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        self._make_wizard(
+            invoice, [{"tax_id": self.tax_fixed.id, "amount": 155.2, "new_tax": False}]
+        ).action_update_tax()
+
+        tax_line = self._tax_line(invoice, self.tax_fixed)
+        self.assertTrue(tax_line, "The tax line was dropped, the override is lost")
+        self.assertAlmostEqual(abs(tax_line.balance), 155.2)
+        # El asiento tiene que coincidir con el total mostrado al usuario.
+        self.assertAlmostEqual(invoice.amount_untaxed, 890.0)
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        payment_term_line = invoice.line_ids.filtered(lambda l: l.display_type == "payment_term")
+        self.assertAlmostEqual(abs(payment_term_line.balance), 1045.2)
+
+        # Al confirmar, la deuda con el proveedor tiene que ser el total.
+        invoice.invoice_date = fields.Date.context_today(invoice)
+        invoice.action_post()
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        self.assertAlmostEqual(invoice.amount_residual, 1045.2)
+
+
+@tagged("post_install", "-at_install")
+class TestAccountInvoiceTaxWizard(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.tax_group = cls.env["account.tax.group"].create(
+            {
+                "name": "Test Tax Group Fixed",
+                "sequence": 99,
+            }
+        )
+        cls.tax_fixed_1 = cls.env["account.tax"].create(
+            {
+                "name": "Fixed Tax A",
+                "amount_type": "fixed",
+                "amount": 10.0,
+                "type_tax_use": "purchase",
+                "tax_group_id": cls.tax_group.id,
+            }
+        )
+        cls.tax_fixed_2 = cls.env["account.tax"].create(
+            {
+                "name": "Fixed Tax B",
+                "amount_type": "fixed",
+                "amount": 20.0,
+                "type_tax_use": "purchase",
+                "tax_group_id": cls.tax_group.id,
+            }
+        )
+        cls.partner = cls.env["res.partner"].create({"name": "Test Vendor Fixed"})
+
+    def _make_wizard(self, move):
+        ctx = {"active_ids": [move.id], "active_model": "account.move"}
+        defaults = self.env["account.invoice.tax"].with_context(**ctx).default_get(["move_id", "tax_line_ids"])
+        return self.env["account.invoice.tax"].with_context(**ctx).create(defaults)
+
+    def _get_group_totals(self, move):
+        """Return (tax_amount_cc, tax_amount_currency) for the shared tax group."""
+        tax_totals = move.tax_totals or {}
+        for subtotal in tax_totals.get("subtotals", []):
+            for tg in subtotal.get("tax_groups", []):
+                if tg.get("id") == self.tax_group.id:
+                    return tg.get("tax_amount", 0.0), tg.get("tax_amount_currency", 0.0)
+        return 0.0, 0.0
+
+    def test_fixed_taxes_same_group_company_currency(self):
+        """Wizard changes to two fixed taxes in same group update overrides and tax_totals."""
+        move = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "partner_id": self.partner.id,
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "Service",
+                            "quantity": 1,
+                            "price_unit": 100.0,
+                            "tax_ids": [(6, 0, [self.tax_fixed_1.id, self.tax_fixed_2.id])],
+                        },
+                    )
+                ],
+            }
+        )
+
+        wizard = self._make_wizard(move)
+
+        for line in wizard.tax_line_ids:
+            if line.tax_id == self.tax_fixed_1:
+                line.amount = 15.0
+            elif line.tax_id == self.tax_fixed_2:
+                line.amount = 25.0
+
+        wizard.action_update_tax()
+
+        # Both taxes persisted in tax_override_data with new amounts
+        overrides = move.tax_override_data or {}
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_1.id)]["amount"], 15.0, places=2)
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_2.id)]["amount"], 25.0, places=2)
+
+        # Actual tax lines on the move reflect new values (in_invoice → debit)
+        line_1 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_1)
+        line_2 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_2)
+        self.assertAlmostEqual(line_1.debit, 15.0, places=2)
+        self.assertAlmostEqual(line_2.debit, 25.0, places=2)
+
+        # tax_totals group total = 15 + 25 = 40 in company currency
+        group_amt_cc, _group_amt_currency = self._get_group_totals(move)
+        self.assertAlmostEqual(group_amt_cc, 40.0, places=2)
+
+    def test_fixed_taxes_same_group_foreign_currency(self):
+        """Wizard changes in a foreign-currency invoice persist and tax_totals group is correct."""
+        usd = self.env["res.currency"].with_context(active_test=False).search([("name", "=", "USD")], limit=1)
+        if not usd:
+            usd = self.env["res.currency"].create({"name": "USD", "symbol": "USD$"})
+        usd.active = True
+
+        # Ensure a fresh rate today: 1 company_currency = 0.5 USD  →  1 USD = 2 company_currency
+        self.env["res.currency.rate"].search(
+            [
+                ("currency_id", "=", usd.id),
+                ("name", "=", fields.Date.today()),
+                ("company_id", "=", self.env.company.id),
+            ]
+        ).unlink()
+        self.env["res.currency.rate"].create(
+            {
+                "currency_id": usd.id,
+                "rate": 0.5,
+                "name": fields.Date.today(),
+                "company_id": self.env.company.id,
+            }
+        )
+
+        move = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "partner_id": self.partner.id,
+                "currency_id": usd.id,
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "Service",
+                            "quantity": 1,
+                            "price_unit": 100.0,
+                            "tax_ids": [(6, 0, [self.tax_fixed_1.id, self.tax_fixed_2.id])],
+                        },
+                    )
+                ],
+            }
+        )
+
+        # Read rate from the move so assertions don't hardcode the conversion direction
+        rate = move.invoice_currency_rate
+
+        wizard = self._make_wizard(move)
+
+        for line in wizard.tax_line_ids:
+            if line.tax_id == self.tax_fixed_1:
+                line.amount = 15.0  # USD
+            elif line.tax_id == self.tax_fixed_2:
+                line.amount = 25.0  # USD
+
+        wizard.action_update_tax()
+
+        # Overrides stored in invoice currency (USD)
+        overrides = move.tax_override_data or {}
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_1.id)]["amount"], 15.0, places=2)
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_2.id)]["amount"], 25.0, places=2)
+
+        # Tax lines: amount_currency in USD, debit in company currency
+        line_1 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_1)
+        line_2 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_2)
+        self.assertAlmostEqual(abs(line_1.amount_currency), 15.0, places=2)
+        self.assertAlmostEqual(abs(line_2.amount_currency), 25.0, places=2)
+        self.assertAlmostEqual(line_1.debit, 15.0 / rate, places=2)
+        self.assertAlmostEqual(line_2.debit, 25.0 / rate, places=2)
+
+        # tax_totals group: invoice-currency total = 40 USD, company-currency = 40 / rate
+        group_amt_cc, group_amt_currency = self._get_group_totals(move)
+        self.assertAlmostEqual(group_amt_currency, 40.0, places=2)
+        self.assertAlmostEqual(group_amt_cc, 40.0 / rate, places=2)
+=======
+        self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 150.0)
+        self.assertNotIn(str(self.tax_percent.id), invoice.tax_override_data or {})
+
+    def test_override_survives_fixed_tax_netting_to_zero(self):
+        """Percepción de importe fijo sobre una línea positiva y una negativa
+        que la cancelan: el core borra la línea de impuesto en cero y el
+        override quedaba huérfano, así que el asiento se registraba sin la
+        percepción mientras el widget de totales sí la mostraba (ticket 124374).
+        """
+        invoice = self._make_invoice(self.tax_fixed)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Bonificación 11 %",
+                            "quantity": 1.0,
+                            "price_unit": -110.0,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_fixed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        self._make_wizard(
+            invoice, [{"tax_id": self.tax_fixed.id, "amount": 155.2, "new_tax": False}]
+        ).action_update_tax()
+
+        tax_line = self._tax_line(invoice, self.tax_fixed)
+        self.assertTrue(tax_line, "The tax line was dropped, the override is lost")
+        self.assertAlmostEqual(abs(tax_line.balance), 155.2)
+        # El asiento tiene que coincidir con el total mostrado al usuario.
+        self.assertAlmostEqual(invoice.amount_untaxed, 890.0)
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        payment_term_line = invoice.line_ids.filtered(lambda l: l.display_type == "payment_term")
+        self.assertAlmostEqual(abs(payment_term_line.balance), 1045.2)
+
+        # Al confirmar, la deuda con el proveedor tiene que ser el total.
+        invoice.invoice_date = fields.Date.context_today(invoice)
+        invoice.action_post()
+        self.assertAlmostEqual(invoice.amount_total, 1045.2)
+        self.assertAlmostEqual(invoice.amount_residual, 1045.2)
+
+    def test_zero_amount_tax_is_kept_on_the_product_line(self):
+        """Factura con una línea al 21 % y otra con "IVA No Gravado" (impuesto
+        de importe fijo en cero): ajustar los centavos del IVA desde el wizard
+        borraba el No Gravado de su línea de producto.  Su línea de impuesto
+        existe aunque valga cero (``__keep_zero_line``), así que llega al wizard
+        con importe 0, se descartaba de ``tax_line_ids`` y quedaba fuera de
+        ``active_tax`` -- con lo cual el bloque de ``to_remove_tax`` lo
+        desvinculaba de todas las líneas de producto (ticket 126379).
+        """
+        invoice = self._make_invoice(self.tax_percent)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Concepto no gravado",
+                            "quantity": 1.0,
+                            "price_unit": 500.0,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_not_taxed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        not_taxed_line = invoice.invoice_line_ids.filtered(lambda l: l.price_unit == 500.0)
+
+        # El wizard se abre con las dos líneas: la de tasa 0 llega en 0, tal
+        # como la arma ``default_get``.
+        self._make_wizard(
+            invoice,
+            [
+                {"tax_id": self.tax_percent.id, "amount": 210.97, "new_tax": False},
+                {"tax_id": self.tax_not_taxed.id, "amount": 0.0, "new_tax": False},
+            ],
+        ).action_update_tax()
+
+        self.assertIn(
+            self.tax_not_taxed,
+            not_taxed_line.tax_ids,
+            "The zero-amount tax was unlinked from its product line",
+        )
+        self.assertTrue(
+            self._tax_line(invoice, self.tax_not_taxed),
+            "The zero-amount tax line was dropped from the entry",
+        )
+        self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 210.97)
+        self.assertAlmostEqual(invoice.amount_untaxed, 1500.0)
+        self.assertAlmostEqual(invoice.amount_total, 1710.97)
+
+
+@tagged("post_install", "-at_install")
+class TestAccountInvoiceTaxWizard(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.tax_group = cls.env["account.tax.group"].create(
+            {
+                "name": "Test Tax Group Fixed",
+                "sequence": 99,
+            }
+        )
+        cls.tax_fixed_1 = cls.env["account.tax"].create(
+            {
+                "name": "Fixed Tax A",
+                "amount_type": "fixed",
+                "amount": 10.0,
+                "type_tax_use": "purchase",
+                "tax_group_id": cls.tax_group.id,
+            }
+        )
+        cls.tax_fixed_2 = cls.env["account.tax"].create(
+            {
+                "name": "Fixed Tax B",
+                "amount_type": "fixed",
+                "amount": 20.0,
+                "type_tax_use": "purchase",
+                "tax_group_id": cls.tax_group.id,
+            }
+        )
+        cls.partner = cls.env["res.partner"].create({"name": "Test Vendor Fixed"})
+
+    def _make_wizard(self, move):
+        ctx = {"active_ids": [move.id], "active_model": "account.move"}
+        defaults = self.env["account.invoice.tax"].with_context(**ctx).default_get(["move_id", "tax_line_ids"])
+        return self.env["account.invoice.tax"].with_context(**ctx).create(defaults)
+
+    def _get_group_totals(self, move):
+        """Return (tax_amount_cc, tax_amount_currency) for the shared tax group."""
+        tax_totals = move.tax_totals or {}
+        for subtotal in tax_totals.get("subtotals", []):
+            for tg in subtotal.get("tax_groups", []):
+                if tg.get("id") == self.tax_group.id:
+                    return tg.get("tax_amount", 0.0), tg.get("tax_amount_currency", 0.0)
+        return 0.0, 0.0
+
+    def test_fixed_taxes_same_group_company_currency(self):
+        """Wizard changes to two fixed taxes in same group update overrides and tax_totals."""
+        move = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "partner_id": self.partner.id,
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "Service",
+                            "quantity": 1,
+                            "price_unit": 100.0,
+                            "tax_ids": [(6, 0, [self.tax_fixed_1.id, self.tax_fixed_2.id])],
+                        },
+                    )
+                ],
+            }
+        )
+
+        wizard = self._make_wizard(move)
+
+        for line in wizard.tax_line_ids:
+            if line.tax_id == self.tax_fixed_1:
+                line.amount = 15.0
+            elif line.tax_id == self.tax_fixed_2:
+                line.amount = 25.0
+
+        wizard.action_update_tax()
+
+        # Both taxes persisted in tax_override_data with new amounts
+        overrides = move.tax_override_data or {}
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_1.id)]["amount"], 15.0, places=2)
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_2.id)]["amount"], 25.0, places=2)
+
+        # Actual tax lines on the move reflect new values (in_invoice → debit)
+        line_1 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_1)
+        line_2 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_2)
+        self.assertAlmostEqual(line_1.debit, 15.0, places=2)
+        self.assertAlmostEqual(line_2.debit, 25.0, places=2)
+
+        # tax_totals group total = 15 + 25 = 40 in company currency
+        group_amt_cc, _group_amt_currency = self._get_group_totals(move)
+        self.assertAlmostEqual(group_amt_cc, 40.0, places=2)
+
+    def test_fixed_taxes_same_group_foreign_currency(self):
+        """Wizard changes in a foreign-currency invoice persist and tax_totals group is correct."""
+        usd = self.env["res.currency"].with_context(active_test=False).search([("name", "=", "USD")], limit=1)
+        if not usd:
+            usd = self.env["res.currency"].create({"name": "USD", "symbol": "USD$"})
+        usd.active = True
+
+        # Ensure a fresh rate today: 1 company_currency = 0.5 USD  →  1 USD = 2 company_currency
+        self.env["res.currency.rate"].search(
+            [
+                ("currency_id", "=", usd.id),
+                ("name", "=", fields.Date.today()),
+                ("company_id", "=", self.env.company.id),
+            ]
+        ).unlink()
+        self.env["res.currency.rate"].create(
+            {
+                "currency_id": usd.id,
+                "rate": 0.5,
+                "name": fields.Date.today(),
+                "company_id": self.env.company.id,
+            }
+        )
+
+        move = self.env["account.move"].create(
+            {
+                "move_type": "in_invoice",
+                "partner_id": self.partner.id,
+                "currency_id": usd.id,
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "Service",
+                            "quantity": 1,
+                            "price_unit": 100.0,
+                            "tax_ids": [(6, 0, [self.tax_fixed_1.id, self.tax_fixed_2.id])],
+                        },
+                    )
+                ],
+            }
+        )
+
+        # Read rate from the move so assertions don't hardcode the conversion direction
+        rate = move.invoice_currency_rate
+
+        wizard = self._make_wizard(move)
+
+        for line in wizard.tax_line_ids:
+            if line.tax_id == self.tax_fixed_1:
+                line.amount = 15.0  # USD
+            elif line.tax_id == self.tax_fixed_2:
+                line.amount = 25.0  # USD
+
+        wizard.action_update_tax()
+
+        # Overrides stored in invoice currency (USD)
+        overrides = move.tax_override_data or {}
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_1.id)]["amount"], 15.0, places=2)
+        self.assertAlmostEqual(overrides[str(self.tax_fixed_2.id)]["amount"], 25.0, places=2)
+
+        # Tax lines: amount_currency in USD, debit in company currency
+        line_1 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_1)
+        line_2 = move.line_ids.filtered(lambda l: l.tax_line_id == self.tax_fixed_2)
+        self.assertAlmostEqual(abs(line_1.amount_currency), 15.0, places=2)
+        self.assertAlmostEqual(abs(line_2.amount_currency), 25.0, places=2)
+        self.assertAlmostEqual(line_1.debit, 15.0 / rate, places=2)
+        self.assertAlmostEqual(line_2.debit, 25.0 / rate, places=2)
+
+        # tax_totals group: invoice-currency total = 40 USD, company-currency = 40 / rate
+        group_amt_cc, group_amt_currency = self._get_group_totals(move)
+        self.assertAlmostEqual(group_amt_currency, 40.0, places=2)
+        self.assertAlmostEqual(group_amt_cc, 40.0 / rate, places=2)
+>>>>>>> ff013750f202fcd1efb74fd7cda4302821c1df59
