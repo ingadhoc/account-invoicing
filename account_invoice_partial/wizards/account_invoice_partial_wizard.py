@@ -2,8 +2,8 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models
-from odoo.tools import float_round
+from odoo import Command, _, fields, models
+from odoo.tools import float_round, formatLang
 
 
 class AccountInvoicePartialWizard(models.TransientModel):
@@ -30,10 +30,42 @@ class AccountInvoicePartialWizard(models.TransientModel):
         help="The tie-breaking rule used for float rounding operations",
     )
 
+    def _get_partial_line_vals(self, line):
+        """Values to write on ``line``. Hook for modules applying the percentage on another field."""
+        return {
+            "quantity": float_round(
+                line.quantity * (self.percentage_to_invoice / 100),
+                precision_rounding=self.rounding,
+                rounding_method=self.rounding_method,
+            ),
+        }
+
+    def _log_partial_invoice(self, amount_before):
+        """Log the change on the invoice chatter: the write runs with tracking disabled for performance."""
+        invoice = self.invoice_id
+        invoice._message_log(
+            body=_(
+                "Invoice percentage applied: %(percentage)s%%. Total changed from %(before)s to %(after)s.",
+                percentage=formatLang(self.env, self.percentage_to_invoice),
+                before=formatLang(self.env, amount_before, currency_obj=invoice.currency_id),
+                after=formatLang(self.env, invoice.amount_total, currency_obj=invoice.currency_id),
+            )
+        )
+
     def compute_new_quantity(self):
         self.ensure_one()
-        for line in self.invoice_id.invoice_line_ids.with_context(check_move_validity=False):
-            quantity = line.quantity * (self.percentage_to_invoice / 100)
-            line.quantity = float_round(
-                quantity, precision_rounding=self.rounding, rounding_method=self.rounding_method
-            )
+        # One write on the move instead of one assignment per line. Line by line, each assignment is a write
+        # that runs the whole dynamic lines sync (taxes, payment terms, discount allocation), and every nested
+        # write calls fields_get() in the tracking block of account.move.line.write() -- which, with no tracked
+        # field in vals, ends up describing every field of the model. tracking_disable skips that block.
+        invoice = self.invoice_id.with_context(check_move_validity=False, tracking_disable=True)
+        amount_before = invoice.amount_total
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.update(line.id, self._get_partial_line_vals(line)) for line in invoice.invoice_line_ids
+                ],
+            }
+        )
+        # tracking_disable above means the amount change leaves no tracking values, so log it explicitly.
+        self._log_partial_invoice(amount_before)
