@@ -18,6 +18,10 @@ This module let the user to improve the use of the post entries action on the in
 
 1. Let the user to post the entries in Background. This new option on the wizard will mark the invoices to be validated so they can be validated in Background, if we found and error with one of them, we leave a message in the invoice notifying the internal users and unmark the invoice so the validate process can continue with other invoices.
 
+   1.1 The marked invoices can also carry a scheduling date ("Post in Background At", ``background_post_date``). The cron only posts them once that date is reached, so a caller can defer a posting to a known future moment (for example, the next invoice date of a subscription) instead of posting on the next run. Without a date the behaviour is the historical one: the invoice is posted on the next cron run.
+
+   1.2 Optionally, an invoice that fails can be retried instead of being unmarked on the first error. While there are retries left we reschedule the invoice (and count the attempt on ``background_post_attempts``); once they are exhausted we unmark it and leave the message in the invoice, as always. Retries are disabled by default, so the behaviour does not change unless they are configured.
+
 2. If the user want to validate the invoices at the current moment not in Background, we do the next two changes:
 
    2.1 We only let the user to validate small batch of invoices. By default only 20 invoices. If the user try to select more than 20 invoices then we force him to use Post in Background option.
@@ -38,7 +42,11 @@ Configuration
 
 To configure this module, you need to:
 
-#. Nothing to configure
+#. Nothing to configure, but the following system parameters are available:
+
+   * ``account_background_post.batch_size`` (default 20): how many invoices the user can validate synchronously before being forced to use the background option.
+   * ``account_background_post.max_retries`` (default 0): how many times the cron retries an invoice that failed before unmarking it and notifying the error. With 0 there are no retries.
+   * ``account_background_post.retry_delay_minutes`` (default 30): how long to wait before retrying an invoice that failed.
 
 Usage
 =====
