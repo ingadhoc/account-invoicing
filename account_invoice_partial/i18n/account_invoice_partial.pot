@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-22 00:36+0000\n"
-"PO-Revision-Date: 2025-11-22 00:36+0000\n"
+"POT-Creation-Date: 2026-09-23 18:21+0000\n"
+"PO-Revision-Date: 2026-09-23 18:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -69,6 +69,14 @@ msgstr ""
 #. module: account_invoice_partial
 #: model_terms:ir.ui.view,arch_db:account_invoice_partial.view_move_form
 msgid "Invoice Percentage"
+msgstr ""
+
+#. module: account_invoice_partial
+#. odoo-python
+#: code:addons/account_invoice_partial/wizards/account_invoice_partial_wizard.py:0
+msgid ""
+"Invoice percentage applied: %(percentage)s%%. Total changed from %(before)s "
+"to %(after)s."
 msgstr ""
 
 #. module: account_invoice_partial
