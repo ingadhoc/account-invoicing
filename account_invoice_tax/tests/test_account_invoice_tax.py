@@ -175,11 +175,9 @@ class TestAccountInvoiceTax(TransactionCase):
     def test_zero_amount_tax_is_kept_on_the_product_line(self):
         """Factura con una línea al 21 % y otra con "IVA No Gravado" (impuesto
         de importe fijo en cero): ajustar los centavos del IVA desde el wizard
-        borraba el No Gravado de su línea de producto.  Su línea de impuesto
-        existe aunque valga cero (``__keep_zero_line``), así que llega al wizard
-        con importe 0, se descartaba de ``tax_line_ids`` y quedaba fuera de
-        ``active_tax`` -- con lo cual el bloque de ``to_remove_tax`` lo
-        desvinculaba de todas las líneas de producto (ticket 126379).
+        borraba el No Gravado de su línea de producto (ticket 126379).  El
+        impuesto no tiene línea en el asiento (vale cero y no tiene override),
+        así que ``default_get`` no lo trae al wizard y el wizard no lo toca.
         """
         invoice = self._make_invoice(self.tax_percent)
         invoice.write(
@@ -199,14 +197,10 @@ class TestAccountInvoiceTax(TransactionCase):
         )
         not_taxed_line = invoice.invoice_line_ids.filtered(lambda l: l.price_unit == 500.0)
 
-        # El wizard se abre con las dos líneas: la de tasa 0 llega en 0, tal
-        # como la arma ``default_get``.
+        self.assertFalse(self._tax_line(invoice, self.tax_not_taxed))
+        # El wizard se abre solo con el IVA, tal como lo arma ``default_get``.
         self._make_wizard(
-            invoice,
-            [
-                {"tax_id": self.tax_percent.id, "amount": 210.97, "new_tax": False},
-                {"tax_id": self.tax_not_taxed.id, "amount": 0.0, "new_tax": False},
-            ],
+            invoice, [{"tax_id": self.tax_percent.id, "amount": 210.97, "new_tax": False}]
         ).action_update_tax()
 
         self.assertIn(
@@ -214,13 +208,33 @@ class TestAccountInvoiceTax(TransactionCase):
             not_taxed_line.tax_ids,
             "The zero-amount tax was unlinked from its product line",
         )
-        self.assertTrue(
-            self._tax_line(invoice, self.tax_not_taxed),
-            "The zero-amount tax line was dropped from the entry",
+        self.assertNotIn(
+            self.tax_not_taxed, invoice.invoice_line_ids.filtered(lambda l: l.price_unit == 1000.0).tax_ids
         )
         self.assertAlmostEqual(abs(self._tax_line(invoice, self.tax_percent).balance), 210.97)
         self.assertAlmostEqual(invoice.amount_untaxed, 1500.0)
         self.assertAlmostEqual(invoice.amount_total, 1710.97)
+
+    def test_zero_fixed_tax_without_override_has_no_tax_line(self):
+        """Factura de proveedor con "IVA Exento" configurado como impuesto fijo
+        de importe cero: no tiene que generar un apunte de impuesto 0/0, que
+        después aparece en el Libro mayor aunque se oculten las líneas en 0
+        (ticket 128734).  Si se le carga un importe desde el wizard, la línea sí
+        tiene que existir para que el importe llegue al asiento.
+        """
+        invoice = self._make_invoice(self.tax_not_taxed)
+        self.assertFalse(self._tax_line(invoice, self.tax_not_taxed))
+
+        invoice.invoice_date = fields.Date.context_today(invoice)
+        invoice.action_post()
+        self.assertFalse(invoice.line_ids.filtered(lambda l: l.display_type == "tax"))
+
+        overridden = self._make_invoice(self.tax_not_taxed)
+        self._make_wizard(
+            overridden, [{"tax_id": self.tax_not_taxed.id, "amount": 45.0, "new_tax": False}]
+        ).action_update_tax()
+        self.assertAlmostEqual(abs(self._tax_line(overridden, self.tax_not_taxed).balance), 45.0)
+        self.assertAlmostEqual(overridden.amount_total, 1045.0)
 
 
 @tagged("post_install", "-at_install")
