@@ -41,23 +41,40 @@ class AccountInvoiceTax(models.TransientModel):
         active_tax = self.tax_line_ids.mapped("tax_id")
         origin_tax = self.move_id.line_ids.filtered(lambda x: x.tax_line_id).mapped("tax_repartition_line_id.tax_id")
         to_remove_tax = origin_tax - active_tax
-        to_add_tax = active_tax - origin_tax
+        product_lines = move.invoice_line_ids.filtered(lambda x: x.display_type == "product")
+        # Taxes already on some product line are not linked again: that would spread them to every line.
+        to_add_tax = active_tax - origin_tax - product_lines.tax_ids
+        # A fixed tax already on the product lines but without a tax line (zero
+        # amount, no override): it is not linked again, so the core would not
+        # create the line the manual amount is written on.
+        missing_tax_line = (
+            self.tax_line_ids.filtered(
+                lambda l: l.amount and l.tax_id.amount_type == "fixed" and l.tax_id in product_lines.tax_ids
+            ).tax_id
+            - origin_tax
+        )
+        # The reverse case: a zero fixed tax set back to 0 keeps its old tax line,
+        # since no base line changed and the core does not recompute the taxes.
+        stale_zero_line = (
+            self.tax_line_ids.filtered(
+                lambda l: not l.amount and l.tax_id.amount_type == "fixed" and not l.tax_id.amount
+            ).tax_id
+            & origin_tax
+        )
         container = {"records": move, "self": move}
 
-        # --- 1. Update tax list on invoice lines ---
+        # --- 1. Persist overrides first: they decide which zero fixed tax lines are kept ---
+        self._save_overrides()
+
+        # --- 2. Update tax list on invoice lines ---
         with move.with_context(check_move_validity=False)._check_balanced(container):
             with move._sync_dynamic_lines(container):
                 if to_remove_tax:
-                    move.invoice_line_ids.filtered(lambda x: x.display_type == "product").write(
-                        {"tax_ids": [Command.unlink(tax_id.id) for tax_id in to_remove_tax]}
-                    )
+                    product_lines.write({"tax_ids": [Command.unlink(tax_id.id) for tax_id in to_remove_tax]})
                 if to_add_tax:
-                    move.invoice_line_ids.filtered(lambda x: x.display_type == "product").write(
-                        {"tax_ids": [Command.link(tax_id.id) for tax_id in to_add_tax]}
-                    )
-
-        # --- 2. Persist overrides in the JSON field so they survive recomputations ---
-        self._save_overrides()
+                    product_lines.write({"tax_ids": [Command.link(tax_id.id) for tax_id in to_add_tax]})
+                if missing_tax_line or stale_zero_line:
+                    move._recompute_tax_lines_from_base_lines()
 
         # --- 3. Apply overrides to the current tax lines ---
         other_taxes_override = {}
