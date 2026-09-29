@@ -130,7 +130,6 @@ class AccountMove(models.Model):
         with super()._sync_tax_lines(container):
             yield
 
-        AccountTax = self.env["account.tax"]
         for move in container.get("records", self):
             # Fix: when the invoice currency rate changed at the same time as a
             # taxed base line was deleted, the core may have preserved the stale
@@ -143,33 +142,34 @@ class AccountMove(models.Model):
                     )
                     if before["taxed_base_ids"] - current_taxed_base_ids:
                         # Force a fresh recompute from base lines.
-                        base_lines_values, tax_lines_values = move._get_rounded_base_and_tax_lines(
-                            round_from_tax_lines=False
-                        )
-                        AccountTax._add_accounting_data_in_base_lines_tax_details(
-                            base_lines_values,
-                            move.company_id,
-                            include_caba_tags=move.always_tax_exigible,
-                        )
-                        tax_results = AccountTax._prepare_tax_lines(
-                            base_lines_values,
-                            move.company_id,
-                            tax_lines=tax_lines_values,
-                        )
-                        for _tax_line_vals, _grouping_key, to_update in tax_results["tax_lines_to_update"]:
-                            _tax_line_vals["record"].write(dict(to_update))
-                        if tax_results.get("tax_lines_to_delete"):
-                            self.env["account.move.line"].browse(
-                                v["record"].id for v in tax_results["tax_lines_to_delete"]
-                            ).with_context(dynamic_unlink=True).unlink()
-                        if tax_results.get("tax_lines_to_add"):
-                            self.env["account.move.line"].create(
-                                [
-                                    {**vals, "display_type": "tax", "move_id": move.id}
-                                    for vals in tax_results["tax_lines_to_add"]
-                                ]
-                            )
+                        move._recompute_tax_lines_from_base_lines()
             move._apply_tax_overrides()
+
+    def _recompute_tax_lines_from_base_lines(self):
+        """Rebuild the tax lines of the move from its base lines, ignoring the current tax amounts."""
+        self.ensure_one()
+        AccountTax = self.env["account.tax"]
+        base_lines_values, tax_lines_values = self._get_rounded_base_and_tax_lines(round_from_tax_lines=False)
+        AccountTax._add_accounting_data_in_base_lines_tax_details(
+            base_lines_values,
+            self.company_id,
+            include_caba_tags=self.always_tax_exigible,
+        )
+        tax_results = AccountTax._prepare_tax_lines(
+            base_lines_values,
+            self.company_id,
+            tax_lines=tax_lines_values,
+        )
+        for _tax_line_vals, _grouping_key, to_update in tax_results["tax_lines_to_update"]:
+            _tax_line_vals["record"].write(dict(to_update))
+        if tax_results.get("tax_lines_to_delete"):
+            self.env["account.move.line"].browse(
+                v["record"].id for v in tax_results["tax_lines_to_delete"]
+            ).with_context(dynamic_unlink=True).unlink()
+        if tax_results.get("tax_lines_to_add"):
+            self.env["account.move.line"].create(
+                [{**vals, "display_type": "tax", "move_id": self.id} for vals in tax_results["tax_lines_to_add"]]
+            )
 
     def _apply_tax_overrides(self, other_taxes_override=False):
         """Re-write values from ``tax_override_data`` onto the matching tax lines.
