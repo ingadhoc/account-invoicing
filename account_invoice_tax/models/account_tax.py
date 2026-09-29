@@ -8,7 +8,7 @@ class AccountTax(models.Model):
     def _prepare_base_line_tax_repartition_grouping_key(
         self, base_line, base_line_grouping_key, tax_data, tax_rep_data
     ):
-        """Never drop the tax line of a fixed tax on a vendor bill.
+        """Keep the tax line of a fixed tax on a vendor bill when it nets to zero.
 
         The core removes every tax line whose amount nets to zero, which happens
         with a fixed tax set on a positive and a negative base line: the fixed
@@ -17,18 +17,27 @@ class AccountTax(models.Model):
         ``AccountMove._apply_tax_overrides`` applies it by writing on the tax
         line.  Without a line there is nothing to write on, so the manual amount
         is silently lost from the entry while the totals widget still shows it.
+
+        Only the fixed taxes that can carry an amount are kept: a non-zero
+        fixed amount, or a non-zero override on the move.  A fixed tax of amount
+        zero without override (e.g. "IVA Exento" / "IVA No Gravado" set up as
+        fixed) always yields zero, and keeping it only adds 0/0 journal items
+        that show up in the general ledger.
         """
         res = super()._prepare_base_line_tax_repartition_grouping_key(
             base_line, base_line_grouping_key, tax_data, tax_rep_data
         )
+        tax = tax_data["tax"]
         record = base_line.get("record")
         if (
-            tax_data["tax"].amount_type == "fixed"
+            tax.amount_type == "fixed"
             and isinstance(record, models.Model)
             and record._name == "account.move.line"
             and record.move_id.move_type in ("in_invoice", "in_refund", "in_receipt")
         ):
-            res["__keep_zero_line"] = True
+            override = (record.move_id.tax_override_data or {}).get(str(tax.id)) or {}
+            if tax.amount or override.get("amount"):
+                res["__keep_zero_line"] = True
         return res
 
     @api.model
