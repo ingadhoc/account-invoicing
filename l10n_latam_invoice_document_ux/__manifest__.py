@@ -16,7 +16,7 @@
             "l10n_latam_invoice_document_ux/static/src/js/account_move_form.js",
         ],
     },
-    "installable": True,
+    "installable": False,
     "auto_install": False,
     "application": False,
 }
