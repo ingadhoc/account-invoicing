@@ -172,6 +172,42 @@ class TestAccountInvoiceTax(TransactionCase):
         self.assertAlmostEqual(invoice.amount_total, 1045.2)
         self.assertAlmostEqual(invoice.amount_residual, 1045.2)
 
+    def test_rounded_base_lines_keep_fixed_tax_netting_to_zero(self):
+        """Percepción fija sobre una línea positiva y una negativa: lo que se
+        recalcula desde las líneas base (como el TXT del libro de IVA) tiene
+        que tomar el importe asentado, no el cero de las líneas."""
+        invoice = self._make_invoice(self.tax_fixed)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Redondeo",
+                            "quantity": 1.0,
+                            "price_unit": -0.06,
+                            "account_id": self._acct_expense.id,
+                            "tax_ids": [Command.set(self.tax_fixed.ids)],
+                        }
+                    )
+                ]
+            }
+        )
+        self._make_wizard(
+            invoice, [{"tax_id": self.tax_fixed.id, "amount": 155.2, "new_tax": False}]
+        ).action_update_tax()
+        invoice.invoice_date = fields.Date.context_today(invoice)
+        invoice.action_post()
+
+        base_lines, _tax_lines = invoice._get_rounded_base_and_tax_lines()
+        taxes_data = [
+            tax_data
+            for base_line in base_lines
+            for tax_data in base_line["tax_details"]["taxes_data"]
+            if tax_data["tax"] == self.tax_fixed
+        ]
+        self.assertAlmostEqual(sum(tax_data["tax_amount"] for tax_data in taxes_data), 155.2)
+        self.assertAlmostEqual(sum(tax_data["tax_amount_currency"] for tax_data in taxes_data), 155.2)
+
     def test_zero_amount_tax_is_kept_on_the_product_line(self):
         """Factura con una línea al 21 % y otra con "IVA No Gravado" (impuesto
         de importe fijo en cero): ajustar los centavos del IVA desde el wizard

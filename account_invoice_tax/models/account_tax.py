@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from odoo import api, models
 
 
@@ -39,6 +41,40 @@ class AccountTax(models.Model):
             if tax.amount or override.get("amount"):
                 res["__keep_zero_line"] = True
         return res
+
+    @api.model
+    def _round_tax_details_tax_amounts_from_tax_lines(self, base_lines, company, tax_lines):
+        """Keep the amount of a fixed tax line when its base lines net to zero.
+
+        The core skips the taxes whose amount on the base lines is zero, so the
+        amount kept on the tax line (see ``_prepare_base_line_tax_repartition_grouping_key``)
+        is lost for everything that reads the rounded base lines, like the
+        Argentinian VAT book.  Put it on the first base line of that tax.
+        """
+        super()._round_tax_details_tax_amounts_from_tax_lines(base_lines, company, tax_lines)
+        if not tax_lines:
+            return
+
+        target_per_key = defaultdict(lambda: {"tax_amount_currency": 0.0, "tax_amount": 0.0})
+        for tax_line in tax_lines:
+            tax_rep = tax_line["tax_repartition_line_id"]
+            if tax_rep.tax_id.amount_type != "fixed":
+                continue
+            key = (tax_rep.tax_id.id, tax_line["currency_id"].id, tax_rep.document_type == "refund")
+            target_per_key[key]["tax_amount_currency"] += tax_line["sign"] * tax_line["amount_currency"]
+            target_per_key[key]["tax_amount"] += tax_line["sign"] * tax_line["balance"]
+
+        taxes_data_per_key = defaultdict(list)
+        for base_line in base_lines:
+            for tax_data in base_line["tax_details"]["taxes_data"]:
+                key = (tax_data["tax"].id, base_line["currency_id"].id, base_line["is_refund"])
+                if key in target_per_key:
+                    taxes_data_per_key[key].append(tax_data)
+
+        for key, taxes_data in taxes_data_per_key.items():
+            for field, target in target_per_key[key].items():
+                if target and not sum(tax_data[field] for tax_data in taxes_data):
+                    taxes_data[0][field] += target
 
     @api.model
     def _get_tax_totals_summary(self, base_lines, currency, company, cash_rounding=None):
