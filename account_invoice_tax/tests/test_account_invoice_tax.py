@@ -399,3 +399,42 @@ class TestAccountInvoiceTax(AccountTestInvoicingCommon):
         self.assertIn(self.not_taxed_tax, invoice.invoice_line_ids.tax_ids)
         self.assertAlmostEqual(abs(self._tax_line(invoice, self.purchase_tax).balance), 210.0)
         self.assertAlmostEqual(invoice.amount_total, 1210.0)
+
+    def test_override_in_its_own_subtotal_is_shown_in_tax_totals(self):
+        """Percepción fija en un grupo con subtotal propio (preceding_subtotal):
+        el monto cargado en el wizard tiene que verse en el cuadro de totales,
+        no solo en el asiento.
+        """
+        perception_group = self.env["account.tax.group"].create(
+            {
+                "name": "Perceptions",
+                "company_id": self.env.company.id,
+                "preceding_subtotal": "Subtotal before perceptions",
+            }
+        )
+        perception_tax = self.env["account.tax"].create(
+            {
+                "name": "Fixed Perception",
+                "amount_type": "fixed",
+                "amount": 0.0,
+                "type_tax_use": "purchase",
+                "company_id": self.env.company.id,
+                "tax_group_id": perception_group.id,
+            }
+        )
+        invoice = self._build_move("in_invoice", self.purchase_tax + perception_tax)
+        self._make_wizard(
+            invoice,
+            [
+                {"tax_id": self.purchase_tax.id, "amount": 210.0, "new_tax": False},
+                {"tax_id": perception_tax.id, "amount": 50.0, "new_tax": True},
+            ],
+        ).action_update_tax()
+
+        self.assertAlmostEqual(invoice.amount_total, 1260.0)
+        tax_totals = invoice.tax_totals
+        self.assertAlmostEqual(tax_totals["total_amount_currency"], invoice.amount_total)
+        subtotal = next(s for s in tax_totals["subtotals"] if s["name"] == "Subtotal before perceptions")
+        self.assertAlmostEqual(subtotal["base_amount_currency"], 1210.0)
+        self.assertAlmostEqual(subtotal["tax_amount_currency"], 50.0)
+        self.assertAlmostEqual(subtotal["tax_groups"][0]["tax_amount_currency"], 50.0)
