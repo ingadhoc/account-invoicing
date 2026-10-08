@@ -45,7 +45,7 @@ To configure this module, you need to:
 #. Nothing to configure, but the following system parameters are available:
 
    * ``account_background_post.batch_size`` (default 20): how many invoices the user can validate synchronously before being forced to use the background option.
-   * ``account_background_post.max_retries`` (default 0): how many times the cron retries an invoice that failed before unmarking it and notifying the error. With 0 there are no retries.
+   * ``account_background_post.max_retries`` (default 5): how many times the cron retries an invoice that failed before unmarking it and notifying the error. With 0 there are no retries.
    * ``account_background_post.retry_delay_minutes`` (default 30): how long to wait before retrying an invoice that failed.
 
 Usage

@@ -29,7 +29,7 @@ class AccountMove(models.Model):
 
     @api.model
     def _get_background_post_max_retries(self):
-        return self.env["ir.config_parameter"].sudo().get_int("account_background_post.max_retries", 0)
+        return self.env["ir.config_parameter"].sudo().get_int("account_background_post.max_retries", 5)
 
     @api.model
     def _get_background_post_retry_delay(self):
