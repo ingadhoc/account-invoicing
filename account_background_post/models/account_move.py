@@ -29,15 +29,15 @@ class AccountMove(models.Model):
 
     @api.model
     def _get_background_post_max_retries(self):
-        return int(self.env["ir.config_parameter"].sudo().get_param("account_background_post.max_retries", 0))
+        return self.env["ir.config_parameter"].sudo().get_int("account_background_post.max_retries", 0)
 
     @api.model
     def _get_background_post_retry_delay(self):
-        return int(self.env["ir.config_parameter"].sudo().get_param("account_background_post.retry_delay_minutes", 30))
+        return self.env["ir.config_parameter"].sudo().get_int("account_background_post.retry_delay_minutes", 30)
 
     @api.model
     def _get_background_post_batch_size(self):
-        return int(self.env["ir.config_parameter"].sudo().get_param("account_background_post.batch_size", 20))
+        return self.env["ir.config_parameter"].sudo().get_int("account_background_post.batch_size", 20)
 
     def get_internal_partners(self):
         res = self.env["res.partner"]
