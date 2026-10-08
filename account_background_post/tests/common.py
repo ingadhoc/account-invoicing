@@ -43,7 +43,7 @@ class BackgroundPostCommon(AccountTestInvoicingCommon, BackgroundPostInvariants)
         return self._create_invoice_one_line(**kwargs)
 
     def _set_param(self, key, value):
-        self.env["ir.config_parameter"].sudo().set_param("account_background_post.%s" % key, value)
+        self.env["ir.config_parameter"].sudo().set_int("account_background_post.%s" % key, value)
 
     def _open_validate_wizard(self, moves):
         return (
