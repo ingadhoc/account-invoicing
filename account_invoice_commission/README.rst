@@ -22,6 +22,8 @@ Simple module that links a commission invoice (supplier invoice) to the commissi
 
 - Creates a tab in Commissioned Invoices that shows the applied Commision Invoices.
 
+- Adds a Last Payment Date on invoices, computed from the reconciled payments and available in the invoice search view.
+
 
 Installation
 ============
@@ -44,7 +46,19 @@ Usage
 
 To use this module, you need to:
 
-#. Go to ...
+#. Go to Invoicing > Configuration > Invoicing > Commission Rules and create
+   the rules. The menu needs the Billing Administrator access right. A rule
+   can be limited by validity dates, a minimum amount (checked against the
+   invoice line), agent, customer, product template, product category and
+   account, and it sets the commission percentage. The first rule that
+   matches, by sequence, is the one applied.
+
+#. Open the commission invoice (a vendor bill for the agent) and go to the
+   Commission tab. Add there the customer invoices being commissioned: the
+   Commission Amount column shows what each one pays according to the rules.
+
+#. On a customer invoice, the Commissions tab shows the commission invoices
+   that commission it.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
