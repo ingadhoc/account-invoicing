@@ -33,7 +33,7 @@
     "data": [
         "views/account_move_view.xml",
         "views/account_commission_rule_view.xml",
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
     ],
     "demo": [],
     "test": [],
