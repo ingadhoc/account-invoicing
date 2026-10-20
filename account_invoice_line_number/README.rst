@@ -16,6 +16,9 @@ Account Invoice Line Number
 
 This module add automatic numeration for invoice lines.
 
+The number of each line follows the line order (sequence) and is shown in the
+invoice form as an optional column ("nbr").
+
 Installation
 ============
 
