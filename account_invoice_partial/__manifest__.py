@@ -33,7 +33,7 @@
     "data": [
         "wizards/account_invoice_partial_wizard_views.xml",
         "views/account_move_views.xml",
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
     ],
     "demo": [],
     "installable": True,
