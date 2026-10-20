@@ -14,12 +14,12 @@
 Account Invoice Control
 =======================
 
-Module that adds invoice controls and validations:
+Restrict editing of customer invoices that come from sales orders.
 
-- Additional invoice states management
-- Security rules to control invoice validation process
-- Controls over customer account moves
-- Validation steps for invoice workflow
+Users that belong to the "Restrict Edit Invoice" group cannot edit the main
+fields of a customer invoice (such as its lines, sales team, partner,
+salesperson, due date and payment terms) when at least one of its lines is
+linked to a sales order line, even if the invoice is still in draft.
 
 
 Installation
@@ -36,7 +36,7 @@ Configuration
 To configure this module, you need to:
 
 #. Go to Settings -> Users & Companies -> Groups
-#. Assign users to the appropriate invoice control groups
+#. Add the users you want to restrict to the "Restrict Edit Invoice" group
 
 
 Usage
@@ -44,9 +44,10 @@ Usage
 
 To use this module, you need to:
 
+#. Log in as a user of the "Restrict Edit Invoice" group
 #. Go to Invoicing -> Customers -> Invoices
-#. Create a new invoice or edit an existing one
-#. The additional controls and validations will be applied based on configuration
+#. Open an invoice that has lines linked to a sales order: its main fields are read-only
+#. Invoices without lines linked to a sales order are editable as usual in draft
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
