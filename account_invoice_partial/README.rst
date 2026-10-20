@@ -14,19 +14,19 @@
 Account Invoice Partial
 ========================
 
-This module provides a wizard to create partial invoices from existing customer invoices in Odoo. It allows users to generate new invoices with partial quantities or amounts from the original invoice lines.
+This module adds an **Invoice Percentage** button to draft customer invoices and credit notes. A wizard scales the quantity of every invoice line by a percentage, so the invoice can be issued for only a part of the original amount.
 
 Features
 ========
 
-**Partial Invoice Creation Wizard**
-   Create new invoices with partial quantities from existing customer invoices through an intuitive wizard interface.
+**Percentage Wizard**
+   Asks for the percentage to invoice, the rounding precision (``0.01`` by default) and the rounding method (``UP``, ``DOWN`` or ``HALF-UP``, ``HALF-UP`` by default).
 
-**Line-by-Line Control**
-   Select specific invoice lines and define partial quantities for each line item independently.
+**Quantities on Every Line**
+   The quantity of each invoice line is multiplied by the percentage and rounded with the chosen precision and method. Prices are not changed, so totals and taxes follow the new quantities.
 
-**Automatic Invoice Generation**
-   Generate properly formatted partial invoices that maintain proper accounting relationships and traceability.
+**Chatter Log**
+   The invoice chatter records the percentage applied and the total before and after the change.
 
 Installation
 ============
@@ -39,32 +39,29 @@ To install this module, you need to:
 Usage
 =====
 
-**Creating Partial Invoices**
-   #. Go to **Accounting** ‣ **Customers** ‣ **Invoices**
-   #. Open an existing customer invoice
-   #. Click on the "Create Partial Invoice" action button
-   #. In the wizard, select the invoice lines you want to include
-   #. Specify the partial quantities for each selected line
-   #. Click "Create Partial Invoice" to generate the new invoice
+**Invoicing a Percentage**
+   #. Go to **Accounting** ‣ **Customers** ‣ **Invoices** (or **Credit Notes**)
+   #. Open a customer invoice or credit note in draft
+   #. Click on the **Invoice Percentage** button
+   #. Enter the percentage, the rounding precision and the rounding method
+   #. Click **Confirm**: the quantity of every line is updated and the change is logged in the chatter
 
-**Managing Partial Invoice Lines**
-   #. The wizard displays all available invoice lines from the source invoice
-   #. Enter the desired quantity for each line (must be less than or equal to the original quantity)
-   #. Only lines with quantities greater than zero will be included in the new partial invoice
+The button is only shown while the document is in draft. Running the wizard requires the ``account.group_account_invoice`` group.
 
 Technical Details
 =================
 
-**Models Extended**
-   * ``account.move``: Enhanced with partial invoice creation capabilities
-
 **New Models**
-   * ``account.invoice.partial.wizard``: Main wizard for partial invoice creation
-   * ``account.invoice.partial.wizard.line``: Individual line items in the partial invoice wizard
+   * ``account.invoice.partial.wizard``: transient wizard that applies the percentage to the lines of the invoice
+
+**Views**
+   * ``account.move`` form: adds the **Invoice Percentage** button to the header, next to the post buttons
+
+**Extension Point**
+   * ``_get_partial_line_vals``: values written on each line, so other modules can apply the percentage to another field
 
 **Security**
-   * Proper access controls defined for the wizard models
-   * Inherits standard invoice security permissions
+   * Access to the wizard is granted to ``account.group_account_invoice``
 
 Bug Tracker
 ===========
