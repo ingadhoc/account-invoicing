@@ -43,6 +43,12 @@
             <field name="partner_bank_id" position="attributes">
                 <attribute name="readonly">state != 'draft' or (has_sales and restrict_edit_invoice)</attribute>
             </field>
+            <xpath expr="//field[@name='document_tax_mode'][@id='document_tax_mode_mobile']" position="attributes">
+                <attribute name="readonly">state != 'draft' or (has_sales and restrict_edit_invoice)</attribute>
+            </xpath>
+            <xpath expr="//field[@name='document_tax_mode'][@id='document_tax_mode']" position="attributes">
+                <attribute name="readonly">state != 'draft' or (has_sales and restrict_edit_invoice)</attribute>
+            </xpath>
         </field>
     </record>
 
