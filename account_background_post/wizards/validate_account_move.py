@@ -1,6 +1,6 @@
 import logging
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -9,22 +9,28 @@ _logger = logging.getLogger(__name__)
 class ValidateAccountMove(models.TransientModel):
     _inherit = "validate.account.move"
 
-    count_inv = fields.Integer(help="Technical field to know the number of invoices selected from the wizard")
+    count_inv = fields.Integer(
+        compute="_compute_count_inv", help="Technical field to know the number of invoices selected from the wizard"
+    )
     batch_size = fields.Integer(compute="_compute_batch_size")
     force_background = fields.Integer(compute="_compute_force_background")
+
+    @api.depends("move_ids")
+    def _compute_count_inv(self):
+        """It used to be set on default_get, which only sees the fields the ORM still has to
+        default. Odoo 19 builds this wizard with create({'move_ids': ...}) from
+        action_validate_moves_with_confirmation, so move_ids never reached default_get and the
+        count stayed at 0, sending validate_move down the native _post() branch."""
+        for rec in self:
+            rec.count_inv = len(rec.move_ids)
 
     def _compute_batch_size(self):
         self.batch_size = self.env["account.move"]._get_background_post_batch_size()
 
+    @api.depends("count_inv", "batch_size")
     def _compute_force_background(self):
         for rec in self:
             rec.force_background = rec.count_inv > rec.batch_size
-
-    def default_get(self, fields):
-        res = super().default_get(fields)
-        if res:
-            res["count_inv"] = len(res["move_ids"][0][2])
-        return res
 
     def action_background_post(self):
         self.move_ids.filtered(lambda m: m.state == "draft")._schedule_background_post()
