@@ -61,21 +61,33 @@ class AccountInvoicePricesUpdateWizard(models.TransientModel):
             date=date,
         )
         rule_id = self.env["product.pricelist.item"].browse(rule_id)
-        if rule_id.compute_price != "percentage":
-            price_unit = self.env["account.tax"]._fix_tax_included_price_company(
-                final_price,
-                product.taxes_id,
-                invoice_line.tax_ids,
-                invoice_line.company_id,
-            )
-            return price_unit, 0.0
-        else:
-            base_price = rule_id._compute_base_price(
-                product,
-                qty,
-                uom,
-                date,
-                currency=invoice_line.currency_id,
-            )
-            price_unit = max(base_price, final_price)
-        return price_unit, self._calculate_discount(base_price, final_price)
+        if not rule_id.is_plain_discount:
+            return self._get_document_price(final_price, invoice_line), 0.0
+        base_price = rule_id._compute_base_price(
+            product,
+            qty,
+            uom,
+            currency=invoice_line.currency_id,
+            date=date,
+        )
+        price_unit = max(base_price, final_price)
+        return self._get_document_price(price_unit, invoice_line), self._calculate_discount(base_price, final_price)
+
+    def _get_document_price(self, price_unit, invoice_line):
+        """Express a pricelist price for the invoice line, like a native invoice line does: in the
+        tax mode of the invoice, and from the product taxes to the taxes of the line."""
+        move = invoice_line.move_id
+        product = invoice_line.product_id
+        product_taxes = product.taxes_id._filter_taxes_by_company(invoice_line.company_id)
+        price_unit = product._adapt_price_unit_to_document_tax_mode(
+            price_unit,
+            product_taxes,
+            invoice_line.product_uom_id,
+            move.document_tax_mode,
+        )
+        return product._get_tax_included_unit_price_from_price(
+            price_unit,
+            product_taxes,
+            product_taxes_after_fp=invoice_line.tax_ids,
+            document_tax_mode=move.document_tax_mode,
+        )
