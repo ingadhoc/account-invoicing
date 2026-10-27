@@ -1,0 +1,2 @@
+id,name,model_id,group_id/id,operation,domain
+access_account_invoice_prices_update_wizard,access.account.invoice.prices_update,account.invoice.prices_update.wizard,account.group_account_invoice,cru,
