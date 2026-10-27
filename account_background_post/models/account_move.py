@@ -137,20 +137,27 @@ class AccountMove(models.Model):
             partner_ids=self.get_internal_partners().ids,
         )
 
-    def _post(self, soft=True):
+    def action_post(self):
         """Difiere el posteo de documentos de venta (facturas y notas de crédito) a background,
         para no bloquear el flujo sincrónico por validaciones externas lentas (ej. ARCA).
 
-        Si el contexto trae `force_background_post`, saltea el `super()._post()` para facturas
-        de cliente y notas de crédito/débito de venta (`out_invoice`, `out_refund`); el resto
+        Si el contexto trae `force_background_post`, las facturas de cliente y notas de
+        crédito/débito de venta (`out_invoice`, `out_refund`) no llegan a `_post`; el resto
         de los moves postea normalmente. El contexto puede traer una fecha en lugar de `True`
-        para diferir el posteo hasta ese momento."""
+        para diferir el posteo hasta ese momento.
+
+        Se difiere acá y no en `_post` porque los overrides de `_post` que quedan por encima
+        (stock_account crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de
+        cualquier super()."""
         to_defer = self.env["account.move"]
         force = self.env.context.get("force_background_post")
         if force:
             to_defer = self.filtered(lambda m: m.move_type in ("out_invoice", "out_refund"))
             to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
-        posted = super(AccountMove, self - to_defer)._post(soft=soft)
+        return super(AccountMove, self - to_defer).action_post()
+
+    def _post(self, soft=True):
+        posted = super()._post(soft=soft)
         posted.filtered("background_post")._unschedule_background_post()
         return posted
 
