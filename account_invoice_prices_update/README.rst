@@ -16,6 +16,10 @@ Account Invoice Prices Update
 
 This module adds a wizard to update prices of the products of an invoice according to the price list is chosen in the wizard.
 
+* The invoice takes the currency of the pricelist.
+* If the pricelist rule is a plain discount (no rounding, extra fee or margins), the line gets the base price and the discount apart. With any other rule, the line gets the final price without discount.
+* The price follows the tax mode of the invoice (tax included or tax excluded).
+
 
 Installation
 ============
@@ -36,7 +40,7 @@ Usage
 
 To use this module, you need to:
 
-#. Go to an "draft" invoice and click the button "Update Pricelist and Prices", then a popup it's open, select the pricelist to update the price in the lines using this listprice.
+#. Go to a "draft" customer invoice or credit note and click the button "Update Pricelist and Prices", then a popup it's open, select the pricelist to update the price in the lines using this listprice.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
