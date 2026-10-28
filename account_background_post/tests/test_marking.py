@@ -3,6 +3,7 @@
 # directory
 ##############################################################################
 from datetime import timedelta
+from unittest.mock import patch
 
 from odoo import Command, fields
 from odoo.tests import tagged
@@ -39,6 +40,27 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
                 self.assertEqual(move.background_post, deferred)
                 self.assertEqual(move.state, "draft" if deferred else "posted")
                 self.assert_background_post_invariants(move)
+
+    def test_context_defers_before_post(self):
+        """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes
+        del super() (stock_account crea el costo, l10n_ar_edi pide el CAE) y al validarse después
+        el costo se registraba dos veces."""
+        invoice = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        reached = self.env["account.move"]
+
+        def _post(moves, soft=True):
+            nonlocal reached
+            reached |= moves
+            return original(moves, soft=soft)
+
+        with patch.object(model, "_post", _post):
+            (invoice + bill).with_context(force_background_post=True).action_post()
+        self.assertEqual(reached, bill)
+        self.assertEqual(invoice.state, "draft")
+        self.assertTrue(invoice.background_post)
 
     def test_context_accepts_a_posting_date(self):
         """Comportamiento 12: el contexto puede traer la fecha en la que hay que validar."""
