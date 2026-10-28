@@ -14,15 +14,15 @@
 Website Sale Account Invoice Commission
 =======================================
 
-This module extends the commission functionality to work with website sales and invoices. It allows you to configure commission rules that apply to orders created through the website and ensures commissions are properly calculated based on invoice amounts.
+This module adds a website category to commission rules, so a rule can apply only to the products published in that category of the online shop or in any of its subcategories. It is installed automatically when both **Account Invoice Commission** and **eCommerce** are installed.
 
 Features
 ========
 
-* Define commission rules that apply to website sales
-* Configure whether to use the invoice total instead of the sale order total for commission calculation
-* Automatic commission calculation based on actual invoiced amounts
-* Seamless integration with Odoo's e-commerce and invoicing workflow
+* Filter commission rules by website (public) category
+* A rule on a category also applies to the products of its subcategories
+* Rules without website category keep applying to every product
+* Invoice lines without product only take rules without website category
 
 Installation
 ============
@@ -30,41 +30,39 @@ Installation
 To install this module, follow these steps:
 
 1. Go to **Apps** in Odoo
-2. Search for **Website Sale Account Invoice Commission**
+2. Search for **Commission Invoices with Public Categories**
 3. Click **Install**
+
+The module is installed automatically when ``account_invoice_commission`` and ``website_sale`` are installed.
 
 Configuration
 =============
 
-To configure commission rules for website sales:
+To configure commission rules by website category:
 
-#. Go to **Accounting > Configuration > Commission Rules**
+#. Go to **Accounting > Configuration > Invoicing > Commission Rules**
 #. Create or edit a commission rule
-#. Define **Website category** to make this rule applicable to website orders"
-#. Optionally check **Use Invoice Total** to calculate commissions based on the invoice amount rather than the sale order amount
+#. Set **Website Category** to make the rule apply only to products of that category or its subcategories
 
 Usage
 =====
 
-Once configured, commissions will be automatically calculated for website orders:
+When the commission of an invoice line is computed, the rule must also match the website category of the line product:
 
-* When a customer places an order through the website, eligible commission rules will apply
-* If **Use Invoice Total** is enabled, the commission amount will be recalculated based on the actual invoice total (useful for partial invoicing or invoice adjustments)
-* Commission amounts will respect the invoice currency and conversion rates
+* A rule without **Website Category** applies to any product
+* A rule with **Website Category** applies when one of the website categories of the product is that category or one of its subcategories
+* A line without product only takes rules without **Website Category**
+
+Among the rules that match, the first one by sequence is used, as in ``account_invoice_commission``.
 
 Technical Details
 =================
 
-This module adds the following fields to commission rules:
+This module adds the following field to commission rules (``account.commission.rule``):
 
-* **Website Sale** (``website_sale``): Many2one field to mark rules applicable to website orders
-* **Use Invoice Total** (``use_invoice_total``): Boolean field to calculate commissions from invoice amounts instead of sale order amounts
+* **Website Category** (``public_category_id``): Many2one to ``product.public.category``
 
-The commission calculation considers:
-
-* Invoice amounts in their original currency with proper conversion
-* Only confirmed and posted invoices
-* Tax-included or tax-excluded amounts based on rule configuration
+It extends ``_get_rule_domain`` to add the website category condition, using ``parent_of`` over the website categories of the product (``public_categ_ids``), and adds the field to the commission rules list view (``account_invoice_commission.account_commission_rule_tree``).
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
