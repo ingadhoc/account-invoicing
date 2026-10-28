@@ -1,0 +1,1 @@
+from . import test_commission_rule_public_category
