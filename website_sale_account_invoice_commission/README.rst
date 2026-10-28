@@ -14,7 +14,7 @@
 Website Sale Account Invoice Commission
 =======================================
 
-This module adds a website category to commission rules, so a rule can apply only to the products published in that category of the online shop or in any of its subcategories. It is installed automatically when both **Account Invoice Commission** and **eCommerce** are installed.
+This module adds a website category to commission rules, so a rule can apply only to the products of that website category or of any of its subcategories, whether they are published or not. It is installed automatically when both **Account Invoice Commission** and **eCommerce** are installed.
 
 Features
 ========
