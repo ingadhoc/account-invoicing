@@ -1,4 +1,4 @@
-from odoo import tools
+from odoo import fields, tools
 from odoo.exceptions import ValidationError
 from odoo.tests import Form, common, tagged
 
@@ -79,12 +79,14 @@ if tools.config.get("test_enable"):
 
         doc_60_lp_a = self.env.ref("l10n_ar.dc_a_cvl")
         payment_term_id = self.env.ref("account.account_payment_term_end_following_month")
+        # the scenario does not depend on the date: it is read once so both bills share it
+        today = fields.Date.today()
 
         with Form(self.env["account.move"].with_context(default_move_type="in_invoice")) as bill_form:
             bill_form.ref = "demo_liquido_producto_1: Vendor bill liquido producto (DOC 186)"
             bill_form.partner_id = self.res_partner_adhoc
             bill_form.invoice_payment_term_id = payment_term_id
-            bill_form.invoice_date = "2023-02-09"
+            bill_form.invoice_date = today
             bill_form.l10n_latam_document_type_id = doc_60_lp_a
             with bill_form.invoice_line_ids.new() as line_form:
                 line_form.product_id = self.env.ref("product.product_product_4")
@@ -105,7 +107,7 @@ if tools.config.get("test_enable"):
             bill_form.ref = "demo_liquido_producto_1: Vendor bill liquido producto (DOC 186)"
             bill_form.partner_id = self.res_partner_adhoc
             bill_form.invoice_payment_term_id = payment_term_id
-            bill_form.invoice_date = "2023-02-09"
+            bill_form.invoice_date = today
             bill_form.journal_id = purchase_pos_journal
             bill_form.l10n_latam_document_type_id = doc_60_lp_a
             bill_form.l10n_latam_document_number = "00077-00000077"

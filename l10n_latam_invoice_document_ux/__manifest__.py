@@ -1,6 +1,6 @@
 {
     "name": "Latam Invoice Document UX",
-    "version": "19.0.1.2.0",
+    "version": "20.0.1.0.0",
     "author": "ADHOC SA",
     "website": "www.adhoc.com.ar",
     "license": "AGPL-3",
@@ -16,7 +16,7 @@
             "l10n_latam_invoice_document_ux/static/src/js/account_move_form.js",
         ],
     },
-    "installable": False,
+    "installable": True,
     "auto_install": False,
     "application": False,
 }

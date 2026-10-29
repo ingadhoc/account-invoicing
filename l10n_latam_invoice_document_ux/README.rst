@@ -39,6 +39,7 @@ This module modifies the validation behavior of LATAM invoice documents:
 #. Document type and document number fields are now required when validating invoices with manual numbering
 #. This allows users to fill in the form without being forced to enter these fields immediately
 #. The validation ensures data integrity when the invoice is posted
+#. A posted entry can no longer be moved to a journal that uses documents
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
