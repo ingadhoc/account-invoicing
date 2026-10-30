@@ -63,41 +63,38 @@ class AccountTax(models.Model):
                         tax_id, 0.0
                     ) + tax_data.get("tax_amount_currency", 0.0)
 
-            for tax_group in res.get("subtotals", [{}])[0].get("tax_groups", []):
-                new_amount_currency = tax_group.get("tax_amount_currency", 0.0)
-                new_amount = tax_group.get("tax_amount", 0.0)
-                has_override = False
-                for involved_tax_id in tax_group.get("involved_tax_ids", []):
-                    override = tax_context.get(involved_tax_id)
-                    if not override:
+            # A tax group with a preceding_subtotal lands in its own subtotal,
+            # and every later subtotal starts from the taxes before it.
+            accumulated_diff = 0.0
+            accumulated_diff_currency = 0.0
+            for subtotal in res.get("subtotals", []):
+                subtotal["base_amount"] += accumulated_diff
+                subtotal["base_amount_currency"] += accumulated_diff_currency
+                for tax_group in subtotal.get("tax_groups", []):
+                    diff = 0.0
+                    diff_currency = 0.0
+                    for involved_tax_id in tax_group.get("involved_tax_ids", []):
+                        override = tax_context.get(involved_tax_id)
+                        if not override:
+                            continue
+                        fixed_amount = override.get("fixed_amount", 0.0)
+                        rate = override.get("rate") or 1.0
+                        diff_currency += fixed_amount - original_amount_currency_by_tax_id.get(involved_tax_id, 0.0)
+                        diff += fixed_amount / rate - original_amount_by_tax_id.get(involved_tax_id, 0.0)
+
+                    if not diff_currency:
                         continue
-                    has_override = True
-                    fixed_amount = override.get("fixed_amount", 0.0)
-                    rate = override.get("rate") or 1.0
-                    original_tax_amount_currency = original_amount_currency_by_tax_id.get(involved_tax_id, 0.0)
-                    original_tax_amount = original_amount_by_tax_id.get(involved_tax_id, 0.0)
-                    new_amount_currency += fixed_amount - original_tax_amount_currency
-                    new_amount += fixed_amount / rate - original_tax_amount
 
-                if not has_override:
-                    continue
+                    tax_group["tax_amount"] += diff
+                    tax_group["tax_amount_currency"] += diff_currency
+                    subtotal["tax_amount"] += diff
+                    subtotal["tax_amount_currency"] += diff_currency
+                    accumulated_diff += diff
+                    accumulated_diff_currency += diff_currency
 
-                original_amount = tax_group.get("tax_amount", 0.0)
-                original_currency_amount = tax_group.get("tax_amount_currency", 0.0)
-                if new_amount_currency == original_currency_amount:
-                    continue
-
-                diff = new_amount_currency - original_currency_amount
-                currency_diff = new_amount - original_amount
-                tax_group.update(
-                    {
-                        "tax_amount": new_amount,
-                        "tax_amount_currency": new_amount_currency,
-                    }
-                )
-                res["tax_amount"] += currency_diff
-                res["total_amount"] += currency_diff
-                res["tax_amount_currency"] += diff
-                res["total_amount_currency"] += diff
+            res["tax_amount"] += accumulated_diff
+            res["total_amount"] += accumulated_diff
+            res["tax_amount_currency"] += accumulated_diff_currency
+            res["total_amount_currency"] += accumulated_diff_currency
 
         return res
