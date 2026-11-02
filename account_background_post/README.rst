@@ -48,7 +48,7 @@ To configure this module, you need to:
    * ``account_background_post.max_retries`` (default 0): how many times the cron retries an invoice that failed before unmarking it and notifying the error. With 0 there are no retries.
    * ``account_background_post.retry_delay_minutes`` (default 30): how long to wait before retrying an invoice that failed.
 
-#. Feature flag ``background_post_in_action_post`` (system parameter ``saas_feature.background_post_in_action_post``, off by default, needs ``saas_client.feature_flag``): with ``force_background_post`` in the context, the invoice is deferred in ``action_post`` instead of ``_post``, so the ``_post`` overrides that run before ours (``stock_account`` COGS lines, ``l10n_ar_edi`` CAE request) do not run on a deferred invoice.
+#. Feature flag ``background_post_in_action_post`` (system parameter ``saas_feature.background_post_in_action_post``, off by default, needs ``saas_client.feature_flag``): with ``force_background_post`` in the context, the invoice is deferred in ``action_post``, before ``_post``, so the ``_post`` overrides that run before ours (``stock_account`` COGS lines, ``l10n_ar_edi`` CAE request) do not run on a deferred invoice. A caller that calls ``_post`` directly with that context is still deferred in ``_post``.
 
 Usage
 =====
