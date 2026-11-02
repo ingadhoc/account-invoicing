@@ -156,17 +156,17 @@ class AccountMove(models.Model):
         to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
         return to_defer
 
-    @flag("background_post_in_action_post", "_action_post_bg_post_ff")
+    @flag("background_post_in_action_post", "_action_post_background_v2")
     def action_post(self):
         return super().action_post()
 
-    def _action_post_bg_post_ff(self):
+    def _action_post_background_v2(self):
         """Difiere antes de `_post`: los overrides de `_post` que quedan por encima (stock_account
-        crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super()."""
+        crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super().
+        Lo que llama a `_post` directo con el contexto se sigue difiriendo en `_post`."""
         to_defer = self._schedule_forced_background_post()
         return super(AccountMove, self - to_defer).action_post()
 
-    @flag("background_post_in_action_post", "_post_bg_post_ff")
     def _post(self, soft=True):
         """Difiere el posteo de documentos de venta (facturas y notas de crédito) a background,
         para no bloquear el flujo sincrónico por validaciones externas lentas (ej. ARCA).
@@ -176,11 +176,6 @@ class AccountMove(models.Model):
         de los moves postea normalmente."""
         to_defer = self._schedule_forced_background_post()
         posted = super(AccountMove, self - to_defer)._post(soft=soft)
-        posted.filtered("background_post")._unschedule_background_post()
-        return posted
-
-    def _post_bg_post_ff(self, soft=True):
-        posted = super()._post(soft=soft)
         posted.filtered("background_post")._unschedule_background_post()
         return posted
 
