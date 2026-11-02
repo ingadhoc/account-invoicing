@@ -42,6 +42,16 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
                 self.assertEqual(move.state, "draft" if deferred else "posted")
                 self.assert_background_post_invariants(move)
 
+    def test_context_defers_on_direct_post(self):
+        """Quien llama a _post directo con el contexto, sin pasar por action_post, también difiere."""
+        invoice = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        (invoice + bill).with_context(force_background_post=True)._post(soft=False)
+        self.assertEqual(invoice.state, "draft")
+        self.assertTrue(invoice.background_post)
+        self.assertEqual(bill.state, "posted")
+        self.assert_background_post_invariants(invoice + bill)
+
     def test_context_accepts_a_posting_date(self):
         """Comportamiento 12: el contexto puede traer la fecha en la que hay que validar."""
         move = self._create_bg_invoice()
