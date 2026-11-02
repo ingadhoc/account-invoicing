@@ -2,7 +2,9 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
+import unittest
 from datetime import timedelta
+from unittest.mock import patch
 
 from odoo import Command, fields
 from odoo.tests import tagged
@@ -58,3 +60,41 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
         move.with_context(force_background_post=True).action_post()
         self.assertTrue(move.background_post)
         self.assertFalse(move.background_post_date)
+
+
+@tagged("post_install", "-at_install")
+class TestBackgroundPostMarkingInActionPost(TestBackgroundPostMarking):
+    """Las mismas marcas con el flag `background_post_in_action_post` prendido, que difiere en
+    action_post en lugar de _post."""
+
+    allow_inherited_tests_method = True
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        try:
+            from odoo.addons.saas_client.feature_flag import flag  # noqa: F401
+        except ImportError as error:
+            raise unittest.SkipTest("saas_client.feature_flag is not available") from error
+        cls.env["ir.config_parameter"].sudo().set_param("saas_feature.background_post_in_action_post", "1")
+
+    def test_context_defers_before_post(self):
+        """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes
+        del super() (stock_account crea el costo, l10n_ar_edi pide el CAE) y al validarse después
+        el costo se registraba dos veces."""
+        invoice = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        reached = self.env["account.move"]
+
+        def _post(moves, soft=True):
+            nonlocal reached
+            reached |= moves
+            return original(moves, soft=soft)
+
+        with patch.object(model, "_post", _post):
+            (invoice + bill).with_context(force_background_post=True).action_post()
+        self.assertEqual(reached, bill)
+        self.assertEqual(invoice.state, "draft")
+        self.assertTrue(invoice.background_post)
