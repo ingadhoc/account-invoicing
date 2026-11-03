@@ -3,3 +3,4 @@
 # directory
 ##############################################################################
 from . import account_commission_rule
+from . import product_public_category
