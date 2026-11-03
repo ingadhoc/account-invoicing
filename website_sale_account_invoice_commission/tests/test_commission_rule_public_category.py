@@ -42,3 +42,22 @@ class TestCommissionRulePublicCategory(CommissionCommon):
                 {"sequence": 10},
             )
             self.assertEqual(self._get_rule(False), without_public_categ)
+
+    def test_delete_public_category_archives_its_rules(self):
+        """Given commission rules filtered by website category, when a website category is
+        deleted, then the rules of that category and of its children are archived and stop
+        applying, and the rules of other categories or without category do not change.
+        """
+        by_parent, by_child, by_other, general = self._rules(
+            {"sequence": 1, "public_category_id": self.public_parent.id},
+            {"sequence": 2, "public_category_id": self.public_child.id},
+            {"sequence": 3, "public_category_id": self.public_other.id},
+            {"sequence": 10},
+        )
+        self.env.user.group_ids |= self.env.ref("sales_team.group_sale_manager")
+        self.public_parent.unlink()
+
+        self.assertFalse((by_parent | by_child).filtered("active"))
+        self.assertTrue(by_other.active and general.active)
+        self.assertEqual(by_other.public_category_id, self.public_other)
+        self.assertEqual(self._get_rule(self.commissioned_product), general)
