@@ -19,7 +19,9 @@ class AccountMoveLine(models.Model):
         self.number = False
         if self and not isinstance(self[0].id, int):
             return
-        # TODO buscar alternativa al eval() ya que puede traer errores de seguridad
-        mapping = eval(self[0].move_id.number_lines)  # pylint: disable=W0123
-        for line in self:
-            line.number = mapping.get(line.id)
+        to_set = set(self.ids)
+        for move in self.move_id:
+            product_lines = move.line_ids.filtered(lambda l: l.display_type == "product").sorted("sequence")
+            for number, line in enumerate(product_lines, 1):
+                if line.id in to_set:
+                    line.number = number
