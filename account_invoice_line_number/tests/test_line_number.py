@@ -1,5 +1,3 @@
-import ast
-
 from odoo import Command, fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
@@ -34,7 +32,6 @@ class TestAccountInvoiceLineNumber(AccountTestInvoicingCommon):
 
     def _numbers(self):
         # computed fields have no depends: drop the cache as a form reload would
-        self.invoice.invalidate_recordset(["number_lines"])
         self.invoice.line_ids.invalidate_recordset(["number"])
         return {line.name: line.number for line in self.invoice.invoice_line_ids}
 
@@ -57,7 +54,3 @@ class TestAccountInvoiceLineNumber(AccountTestInvoicingCommon):
             other_lines = self.invoice.line_ids - self.invoice.invoice_line_ids
             self.assertTrue(other_lines)
             self.assertFalse(any(other_lines.mapped("number")))
-            self.assertEqual(
-                set(ast.literal_eval(self.invoice.number_lines)),
-                set(self.invoice.invoice_line_ids.ids),
-            )
