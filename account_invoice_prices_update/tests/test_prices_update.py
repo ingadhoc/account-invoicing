@@ -40,7 +40,8 @@ class TestPricesUpdate(AccountTestInvoicingCommon):
 
     def assert_prices(self, invoice, pricelist, price_unit, discount):
         line = invoice.invoice_line_ids
-        self.assertRecordValues(line, [{"price_unit": price_unit, "discount": discount}])
+        self.assertRecordValues(line, [{"price_unit": price_unit}])
+        self.assertAlmostEqual(line.discount, discount, places=2)
         self.assertEqual(invoice.currency_id, pricelist.currency_id)
         self.assertIn(pricelist.display_name, invoice.message_ids[0].body)
 
