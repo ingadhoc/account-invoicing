@@ -136,6 +136,11 @@ msgid "Commission Invoices with Public Categories"
 msgstr "Comisiones de facturas por categorías del sitio web"
 
 #. module: website_sale_account_invoice_commission
+#: model:ir.model.fields,field_description:website_sale_account_invoice_commission.field_account_commission_rule__deleted_public_category
+msgid "Deleted Website Category"
+msgstr "Categoría del sitio web eliminada"
+
+#. module: website_sale_account_invoice_commission
 #: model:ir.model.fields,field_description:website_sale_account_invoice_commission.field_account_commission_rule__display_name
 msgid "Display Name"
 msgstr "Mostrar nombre"
@@ -144,6 +149,11 @@ msgstr "Mostrar nombre"
 #: model:ir.model.fields,field_description:website_sale_account_invoice_commission.field_account_commission_rule__id
 msgid "ID"
 msgstr "ID"
+
+#. module: website_sale_account_invoice_commission
+#: model:ir.model.fields,help:website_sale_account_invoice_commission.field_account_commission_rule__deleted_public_category
+msgid "Website category this rule was filtered by, when it was deleted and the rule got archived."
+msgstr "Categoría del sitio web por la que filtraba esta regla, cuando se eliminó y la regla se archivó."
 
 #. module: website_sale_account_invoice_commission
 #: model:ir.model.fields,field_description:website_sale_account_invoice_commission.field_account_commission_rule__public_category_id

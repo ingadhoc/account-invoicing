@@ -17,4 +17,11 @@ class ProductPublicCategory(models.Model):
         without going through the ORM, so their rules are archived here too. sudo: whoever
         deletes a website category does not need access to the commission rules.
         """
-        self.env["account.commission.rule"].sudo().search([("public_category_id", "child_of", self.ids)]).active = False
+        rules = (
+            self.env["account.commission.rule"]
+            .sudo()
+            .with_context(active_test=False)
+            .search([("public_category_id", "child_of", self.ids)])
+        )
+        for rule in rules:
+            rule.write({"active": False, "deleted_public_category": rule.public_category_id.display_name})

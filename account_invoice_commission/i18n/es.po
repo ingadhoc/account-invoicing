@@ -127,6 +127,16 @@ msgid "Account Commission Rule"
 msgstr "Regla de Comisión de Cuenta"
 
 #. module: account_invoice_commission
+#: model:ir.model.fields,field_description:account_invoice_commission.field_account_commission_rule__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: account_invoice_commission
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.account_commission_rule_search
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: account_invoice_commission
 #: model:ir.model.fields,help:account_invoice_commission.field_account_bank_statement_line__commission_invoice_ids
 #: model:ir.model.fields,help:account_invoice_commission.field_account_move__commission_invoice_ids
 msgid "Commision invoices where this invoice is commissioned"
@@ -156,6 +166,7 @@ msgid "Commission Invoices"
 msgstr "Facturas de comisiones"
 
 #. module: account_invoice_commission
+#: model_terms:ir.ui.view,arch_db:account_invoice_commission.account_commission_rule_search
 #: model:ir.actions.act_window,name:account_invoice_commission.action_commission_rule_form
 #: model:ir.ui.menu,name:account_invoice_commission.menu_action_commission_rule_form
 #: model_terms:ir.ui.view,arch_db:account_invoice_commission.account_commission_rule_tree

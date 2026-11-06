@@ -7,6 +7,19 @@
         <field name="arch" type="xml">
             <field name="categ_id" position="after">
                 <field name="public_category_id"/>
+                <field name="deleted_public_category" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="account_commission_rule_search" model="ir.ui.view">
+        <field name="name">account.commission.rule.search</field>
+        <field name="model">account.commission.rule</field>
+        <field name="inherit_id" ref="account_invoice_commission.account_commission_rule_search"/>
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="public_category_id"/>
+                <field name="deleted_public_category"/>
             </field>
         </field>
     </record>
