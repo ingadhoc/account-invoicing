@@ -4,6 +4,14 @@ from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.tools import plaintext2html
 
+try:
+    from odoo.addons.saas_client.feature_flag import flag
+except ImportError:
+
+    def flag(name, variant):
+        return lambda fn: fn
+
+
 _logger = logging.getLogger(__name__)
 
 
@@ -137,19 +145,36 @@ class AccountMove(models.Model):
             partner_ids=self.get_internal_partners().ids,
         )
 
+    def _schedule_forced_background_post(self):
+        """Marca para background las facturas y notas de crédito de venta (`out_invoice`,
+        `out_refund`) si el contexto trae `force_background_post`, y las devuelve. El contexto
+        puede traer una fecha en lugar de `True` para diferir el posteo hasta ese momento."""
+        force = self.env.context.get("force_background_post")
+        if not force:
+            return self.env["account.move"]
+        to_defer = self.filtered(lambda m: m.move_type in ("out_invoice", "out_refund"))
+        to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
+        return to_defer
+
+    @flag("background_post_in_action_post", "_action_post_background_v2")
+    def action_post(self):
+        return super().action_post()
+
+    def _action_post_background_v2(self):
+        """Difiere antes de `_post`: los overrides de `_post` que quedan por encima (stock_account
+        crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super().
+        Lo que llama a `_post` directo con el contexto se sigue difiriendo en `_post`."""
+        to_defer = self._schedule_forced_background_post()
+        return super(AccountMove, self - to_defer).action_post()
+
     def _post(self, soft=True):
         """Difiere el posteo de documentos de venta (facturas y notas de crédito) a background,
         para no bloquear el flujo sincrónico por validaciones externas lentas (ej. ARCA).
 
         Si el contexto trae `force_background_post`, saltea el `super()._post()` para facturas
         de cliente y notas de crédito/débito de venta (`out_invoice`, `out_refund`); el resto
-        de los moves postea normalmente. El contexto puede traer una fecha en lugar de `True`
-        para diferir el posteo hasta ese momento."""
-        to_defer = self.env["account.move"]
-        force = self.env.context.get("force_background_post")
-        if force:
-            to_defer = self.filtered(lambda m: m.move_type in ("out_invoice", "out_refund"))
-            to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
+        de los moves postea normalmente."""
+        to_defer = self._schedule_forced_background_post()
         posted = super(AccountMove, self - to_defer)._post(soft=soft)
         posted.filtered("background_post")._unschedule_background_post()
         return posted
