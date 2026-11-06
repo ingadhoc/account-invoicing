@@ -13,6 +13,12 @@ class AccountCommissionRule(models.Model):
         "Website Category",
         bypass_search_access=True,
     )
+    deleted_public_category = fields.Char(
+        "Deleted Website Category",
+        readonly=True,
+        copy=False,
+        help="Website category this rule was filtered by, when it was deleted and the rule got archived.",
+    )
 
     def _get_rule_domain(self, date, product, partner_id, customer, amount, account_id=False):
         domain = super()._get_rule_domain(date, product, partner_id, customer, amount, account_id=account_id)
