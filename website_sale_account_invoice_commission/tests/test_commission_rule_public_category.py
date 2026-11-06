@@ -58,7 +58,11 @@ class TestCommissionRulePublicCategory(CommissionCommon):
             {"sequence": 4, "public_category_id": self.public_child.id, "active": False},
         )
         self.env.user.group_ids |= self.env.ref("sales_team.group_sale_manager")
-        self.public_parent.unlink()
+        categories = self.public_parent
+        # product_catalog_report_public_categ turns parent_id into ondelete="restrict"
+        if categories._fields["parent_id"].ondelete != "cascade":
+            categories |= self.public_child
+        categories.unlink()
 
         self.assertFalse((by_parent | by_child).filtered("active"))
         self.assertEqual(by_parent.deleted_public_category, parent_name)
