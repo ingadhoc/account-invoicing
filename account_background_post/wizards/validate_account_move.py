@@ -56,9 +56,16 @@ class ValidateAccountMove(models.TransientModel):
                     )
                 )
 
+            if self.ignore_abnormal_amount:
+                self.abnormal_amount_partner_ids.ignore_abnormal_invoice_amount = True
+            if self.ignore_abnormal_date:
+                self.abnormal_date_partner_ids.ignore_abnormal_invoice_date = True
+
             for move in self.move_ids:
                 _logger.info("Validating invoice %s", move.id)
-                move.action_post()
+                # The user already accepted the abnormal warning in this wizard; checking again
+                # makes action_post return a new wizard instead of posting.
+                move.with_context(disable_abnormal_invoice_detection=True).action_post()
                 move.env.cr.commit()
 
             return {"type": "ir.actions.act_window_close"}

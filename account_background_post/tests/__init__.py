@@ -4,3 +4,4 @@ from . import test_cron_failure
 from . import test_marking
 from . import test_batch_size
 from . import test_list_confirmation
+from . import test_abnormal_warning
