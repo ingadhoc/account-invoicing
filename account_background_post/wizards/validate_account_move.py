@@ -56,7 +56,12 @@ class ValidateAccountMove(models.TransientModel):
                     )
                 )
 
-            for move in self.move_ids:
+            # Same partner flags the native wizard applies; then post without reopening the wizard
+            if self.ignore_abnormal_amount:
+                self.abnormal_amount_partner_ids.ignore_abnormal_invoice_amount = True
+            if self.ignore_abnormal_date:
+                self.abnormal_date_partner_ids.ignore_abnormal_invoice_date = True
+            for move in self.move_ids.with_context(disable_abnormal_invoice_detection=True):
                 _logger.info("Validating invoice %s", move.id)
                 move.action_post()
                 move.env.cr.commit()
