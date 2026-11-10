@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Commission Invoices with Public Categories",
-    "version": "20.0.1.1.0",
+    "version": "20.0.1.2.0",
     "category": "Accounting",
     "sequence": 14,
     "summary": "",
