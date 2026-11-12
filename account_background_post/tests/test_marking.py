@@ -2,7 +2,6 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-import unittest
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -70,23 +69,6 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
         move.with_context(force_background_post=True).action_post()
         self.assertTrue(move.background_post)
         self.assertFalse(move.background_post_date)
-
-
-@tagged("post_install", "-at_install")
-class TestBackgroundPostMarkingInActionPost(TestBackgroundPostMarking):
-    """Las mismas marcas con el flag `background_post_in_action_post` prendido, que difiere en
-    action_post en lugar de _post."""
-
-    allow_inherited_tests_method = True
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        try:
-            from odoo.addons.saas_client.feature_flag import flag  # noqa: F401
-        except ImportError as error:
-            raise unittest.SkipTest("saas_client.feature_flag is not available") from error
-        cls.env["ir.config_parameter"].sudo().set_param("saas_feature.background_post_in_action_post", "1")
 
     def test_context_defers_before_post(self):
         """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes

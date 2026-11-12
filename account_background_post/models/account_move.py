@@ -4,14 +4,6 @@ from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.tools import plaintext2html
 
-try:
-    from odoo.addons.saas_client.feature_flag import flag
-except ImportError:
-
-    def flag(name, variant):
-        return lambda fn: fn
-
-
 _logger = logging.getLogger(__name__)
 
 
@@ -156,11 +148,7 @@ class AccountMove(models.Model):
         to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
         return to_defer
 
-    @flag("background_post_in_action_post", "_action_post_background_v2")
     def action_post(self):
-        return super().action_post()
-
-    def _action_post_background_v2(self):
         """Difiere antes de `_post`: los overrides de `_post` que quedan por encima (stock_account
         crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super().
         Lo que llama a `_post` directo con el contexto se sigue difiriendo en `_post`."""
