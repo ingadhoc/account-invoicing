@@ -58,3 +58,108 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
         move.with_context(force_background_post=True).action_post()
         self.assertTrue(move.background_post)
         self.assertFalse(move.background_post_date)
+<<<<<<< 88df1f82ee214698971735f7b607ef9148b43b38
+||||||| 4765ddab528c0163adf2695f5c33739b4a818cf4
+
+
+@tagged("post_install", "-at_install")
+class TestBackgroundPostMarkingInActionPost(TestBackgroundPostMarking):
+    """Las mismas marcas con el flag `background_post_in_action_post` prendido, que difiere en
+    action_post en lugar de _post."""
+
+    allow_inherited_tests_method = True
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        try:
+            from odoo.addons.saas_client.feature_flag import flag  # noqa: F401
+        except ImportError as error:
+            raise unittest.SkipTest("saas_client.feature_flag is not available") from error
+        cls.env["ir.config_parameter"].sudo().set_param("saas_feature.background_post_in_action_post", "1")
+
+    def test_context_defers_before_post(self):
+        """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes
+        del super() (stock_account crea el costo, l10n_ar_edi pide el CAE) y al validarse después
+        el costo se registraba dos veces."""
+        invoice = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        reached = self.env["account.move"]
+
+        def _post(moves, soft=True):
+            nonlocal reached
+            reached |= moves
+            return original(moves, soft=soft)
+
+        with patch.object(model, "_post", _post):
+            (invoice + bill).with_context(force_background_post=True).action_post()
+        self.assertEqual(reached, bill)
+        self.assertEqual(invoice.state, "draft")
+        self.assertTrue(invoice.background_post)
+=======
+
+    def test_direct_post_accepts_a_posting_date(self):
+        """El respaldo de `_post` difiere igual, con la fecha que traiga el contexto."""
+        move = self._create_bg_invoice()
+        post_at = fields.Datetime.now() + timedelta(days=1)
+        move.with_context(force_background_post=post_at)._post(soft=False)
+        self.assertEqual(move.state, "draft")
+        self.assertEqual(move.background_post_date, post_at)
+        self.assert_background_post_invariants(move)
+
+    def test_direct_post_true_clears_a_stale_date(self):
+        """El respaldo de `_post` también resetea la fecha de una programación anterior."""
+        move = self._create_bg_invoice()
+        move.write({"background_post": True, "background_post_date": fields.Datetime.now() + timedelta(days=7)})
+        move.with_context(force_background_post=True)._post(soft=False)
+        self.assertTrue(move.background_post)
+        self.assertFalse(move.background_post_date)
+
+    def test_context_does_not_leak_to_the_rest_of_the_chain(self):
+        """Lo que la cadena crea y valida después de diferir no se difiere también: una nota de
+        crédito automática o un documento entre compañías que nazca ahí adentro se valida normal."""
+        deferred = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        chained = self.env["account.move"]
+
+        def _post(moves, soft=True):
+            nonlocal chained
+            posted = original(moves, soft=soft)
+            if not chained:
+                # nace con el env de la cadena, como la crearía el módulo que corre ahí adentro
+                chained = self._create_bg_invoice().with_env(moves.env)
+                chained.action_post()
+            return posted
+
+        with patch.object(model, "_post", _post):
+            (deferred + bill).with_context(force_background_post=True).action_post()
+
+        self.assertTrue(deferred.background_post)
+        self.assertEqual(chained.state, "posted")
+        self.assertFalse(chained.background_post)
+
+    def test_context_defers_before_post(self):
+        """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes
+        del super() (stock_account crea el costo, l10n_ar_edi pide el CAE) y al validarse después
+        el costo se registraba dos veces."""
+        invoice = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        reached = self.env["account.move"]
+
+        def _post(moves, soft=True):
+            nonlocal reached
+            reached |= moves
+            return original(moves, soft=soft)
+
+        with patch.object(model, "_post", _post):
+            (invoice + bill).with_context(force_background_post=True).action_post()
+        self.assertEqual(reached, bill)
+        self.assertEqual(invoice.state, "draft")
+        self.assertTrue(invoice.background_post)
+>>>>>>> 6f340bb1fe1b87a67010df4051fd6d2fb5a9eca9
