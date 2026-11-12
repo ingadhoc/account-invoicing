@@ -2,7 +2,6 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-import unittest
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -71,22 +70,47 @@ class TestBackgroundPostMarking(BackgroundPostCommon):
         self.assertTrue(move.background_post)
         self.assertFalse(move.background_post_date)
 
+    def test_direct_post_accepts_a_posting_date(self):
+        """El respaldo de `_post` difiere igual, con la fecha que traiga el contexto."""
+        move = self._create_bg_invoice()
+        post_at = fields.Datetime.now() + timedelta(days=1)
+        move.with_context(force_background_post=post_at)._post(soft=False)
+        self.assertEqual(move.state, "draft")
+        self.assertEqual(move.background_post_date, post_at)
+        self.assert_background_post_invariants(move)
 
-@tagged("post_install", "-at_install")
-class TestBackgroundPostMarkingInActionPost(TestBackgroundPostMarking):
-    """Las mismas marcas con el flag `background_post_in_action_post` prendido, que difiere en
-    action_post en lugar de _post."""
+    def test_direct_post_true_clears_a_stale_date(self):
+        """El respaldo de `_post` también resetea la fecha de una programación anterior."""
+        move = self._create_bg_invoice()
+        move.write({"background_post": True, "background_post_date": fields.Datetime.now() + timedelta(days=7)})
+        move.with_context(force_background_post=True)._post(soft=False)
+        self.assertTrue(move.background_post)
+        self.assertFalse(move.background_post_date)
 
-    allow_inherited_tests_method = True
+    def test_context_does_not_leak_to_the_rest_of_the_chain(self):
+        """Lo que la cadena crea y valida después de diferir no se difiere también: una nota de
+        crédito automática o un documento entre compañías que nazca ahí adentro se valida normal."""
+        deferred = self._create_bg_invoice()
+        bill = self._create_bg_invoice(move_type="in_invoice")
+        model = self.env["account.move"].__class__
+        original = model._post
+        chained = self.env["account.move"]
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        try:
-            from odoo.addons.saas_client.feature_flag import flag  # noqa: F401
-        except ImportError as error:
-            raise unittest.SkipTest("saas_client.feature_flag is not available") from error
-        cls.env["ir.config_parameter"].sudo().set_param("saas_feature.background_post_in_action_post", "1")
+        def _post(moves, soft=True):
+            nonlocal chained
+            posted = original(moves, soft=soft)
+            if not chained:
+                # nace con el env de la cadena, como la crearía el módulo que corre ahí adentro
+                chained = self._create_bg_invoice().with_env(moves.env)
+                chained.action_post()
+            return posted
+
+        with patch.object(model, "_post", _post):
+            (deferred + bill).with_context(force_background_post=True).action_post()
+
+        self.assertTrue(deferred.background_post)
+        self.assertEqual(chained.state, "posted")
+        self.assertFalse(chained.background_post)
 
     def test_context_defers_before_post(self):
         """Lo diferido no puede llegar a _post: los overrides que quedan por encima corren antes

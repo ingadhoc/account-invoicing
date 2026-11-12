@@ -48,8 +48,6 @@ To configure this module, you need to:
    * ``account_background_post.max_retries`` (default 0): how many times the cron retries an invoice that failed before unmarking it and notifying the error. With 0 there are no retries.
    * ``account_background_post.retry_delay_minutes`` (default 30): how long to wait before retrying an invoice that failed.
 
-#. Feature flag ``background_post_in_action_post`` (system parameter ``saas_feature.background_post_in_action_post``, off by default, needs ``saas_client.feature_flag``): with ``force_background_post`` in the context, the invoice is deferred in ``action_post``, before ``_post``, so the ``_post`` overrides that run before ours (``stock_account`` COGS lines, ``l10n_ar_edi`` CAE request) do not run on a deferred invoice. A caller that calls ``_post`` directly with that context is still deferred in ``_post``.
-
 Usage
 =====
 
@@ -58,6 +56,7 @@ To use this module, you need to:
 #. Go the invoices list view and select a batch of invoices.
 #. Go to action menu and click on post entries option.
 #. Use Post in Background or Post Journal Entries depending of what they need to know.
+#. A caller can also defer a sale invoice from code, by posting it with ``force_background_post`` in the context (``True``, or a datetime to post it at that moment). The invoice is deferred in ``action_post``, before ``_post``, so the ``_post`` overrides that run before ours (``stock_account`` COGS lines, ``l10n_ar_edi`` CAE request) do not run on an invoice that will be posted later. A caller that calls ``_post`` directly with that context is still deferred there, after those overrides. The context is dropped for the rest of the chain, so an invoice created and posted further down is not deferred too.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
