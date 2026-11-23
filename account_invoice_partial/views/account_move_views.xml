@@ -9,7 +9,7 @@
             <button name="action_post" position="after">
                 <button
                     name="%(action_account_invoice_partial_wizard_form)d"
-                    invisible="state != 'draft' or move_type not in ('out_invoice', 'out_refund')"
+                    invisible="state != 'draft' or move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')"
                     string="Invoice Percentage"
                     type="action"
                 />
