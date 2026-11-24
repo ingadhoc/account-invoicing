@@ -137,6 +137,54 @@ class AccountMove(models.Model):
             partner_ids=self.get_internal_partners().ids,
         )
 
+<<<<<<< 88df1f82ee214698971735f7b607ef9148b43b38
+||||||| 4765ddab528c0163adf2695f5c33739b4a818cf4
+    def _schedule_forced_background_post(self):
+        """Marca para background las facturas y notas de crédito de venta (`out_invoice`,
+        `out_refund`) si el contexto trae `force_background_post`, y las devuelve. El contexto
+        puede traer una fecha en lugar de `True` para diferir el posteo hasta ese momento."""
+        force = self.env.context.get("force_background_post")
+        if not force:
+            return self.env["account.move"]
+        to_defer = self.filtered(lambda m: m.move_type in ("out_invoice", "out_refund"))
+        to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
+        return to_defer
+
+    @flag("background_post_in_action_post", "_action_post_background_v2")
+    def action_post(self):
+        return super().action_post()
+
+    def _action_post_background_v2(self):
+        """Difiere antes de `_post`: los overrides de `_post` que quedan por encima (stock_account
+        crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super().
+        Lo que llama a `_post` directo con el contexto se sigue difiriendo en `_post`."""
+        to_defer = self._schedule_forced_background_post()
+        return super(AccountMove, self - to_defer).action_post()
+
+=======
+    def _schedule_forced_background_post(self):
+        """Marca para background las facturas y notas de crédito de venta (`out_invoice`,
+        `out_refund`) si el contexto trae `force_background_post`, y las devuelve. El contexto
+        puede traer una fecha en lugar de `True` para diferir el posteo hasta ese momento."""
+        force = self.env.context.get("force_background_post")
+        if not force:
+            return self.env["account.move"]
+        to_defer = self.filtered(lambda m: m.move_type in ("out_invoice", "out_refund"))
+        to_defer._schedule_background_post(False if force is True else fields.Datetime.to_datetime(force))
+        return to_defer
+
+    def action_post(self):
+        """Difiere antes de `_post`: los overrides de `_post` que quedan por encima (stock_account
+        crea las líneas de costo, l10n_ar_edi pide el CAE) corren antes de cualquier super().
+        Lo que llama a `_post` directo con el contexto se sigue difiriendo en `_post`."""
+        to_defer = self._schedule_forced_background_post()
+        rest = self - to_defer
+        if not rest:
+            return False
+        # drop the context so an invoice created and posted later in this chain is not deferred too
+        return super(AccountMove, rest.with_context(force_background_post=False)).action_post()
+
+>>>>>>> 6f340bb1fe1b87a67010df4051fd6d2fb5a9eca9
     def _post(self, soft=True):
         """Difiere el posteo de documentos de venta (facturas y notas de crédito) a background,
         para no bloquear el flujo sincrónico por validaciones externas lentas (ej. ARCA).
