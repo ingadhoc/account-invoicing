@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Thermal invoice report - 80mm continuous paper.
+
+        Contains only data available in the `account` module: no fiscal
+        localization fields are read here. Localization modules build their
+        own report on top of this one (see _get_thermal_receipt_report_name).
+
+        The issuer (logo, name, address, contact) and the price regime are
+        resolved on the move, so every template built on this one prints the
+        same header. The detail is one block per line and not a table of
+        columns, which in 80mm overlapped when a description was long.
+
+        Amounts are rendered with the standard `monetary` widget so the
+        number format follows the user locale instead of being hardcoded.
+    -->
+    <template id="report_thermal_invoice_html">&lt;!DOCTYPE html&gt;
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title>Thermal Receipt</title>
+                <t t-call-assets="web.report_assets_common" t-css="true" t-js="false"/>
+                <style>
+                    /* Page configuration - must be top-level, cannot be scoped */
+                    @page {
+                        size: 80mm auto;
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body class="thermal-receipt-page">
+                <div id="wrapwrap">
+                    <main>
+                        <t t-foreach="docs" t-as="o">
+                            <div class="thermal-receipt">
+
+                                <!--
+                                    Issuer data. The legal name and the logo belong to the
+                                    company issuing the document; the branch contributes its
+                                    own name, address and contact details. `header_company`
+                                    comes from `o.company_id` and not from the branch: the
+                                    partner of a point of sale is a plain Many2one and may
+                                    hang off another legal entity, and the receipt would then
+                                    head with a name that is not the issuer of the document.
+
+                                    Set as siblings of the header so they stay in scope for
+                                    the whole receipt, the footer included.
+                                -->
+                                <t t-set="header_partner" t-value="o._get_thermal_header_partner()"/>
+                                <t t-set="header_company" t-value="o.company_id.partner_id"/>
+                                <t t-set="header_logo" t-value="o._get_thermal_header_logo()"/>
+                                <t t-set="prices_include_taxes" t-value="o._thermal_prices_include_taxes()"/>
+
+                                <!-- Header: company identification (optional) -->
+                                <div class="header" id="thermal_header"
+                                     t-if="o.company_id.thermal_ticket_show_company">
+                                    <div name="div_logo" class="logo" t-if="header_logo">
+                                        <img t-att-src="image_data_uri(header_logo)"
+                                             style="max-height: 50px; display: block; margin: 0 auto;"
+                                             alt="Logo"/>
+                                    </div>
+                                    <div name="div_company_name" class="company-name">
+                                        <t t-out="header_company.name"/>
+                                    </div>
+                                    <div name="div_branch_name" class="company-branch"
+                                         t-if="header_partner != header_company and header_partner.name">
+                                        <t t-out="header_partner.name"/>
+                                    </div>
+                                    <div name="div_company_info" class="company-info">
+                                        <div name="div_company_street" t-if="header_partner.street">
+                                            <t t-out="', '.join([item for item in [header_partner.street, header_partner.street2] if item])"/>
+                                        </div>
+                                        <div name="div_company_city" t-if="header_partner.city or header_partner.state_id">
+                                            <t t-if="header_partner.city"><t t-out="header_partner.city"/></t>
+                                            <t t-if="header_partner.state_id">, <t t-out="header_partner.state_id.name"/></t>
+                                            <t t-if="header_partner.zip"> (<t t-out="header_partner.zip"/>)</t>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Invoice info -->
+                                <div class="section" id="thermal_invoice_info">
+                                    <div name="row_number" class="row">
+                                        <span class="label">Número:</span>
+                                        <span><t t-out="o.name"/></span>
+                                    </div>
+                                    <div name="row_date" class="row">
+                                        <span class="label">Fecha:</span>
+                                        <span><t t-out="o.invoice_date" t-options='{"widget": "date"}'/></span>
+                                    </div>
+                                    <div name="row_time" class="row">
+                                        <span class="label">Hora:</span>
+                                        <span><t t-out="o.get_current_time_formatted()"/></span>
+                                    </div>
+                                    <div name="row_due_date" class="row" t-if="o.invoice_date_due">
+                                        <span class="label">Vencimiento:</span>
+                                        <span><t t-out="o.invoice_date_due" t-options='{"widget": "date"}'/></span>
+                                    </div>
+                                </div>
+
+                                <!-- Customer info -->
+                                <div class="section" id="thermal_partner_info">
+                                    <div name="row_partner_label" class="row">
+                                        <span class="label">Cliente:</span>
+                                    </div>
+                                    <div name="div_partner_name"><t t-out="o.partner_id.commercial_partner_id.name"/></div>
+                                    <div name="div_partner_street" t-if="o.partner_id.street">
+                                        <t t-out="o.partner_id.street"/>
+                                    </div>
+                                    <div name="div_partner_city" t-if="o.partner_id.city or o.partner_id.state_id">
+                                        <t t-if="o.partner_id.city"><t t-out="o.partner_id.city"/></t>
+                                        <t t-if="o.partner_id.state_id">, <t t-out="o.partner_id.state_id.name"/></t>
+                                    </div>
+                                </div>
+
+                                <!--
+                                    Invoice lines: one block per item, description and amount on
+                                    the first line, quantity and unit price below. The prices come
+                                    from `_thermal_line_prices()`, so a localization points the
+                                    three of them at its own helper at once.
+                                -->
+                                <div class="section" id="thermal_lines">
+                                    <div name="div_lines_title" class="lines-title">DETALLE</div>
+                                    <t t-foreach="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product')" t-as="line">
+                                        <t t-set="line_prices" t-value="line._thermal_line_prices()"/>
+                                        <div name="div_line" class="line-item">
+                                            <div name="div_line_main" class="line-main">
+                                                <span name="span_line_name" class="line-name">
+                                                    <t t-out="line.label"/>
+                                                </span>
+                                                <span name="span_line_amount" class="line-amount">
+                                                    <t t-out="line_prices['amount']"
+                                                       t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </span>
+                                            </div>
+                                            <div name="div_line_detail" class="line-detail">
+                                                <t t-out="line.quantity"/> x <span name="span_line_price_unit"><t t-out="line_prices['price_unit']"
+                                                       t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></span>
+                                                <t t-if="line_prices['discount']" name="t_line_discount"> - <t t-out="line_prices['discount']"/>% desc.</t>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!--
+                                    Totals: when the prices already carry the taxes, the net
+                                    amount and the breakdown would be informing a tax the
+                                    receipt does not discriminate, so both are dropped.
+                                -->
+                                <div class="totals" id="thermal_totals">
+                                    <div name="row_amount_untaxed" class="row" t-if="not prices_include_taxes">
+                                        <span>Subtotal:</span>
+                                        <span>
+                                            <t t-out="o.amount_untaxed"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </span>
+                                    </div>
+
+                                    <!-- Tax breakdown by group (generic, from account) -->
+                                    <t t-foreach="(o.tax_totals.get('subtotals', []) if o.tax_totals else []) if not prices_include_taxes else []" t-as="subtotal">
+                                        <t t-foreach="subtotal.get('tax_groups', [])" t-as="tax_group">
+                                            <div class="row" t-if="tax_group.get('tax_amount_currency')">
+                                                <span><t t-out="tax_group.get('group_name', '')"/>:</span>
+                                                <span>
+                                                    <t t-out="tax_group.get('tax_amount_currency', 0.0)"
+                                                       t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </span>
+                                            </div>
+                                        </t>
+                                    </t>
+
+                                    <div name="row_amount_total" class="total-row">
+                                        <span>TOTAL:</span>
+                                        <span>
+                                            <t t-out="o.amount_total"
+                                               t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Credit note reference -->
+                                <div class="document-reference" id="thermal_document_reference"
+                                     t-if="o.reversed_entry_id">
+                                    <div name="div_reference_label" class="reference-label">Documento Asociado:</div>
+                                    <div name="div_reference_info" class="reference-info">
+                                        <t t-out="o.reversed_entry_id.name"/>
+                                    </div>
+                                </div>
+
+                                <!-- Footer: contact details of the branch that issues, like the address -->
+                                <div class="footer" id="thermal_footer">
+                                    <div name="div_footer_thanks">Gracias por su compra</div>
+                                    <t t-if="o.company_id.thermal_ticket_show_company">
+                                        <div name="div_footer_phone" t-if="header_partner.phone">
+                                            Tel: <t t-out="header_partner.phone"/>
+                                        </div>
+                                        <div name="div_footer_email" t-if="header_partner.email">
+                                            <t t-out="header_partner.email"/>
+                                        </div>
+                                    </t>
+                                </div>
+
+                            </div>
+                        </t>
+                    </main>
+                </div>
+            </body>
+        </html>
+    </template>
+</odoo>

@@ -1,0 +1,211 @@
+/**
+ * Thermal Invoice Styles
+ * Optimized for 80mm continuous thermal paper
+ *
+ * All styles scoped under body.thermal-receipt-page to avoid
+ * interfering with other reports
+ *
+ * Note: @page rule is in the template's inline <style> because
+ * it cannot be scoped to a selector
+ *
+ * Only generic layout classes live here. Localization modules add their
+ * own styles for fiscal-specific blocks (letter box, QR, legends, etc).
+ */
+
+// Scoped to thermal receipt pages only
+body.thermal-receipt-page {
+    margin: 0;
+    padding: 0;
+    height: auto;
+
+    #wrapwrap {
+        height: auto;
+        min-height: 100%;
+    }
+
+    main {
+        height: auto;
+        display: block;
+    }
+
+    // Print-specific styles
+    @media print {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        .thermal-receipt {
+            page-break-after: always;
+            width: 80mm !important;
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+
+        // Prevent thead from repeating on each page
+        thead {
+            display: table-row-group;
+        }
+    }
+
+    // Thermal receipt component styles
+    .thermal-receipt {
+        width: 80mm;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12px;
+        padding: 5mm;
+        margin: 0 auto;
+        background: white;
+        color: #000;
+        line-height: 1.3;
+
+        * {
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+
+        // Reset Bootstrap .row class interference
+        .row {
+            display: flex !important;
+            justify-content: space-between !important;
+            margin: 1mm 0;
+            flex-wrap: nowrap !important;
+            --gutter-x: 0 !important;
+            --gutter-y: 0 !important;
+
+            > * {
+                flex-shrink: 1 !important;
+                width: auto !important;
+                max-width: none !important;
+                padding-right: 0 !important;
+                padding-left: 0 !important;
+                margin-top: 0 !important;
+            }
+
+            .label {
+                font-weight: bold;
+            }
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #000;
+            padding-bottom: 5mm;
+            margin-bottom: 5mm;
+
+            .logo {
+                margin-bottom: 3mm;
+            }
+        }
+
+        .company-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 2mm;
+        }
+
+        .company-info {
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .document-reference {
+            margin: 3mm 0;
+            padding: 2mm;
+            border: 1px dashed #000;
+            font-size: 10px;
+            text-align: center;
+
+            .reference-label {
+                font-weight: bold;
+                margin-bottom: 1mm;
+            }
+
+            .reference-info {
+                line-height: 1.3;
+            }
+        }
+
+        .section {
+            margin: 3mm 0;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 3mm;
+        }
+
+        table {
+            width: 100%;
+            font-size: 10px;
+            border-collapse: collapse;
+
+            th {
+                border-bottom: 1px solid #000;
+                padding: 2mm 0;
+                text-align: left;
+            }
+
+            td {
+                padding: 1mm 0;
+                vertical-align: top;
+            }
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .totals {
+            margin-top: 3mm;
+            padding-top: 3mm;
+            border-top: 2px solid #000;
+
+            .total-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                font-weight: bold;
+                margin: 2mm 0;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 5mm;
+            padding-top: 3mm;
+            border-top: 2px dashed #000;
+        }
+
+        // Branch name, under the company one, when the issuing contact is not
+        // the company itself
+        .company-branch {
+            font-size: 11px;
+            margin-bottom: 2mm;
+        }
+
+        // Detail: one block per line instead of a row of columns. In 80mm a
+        // long product description pushed the amounts into each other and had
+        // to be cut, so the amount gets its own line.
+        .lines-title {
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 1mm;
+            margin-bottom: 1.5mm;
+        }
+
+        .line-item {
+            font-size: 10px;
+            margin-bottom: 1.5mm;
+        }
+
+        .line-main {
+            display: flex;
+            justify-content: space-between;
+            gap: 2mm;
+        }
+
+        .line-amount {
+            white-space: nowrap;
+        }
+
+        .line-detail {
+            padding-left: 3mm;
+        }
+    }
+}

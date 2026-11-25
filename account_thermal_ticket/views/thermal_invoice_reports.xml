@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        The print handler opens /report/html/<report_name>/<ids>, which needs an
+        ir.actions.report declaring the template.
+
+        No binding on purpose: offered in the Print menu, this action would
+        render this very template for every invoice, including the ones a
+        localization prints its own way, and a fiscal document would come out
+        with no letter, no CAE and no QR. The button is the only way in, and it
+        picks the template through _get_thermal_receipt_report_name().
+    -->
+    <record id="action_report_thermal_invoice_html" model="ir.actions.report">
+        <field name="name">Factura Térmica (HTML)</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">account_thermal_ticket.report_thermal_invoice_html</field>
+        <field name="binding_model_id" eval="False"/>
+    </record>
+</odoo>
