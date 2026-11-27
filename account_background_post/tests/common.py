@@ -62,14 +62,15 @@ class BackgroundPostCommon(AccountTestInvoicingCommon, BackgroundPostInvariants)
 
     @contextmanager
     def _failing_post(self, moves, error="ARCA no responde"):
-        """Hace fallar action_post solo en esas facturas, antes de que toquen nada."""
+        """Hace fallar action_post solo en esas facturas, antes de que toquen nada. `error` puede
+        ser un texto (UserError) o una excepción ya armada."""
         model = self.env["account.move"].__class__
         original = model.action_post
         broken_ids = set(moves.ids)
 
         def action_post(self):
             if broken_ids & set(self.ids):
-                raise UserError(error)
+                raise error if isinstance(error, Exception) else UserError(error)
             return original(self)
 
         with patch.object(model, "action_post", action_post):

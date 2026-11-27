@@ -2,6 +2,7 @@ import logging
 from datetime import timedelta
 
 from odoo import _, api, fields, models
+from odoo.service.model import MAX_TRIES_ON_CONCURRENCY_FAILURE, PG_CONCURRENCY_EXCEPTIONS_TO_RETRY
 from odoo.tools import plaintext2html
 
 _logger = logging.getLogger(__name__)
@@ -64,7 +65,6 @@ class AccountMove(models.Model):
         moves = self.browse(ids) if ids is not None else self._get_background_post_due_moves()
 
         total_len = len(moves)
-        max_retries = self._get_background_post_max_retries()
         remaining_time = self.env["ir.cron"]._commit_progress(remaining=total_len)
         for index, move in enumerate(moves):
             if remaining_time <= 0:
@@ -79,12 +79,11 @@ class AccountMove(models.Model):
                 remaining_time = self.env["ir.cron"]._commit_progress(processed=1)
             except Exception as exp:
                 self.env.cr.rollback()
-                if move._reschedule_background_post():
+                if move._reschedule_background_post(exp):
                     _logger.warning(
-                        "Error while trying to post invoice %s in background, retry %s of %s scheduled for %s: %s",
+                        "Error while trying to post invoice %s in background, retry %s scheduled for %s: %s",
                         move.name or move.id,
                         move.background_post_attempts,
-                        max_retries,
                         move.background_post_date,
                         exp,
                     )
@@ -102,16 +101,20 @@ class AccountMove(models.Model):
                 # Commit after each failure to keep the retry state and the message
                 remaining_time = self.env["ir.cron"]._commit_progress()
 
-    def _reschedule_background_post(self):
+    def _reschedule_background_post(self, error=None):
         """Devuelve True si la factura quedó reprogramada y False si agotó los reintentos."""
         self.ensure_one()
-        if self.background_post_attempts >= self._get_background_post_max_retries():
+        max_retries = self._get_background_post_max_retries()
+        delay = self._get_background_post_retry_delay()
+        if isinstance(error, PG_CONCURRENCY_EXCEPTIONS_TO_RETRY):
+            # concurrency failures are transient: retry on the next run even without retries configured
+            max_retries, delay = max(max_retries, MAX_TRIES_ON_CONCURRENCY_FAILURE), 0
+        if self.background_post_attempts >= max_retries:
             return False
         self.write(
             {
                 "background_post_attempts": self.background_post_attempts + 1,
-                "background_post_date": fields.Datetime.now()
-                + timedelta(minutes=self._get_background_post_retry_delay()),
+                "background_post_date": fields.Datetime.now() + timedelta(minutes=delay),
             }
         )
         return True
