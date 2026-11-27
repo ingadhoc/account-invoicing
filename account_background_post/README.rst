@@ -20,7 +20,7 @@ This module let the user to improve the use of the post entries action on the in
 
    1.1 The marked invoices can also carry a scheduling date ("Post in Background At", ``background_post_date``). The cron only posts them once that date is reached, so a caller can defer a posting to a known future moment (for example, the next invoice date of a subscription) instead of posting on the next run. Without a date the behaviour is the historical one: the invoice is posted on the next cron run.
 
-   1.2 Optionally, an invoice that fails can be retried instead of being unmarked on the first error. While there are retries left we reschedule the invoice (and count the attempt on ``background_post_attempts``); once they are exhausted we unmark it and leave the message in the invoice, as always. Retries are disabled by default, so the behaviour does not change unless they are configured.
+   1.2 Optionally, an invoice that fails can be retried instead of being unmarked on the first error. While there are retries left we reschedule the invoice (and count the attempt on ``background_post_attempts``); once they are exhausted we unmark it and leave the message in the invoice, as always. Retries are disabled by default, so the behaviour does not change unless they are configured. Concurrency failures (``could not serialize access``, ``deadlock detected``) are the exception: they clear up on their own, so they are always retried on the next cron run, up to 5 times, without notifying anyone.
 
 2. If the user want to validate the invoices at the current moment not in Background, we do the next two changes:
 
