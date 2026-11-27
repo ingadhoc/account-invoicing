@@ -32,18 +32,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post
 msgid "Background Post"
-msgstr "Validación en Background"
+msgstr "Validación en segundo plano"
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post_attempts
 #: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post_attempts
 msgid "Background Post Attempts"
-msgstr "Intentos de Validación en Background"
+msgstr "Intentos de validación en segundo plano"
 
 #. module: account_background_post
 #: model:ir.actions.server,name:account_background_post.ir_cron_background_post_invoices_ir_actions_server
 msgid "Background Post Invoices: cron"
-msgstr "Facturas Validación en Background: cron"
+msgstr "Validar facturas en segundo plano: cron"
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__batch_size
@@ -69,7 +69,7 @@ msgstr "Nombre para mostrar"
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_validate_account_move__force_background
 msgid "Force Background"
-msgstr "Forzar Background"
+msgstr "Forzar segundo plano"
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_move__id
@@ -81,7 +81,8 @@ msgstr "ID"
 #: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post
 #: model:ir.model.fields,help:account_background_post.field_account_move__background_post
 msgid "If True then this invoice will be validated in the background by cron."
-msgstr "Si es Verdadero esta factura sera validada en background por el cron."
+msgstr ""
+"Si está activado, esta factura se validará en segundo plano mediante el cron."
 
 #. module: account_background_post
 #: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post_date
@@ -90,9 +91,9 @@ msgid ""
 "If set, the background cron waits until this date to post this invoice. If "
 "empty, the invoice is posted on the next cron run."
 msgstr ""
-"Si se completa, el cron de background espera hasta esta fecha para validar "
-"esta factura. Si está vacía, la factura se valida en la próxima corrida del "
-"cron."
+"Si se completa, el cron de segundo plano espera hasta esta fecha para "
+"validar esta factura. Si está vacía, la factura se valida en la próxima "
+"corrida del cron."
 
 #. module: account_background_post
 #: model:ir.model,name:account_background_post.model_account_move
@@ -103,7 +104,8 @@ msgstr "Asiento contable"
 #: model:ir.model.fields,help:account_background_post.field_account_bank_statement_line__background_post_attempts
 #: model:ir.model.fields,help:account_background_post.field_account_move__background_post_attempts
 msgid "Number of failed attempts to post this invoice in the background."
-msgstr "Cantidad de intentos fallidos de validar esta factura en background."
+msgstr ""
+"Cantidad de intentos fallidos de validar esta factura en segundo plano."
 
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
@@ -113,13 +115,13 @@ msgstr "Solo use esta opción para validar pequeños lotes de facturas"
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
 msgid "Post in Background"
-msgstr "Validar en Background"
+msgstr "Validar en segundo plano"
 
 #. module: account_background_post
 #: model:ir.model.fields,field_description:account_background_post.field_account_bank_statement_line__background_post_date
 #: model:ir.model.fields,field_description:account_background_post.field_account_move__background_post_date
 msgid "Post in Background At"
-msgstr "Fecha de Validación en Background"
+msgstr "Fecha de validación en segundo plano"
 
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.view_move_form
@@ -146,7 +148,7 @@ msgstr ""
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.view_account_invoice_filter
 msgid "To validate in background"
-msgstr "Para validar en background"
+msgstr "Para validar en segundo plano"
 
 #. module: account_background_post
 #: model:ir.model,name:account_background_post.model_validate_account_move
@@ -157,8 +159,7 @@ msgstr "Validar asiento contable"
 #. odoo-python
 #: code:addons/account_background_post/models/account_move.py:0
 msgid "We tried to validate this invoice on the background but got this error"
-msgstr ""
-"Intentamos validar esta factura en background pero recibimos este error"
+msgstr "No se pudo validar esta factura en segundo plano. Detalle del error"
 
 #. module: account_background_post
 #: model_terms:ir.ui.view,arch_db:account_background_post.validate_account_move_view
